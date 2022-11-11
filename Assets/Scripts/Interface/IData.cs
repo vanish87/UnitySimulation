@@ -22,13 +22,4 @@ namespace Simulation
         string Identifier { get; }
         // Storage Storage { get; }
     }
-
-    public class GPUVelocityField2D : GPUData<float2>
-    {
-        public override string Identifier => throw new System.NotImplementedException();
-
-        // public override Access Access => throw new System.NotImplementedException();
-    }
-
-
 }

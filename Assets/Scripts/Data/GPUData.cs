@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Simulation
 {
-    public interface IGPUDataConfigure : IInitialize
+    public interface IGPUDataConfigure : IConfigure
     {
         public int3 Size { get; }
     }
