@@ -1,14 +1,51 @@
 // Each #kernel tells which function to compile; you can have many kernels
-#pragma kernel CSMain
+#pragma kernel Density
 
-// Create a RenderTexture with enableRandomWrite flag and set it
-// with cs.SetTexture
-RWTexture2D<float4> Result;
+#include "SPHParameter.hlsl"
+#include "Kernel.hlsl"
 
-[numthreads(8,8,1)]
-void CSMain (uint3 id : SV_DispatchThreadID)
+#include "../DispatcherHelper.hlsl"
+#include "../GridData.hlsl"
+#include "../GridHelper.hlsl"
+#include "../DefaultParticle.hlsl"
+
+StructuredBuffer<Particle> _ParticleBufferRead;
+RWStructuredBuffer<ParticleDensity> _ParticleDensityBuffer;
+
+float GetParticleGamma(in Particle p)
 {
-    // TODO: insert actual code here!
+	return p.IsBoundary()?_ParticleGamma.x:_ParticleGamma.y;
+}
 
-    Result[id.xy] = float4(id.x & id.y, (id.x & 15)/15.0, (id.y & 15)/15.0, 0.0);
+[numthreads(128,1,1)]
+void Density(uint3 id : SV_DispatchThreadID)
+{
+    RETURN_IF_INVALID(id);
+
+    const uint p_id = id.x;
+	Particle p = _ParticleBufferRead[p_id];
+
+	float3 p_pos = p.pos;
+	float density = 0;
+	if(p.IsActive())
+	{
+		FOR_EACH_NEIGHBOR_START(p, n_id)
+		{
+			Particle np = _ParticleBufferRead[n_id];
+			if(!np.IsActive()) continue;
+
+			float3 n_pos = np.pos;
+
+			float gamma = GetParticleGamma(np);//IsBoundary(np)?20:1;
+			// float gamma = 1;
+
+			float3 r = p_pos - n_pos;
+			density += _ParticleMass * W(r, _H) * gamma;
+		}
+		FOR_EACH_NEIGHBOR_END
+
+		density = max(density, _RestDensity);
+	}
+
+	_ParticleDensityBuffer[p_id].density = density;
 }

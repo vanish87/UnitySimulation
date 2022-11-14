@@ -1,0 +1,10 @@
+﻿
+
+#define DataType uint2
+#define COMPARE(lhs, rhs) \
+	(lhs.x == rhs.x) ? (lhs.y <= rhs.y) : (lhs.x <= rhs.x);
+	
+	
+#pragma kernel BitonicSort
+#pragma kernel MatrixTranspose
+#include "CommonSort.hlsl"
