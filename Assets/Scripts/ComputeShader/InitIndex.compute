@@ -1,0 +1,13 @@
+#pragma kernel InitBuffer
+
+AppendStructuredBuffer<uint> _Buffer;
+uint _BufferCount;
+
+[numthreads(128,1,1)]
+void InitBuffer(uint3 id : SV_DispatchThreadID)
+{
+    const uint pid= id.x;
+    if(pid >= _BufferCount) return;
+
+    _Buffer.Append(pid);
+}

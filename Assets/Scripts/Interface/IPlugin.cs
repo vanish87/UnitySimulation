@@ -5,6 +5,6 @@ namespace Simulation
     public interface IPlugin : IInitialize
     {
         IEnumerable<int> Steps { get; }
-        void OnSimulationStep(int stepIndex, ISimulation sim, IFluidData data);
+        void OnSimulationStep(int stepIndex, ISimulation sim, ISimulationData data);
     }
 }

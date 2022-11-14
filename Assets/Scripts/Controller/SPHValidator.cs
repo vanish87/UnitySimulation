@@ -8,7 +8,7 @@ namespace Simulation
     {
         public Dictionary<SimulationStep, IEnumerable<Type>> StepAndPlugins => throw new NotImplementedException();
 
-        public void OnSimulationStep(SimulationStep step, ISimulation sim, IFluidData data)
+        public void OnSimulationStep(SimulationStep step, ISimulation sim, ISimulationData data)
         {
             if(step == SimulationStep.BeforeSimulation)
             {

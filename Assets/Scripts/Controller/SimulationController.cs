@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Simulation
+namespace Simulation.Fluid
 {
-    public abstract class FluidSimulation : MonoBehaviour, ISimulation, IFluidData
+    public class SimulationController : MonoBehaviour, ISimulation, ISimulationData
     {
         public virtual IEnumerable<IConfigure> Configures => this.configures ??= this.GetComponentsInChildren<IConfigure>();
         public virtual IEnumerable<IData> Data => this.data ??= this.GetComponentsInChildren<IData>();
@@ -13,13 +13,13 @@ namespace Simulation
         public virtual IEnumerable<IPlugin> Plugins => this.plugins ??= this.GetComponentsInChildren<IPlugin>();
         public bool Inited => this.inited;
         protected Dictionary<int, List<IPlugin>> sortedPlugins = new Dictionary<int, List<IPlugin>>();
-        protected IEnumerable<KeyValuePair<int, List<IPlugin>>> SortedPlugins => this.sortedPlugins.OrderBy(k => k.Key);
+        protected virtual IEnumerable<KeyValuePair<int, List<IPlugin>>> SortedPlugins => this.sortedPlugins.OrderBy(k => k.Key);
         protected IEnumerable<IPlugin> plugins;
         protected IEnumerable<IConfigure> configures;
         protected IEnumerable<ISpace> spaces;
         protected IEnumerable<IData> data;
         protected bool inited = false;
-        public void Init(params object[] parameter)
+        public virtual void Init(params object[] parameter)
         {
             if (this.Inited) return;
 
@@ -50,7 +50,7 @@ namespace Simulation
             this.inited = true;
         }
 
-        public void Deinit(params object[] parameter)
+        public virtual void Deinit(params object[] parameter)
         {
             foreach (var p in this.Plugins)
             {
@@ -70,7 +70,7 @@ namespace Simulation
             }
             this.inited = false;
         }
-        public void SimulationStep()
+        public virtual void SimulationStep()
         {
             foreach (var l in this.SortedPlugins)
             {
@@ -79,6 +79,14 @@ namespace Simulation
                     p.OnSimulationStep(l.Key, this, this);
                 }
             }
+        }
+        protected virtual void OnEnable()
+        {
+            this.Init();
+        }
+        protected virtual void OnDisable()
+        {
+            this.Deinit();
         }
     }
 }

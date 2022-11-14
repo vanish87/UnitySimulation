@@ -26,19 +26,12 @@ namespace Simulation
     }
 
 
-    public interface ISimulation: IInitialize
+    public interface ISimulation : IInitialize
     {
-        // void SimulationStep();
+        void SimulationStep();
 
         // void Register(SimulationStep s, SimulationStepFunction step);
         // void Unregister(SimulationStep s, SimulationStepFunction step);
     }
 
-    public interface IFluidData
-    {
-        IEnumerable<IConfigure> Configures { get; }
-        IEnumerable<ISpace> Spaces { get; }
-        IEnumerable<IData> Data { get; }
-        IEnumerable<IPlugin> Plugins { get; }
-    }
 }

@@ -20,7 +20,7 @@ namespace Simulation
         {
             if (this.Inited) return;
 
-            var config = parameter.OfType<IGPUDataConfigure>().First();
+            var config = this.OnGetConfigure(parameter);
             this.size = config.Size;
             var format = this.Format;
             this.data = new RenderTexture(this.size.x, this.size.y, this.size.z, format);
@@ -29,8 +29,14 @@ namespace Simulation
         }
         public virtual void Deinit(params object[] parameter)
         {
-            if (this.data is RenderTexture) GameObject.Destroy(this.data);
+            GameObject.Destroy(this.data);
             this.inited = false;
+        }
+        protected virtual IGPUBufferConfigure OnGetConfigure(object[] parameter)
+        {
+            var config = this.GetComponent<IGPUBufferConfigure>();
+            Debug.Assert(config != null);
+            return config;
         }
         protected RenderTextureFormat Format
         {

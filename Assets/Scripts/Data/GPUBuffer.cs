@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Unity.Mathematics;
@@ -6,11 +5,11 @@ using UnityEngine;
 
 namespace Simulation
 {
-    public interface IGPUDataConfigure : IConfigure
+    public interface IGPUBufferConfigure : IConfigure
     {
         public int3 Size { get; }
     }
-    public abstract class GPUData<T> : MonoBehaviour, IStructuredData<ComputeBuffer, T>
+    public abstract class GPUBuffer<T> : MonoBehaviour, IStructuredData<ComputeBuffer, T>
     {
         public abstract string Identifier { get; }
         // public abstract Access Access { get; }
@@ -19,15 +18,14 @@ namespace Simulation
         public int Length => this.Size.x * this.Size.y * this.Size.z;
         public bool Inited => this.inited;
         [SerializeField] protected int3 size = new int3(1, 1, 1);
+        [SerializeField] protected ComputeShader initCS;
         protected bool inited = false;
         protected ComputeBuffer data;
         public virtual void Init(params object[] parameter)
         {
             if (this.Inited) return;
 
-            var config = parameter.OfType<IGPUDataConfigure>().First();
-            Debug.Assert(config != null);
-
+            var config = this.OnGetConfigure(parameter);
             this.size = config.Size;
             Debug.Assert(this.Length > 0);
 
@@ -45,6 +43,22 @@ namespace Simulation
         {
             this.data?.Release();
             this.data = new ComputeBuffer(size, Marshal.SizeOf<T>(), type);
+            this.data.SetCounterValue(0);
+
+            if(this.initCS != null)
+            {
+                var k = this.initCS.FindKernel("InitBuffer");
+                this.initCS.SetBuffer(k, "_Buffer", this.Data);
+                this.initCS.SetInt("_BufferCount", this.Data.count);
+                DispatchTool.Dispatch(this.initCS, "InitBuffer", this.Size);
+            }
+        }
+
+        protected virtual IGPUBufferConfigure OnGetConfigure(object[] parameter)
+        {
+            var config = this.GetComponent<IGPUBufferConfigure>();
+            Debug.Assert(config != null);
+            return config;
         }
 
     }
