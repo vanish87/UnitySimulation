@@ -749,6 +749,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
     smoothLength: 0.3
+    pressureK:
+      x: 400
+      y: 3
+    particleGamma:
+      x: 20
+      y: 1
+    restDensity: 1000
+    particleMass: 18
+    viscosity: 10
+    vorticityConfinement: 1
+    nu_t:
+      x: 0.05
+      y: 0.05
+      z: 0.05
+    nu_ext:
+      x: 0
+      y: 0
+      z: 0
+    theta:
+      x: 1
+      y: 1
+      z: 1
+    gravity:
+      x: 0
+      y: -9.8
+      z: 0
+    preferredTimeStep: 0.05
+    maxSpeed: 1
 --- !u!1 &1354797828
 GameObject:
   m_ObjectHideFlags: 0
@@ -917,6 +945,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2033282065}
+  - {fileID: 2087662039}
   m_Father: {fileID: 1710156262}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1196,3 +1225,48 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   densityCS: {fileID: 7200000, guid: 8e86d8c5db27a294aba618c773b94e15, type: 3}
+--- !u!1 &2087662038
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2087662039}
+  - component: {fileID: 2087662040}
+  m_Layer: 0
+  m_Name: VorticityPlugin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2087662039
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087662038}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1641439363}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2087662040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087662038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d9748f9ed2952a4abaa54b825b3d68f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vorticityCS: {fileID: 7200000, guid: 02b95c0433dd64a428662e4b92126770, type: 3}

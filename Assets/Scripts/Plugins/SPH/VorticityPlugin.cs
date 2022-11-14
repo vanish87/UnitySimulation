@@ -1,17 +1,16 @@
-
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
 namespace Simulation.Fluid.SPH
 {
-    public class DensityPlugin : MonoBehaviour, IPlugin
+    public class VorticityPlugin : MonoBehaviour, IPlugin
     {
-        public IEnumerable<int> Steps => new List<int>() { (int)SimulationStep.OnSimulation + (int)Step.Density };
+        public IEnumerable<int> Steps => new List<int>() { (int)SimulationStep.OnSimulation + (int)Step.Vorticity };
         public bool Inited => true;
         public bool Enabled => this.enabled;
-        [SerializeField] protected ComputeShader densityCS;
-        protected const string Kernel = "Density";
+        [SerializeField] protected ComputeShader vorticityCS;
+        protected const string Kernel = "Vorticity";
         
         public void Init(params object[] parameter)
         {
@@ -25,28 +24,27 @@ namespace Simulation.Fluid.SPH
             this.SetConstant(sphConfigure);
 
             var particle = data.Data.OfType<ParticleBufferDouble>().FirstOrDefault();
-            var density = data.Data.OfType<ParticleDensityBuffer>().FirstOrDefault();
-            this.SetBuffer(particle.Read.Data, density.Data);
+            // this.SetBuffer(particle.Read.Data, density.Data);
 
             var grid = data.Data.OfType<SPHGridBuffer>().FirstOrDefault();
             this.OnSetupGridParameter(grid);
 
-            DispatchTool.Dispatch(this.densityCS, Kernel, particle.Read.Size);
+            DispatchTool.Dispatch(this.vorticityCS, Kernel, particle.Read.Size);
         }
 
         protected void SetConstant(ISPHConfigure config)
         {
-            var cs = this.densityCS;
+            var cs = this.vorticityCS;
             var k = cs.FindKernel(Kernel);
 
             cs.SetVector("_ParticleGamma", new Vector4(config.ParticleGamma.x, config.ParticleGamma.y, 0, 0));
             cs.SetFloat("_RestDensity", config.RestDensity);
             cs.SetFloat("_ParticleMass", config.ParticleMass);
         }
-        protected void OnSetupGridParameter(SPHGridBuffer grid)
+        protected virtual void OnSetupGridParameter(SPHGridBuffer grid)
         {
             // this.cs.SetInt("_GridCenterMode", grid.centerMode);
-            var cs = this.densityCS;
+            var cs = this.vorticityCS;
             cs.SetVector("_GridSize", new Vector4(grid.Size.x, grid.Size.y, grid.Size.z, 0));
             cs.SetVector("_GridSpacing", new Vector4(grid.Spacing.x, grid.Spacing.y, grid.Spacing.z, 0));
             cs.SetVector("_GridMin", new Vector4(grid.Min.x, grid.Min.y, grid.Min.z, 0));
@@ -57,7 +55,7 @@ namespace Simulation.Fluid.SPH
 
         protected void SetBuffer(ComputeBuffer particleRead, ComputeBuffer density)
         {
-            var cs = this.densityCS;
+            var cs = this.vorticityCS;
             var k = cs.FindKernel(Kernel);
             cs.SetBuffer(k, "_ParticleBufferRead", particleRead);
             cs.SetBuffer(k, "_ParticleDensityBuffer", density);
