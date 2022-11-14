@@ -8,6 +8,7 @@ namespace Simulation.Fluid.SPH
     {
         public IEnumerable<int> Steps => new List<int>() { (int)SimulationStep.OnSimulation + (int)Step.Density };
         public bool Inited => true;
+        public bool Enabled => this.enabled;
 
         [SerializeField] protected ComputeShader densityCS;
         public void Init(params object[] parameter)

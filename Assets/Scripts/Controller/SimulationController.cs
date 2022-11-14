@@ -76,7 +76,7 @@ namespace Simulation.Fluid
             {
                 foreach (var p in l.Value)
                 {
-                    p.OnSimulationStep(l.Key, this, this);
+                    if (p.Enabled) p.OnSimulationStep(l.Key, this, this);
                 }
             }
         }

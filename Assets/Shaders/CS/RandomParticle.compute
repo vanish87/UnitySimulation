@@ -1,9 +1,12 @@
 #pragma kernel RandomParticle
 
 #include "DefaultParticle.hlsl"
+#include "Tools.hlsl"
 
 RWStructuredBuffer<Particle> _Buffer;
 uint _BufferCount;
+
+float4x4 _SimSpaceLocalToWorld;
 
 [numthreads(128,1,1)]
 void RandomParticle(uint3 id : SV_DispatchThreadID)
@@ -12,6 +15,6 @@ void RandomParticle(uint3 id : SV_DispatchThreadID)
     if(pid >= _BufferCount) return;
 
     Particle p = _Buffer[pid];
-
+    p.pos = GenerateRandomPos(pid, _SimSpaceLocalToWorld);
     _Buffer[pid] = p;
 }
