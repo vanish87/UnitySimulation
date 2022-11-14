@@ -41,7 +41,4 @@ namespace Simulation
         IEnumerable<IData> Data { get; }
         IEnumerable<IPlugin> Plugins { get; }
     }
-
-
-
 }
