@@ -9,7 +9,10 @@ namespace Simulation
         public static void Dispatch(ComputeShader cs, string kernel, int3 dsize)
         {
             var k = cs.FindKernel(kernel);
-
+            DispatchTool.Dispatch(cs, k, dsize);
+        }
+        public static void Dispatch(ComputeShader cs, int k, int3 dsize)
+        {
             uint threadNumX = 0; uint threadNumY = 0; uint threadNumZ = 0;
             cs.GetKernelThreadGroupSizes(k, out threadNumX, out threadNumY, out threadNumZ);
             var dx = GetDispatchSize(dsize.x, threadNumX);

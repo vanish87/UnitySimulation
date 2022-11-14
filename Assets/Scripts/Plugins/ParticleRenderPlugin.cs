@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Simulation
@@ -9,6 +10,8 @@ namespace Simulation
         public IEnumerable<int> Steps => new List<int>() { (int)SimulationStep.Render };
         public bool Inited => true;
         public Material mat;
+
+        protected ParticleBufferDouble particleBuffer;
         public void Init(params object[] parameter)
         {
         }
@@ -17,11 +20,11 @@ namespace Simulation
         }
         public void OnSimulationStep(int stepIndex, ISimulation sim, ISimulationData data)
         {
-            // if (this.Particle == null) this.Particle = data.Data.OfType<ParticleGPUDataDouble>().FirstOrDefault();
-            // var buffer = this.Particle.Read;
+            if (this.particleBuffer == null) this.particleBuffer = data.Data.OfType<ParticleBufferDouble>().FirstOrDefault();
+            var buffer = this.particleBuffer.Read;
 
-            // this.mat.SetBuffer("_ParticleBuffer", buffer.Data);
-            // Graphics.DrawProcedural(this.mat, new Bounds(Vector3.zero, Vector3.one * 10000), MeshTopology.Points, buffer.Data.count);
+            this.mat.SetBuffer("_ParticleBuffer", buffer.Data);
+            Graphics.DrawProcedural(this.mat, new Bounds(Vector3.zero, Vector3.one * 10000), MeshTopology.Points, buffer.Data.count);
         }
     }
 

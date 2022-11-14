@@ -6,7 +6,7 @@ namespace Simulation
 {
     public class ParticleBufferDouble : MonoBehaviour, IData
     {
-        public virtual string Identifier => Fluid.DataType.Particle.ToString();
+        public virtual string Identifier => Fluid.DataType.ParticleDouble.ToString();
         public bool Inited => this.inited;
         protected bool inited = false;
         public ParticleBuffer Read { get; protected set; }

@@ -50,7 +50,7 @@ namespace Simulation
                 var k = this.initCS.FindKernel("InitBuffer");
                 this.initCS.SetBuffer(k, "_Buffer", this.Data);
                 this.initCS.SetInt("_BufferCount", this.Data.count);
-                DispatchTool.Dispatch(this.initCS, "InitBuffer", this.Size);
+                DispatchTool.Dispatch(this.initCS, k, this.Size);
             }
         }
 

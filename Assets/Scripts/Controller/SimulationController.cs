@@ -88,5 +88,9 @@ namespace Simulation.Fluid
         {
             this.Deinit();
         }
+        protected virtual void Update()
+        {
+            this.SimulationStep();
+        }
     }
 }

@@ -12,6 +12,7 @@ void InitBuffer(uint3 id : SV_DispatchThreadID)
     if(pid >= _BufferCount) return;
 
     Particle p = _Buffer[pid];
+    p = (Particle)0;
     p.SetUUID(pid);
     _Buffer[pid] = p;
 }
