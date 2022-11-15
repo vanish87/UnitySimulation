@@ -17,8 +17,8 @@ namespace Simulation
         public float3 Min => this.min;
         public float3 Max => this.max;
         [SerializeField] protected float3 spacing = 0.1f;
-        [SerializeField, Attributes.DisableEdit] protected float3 min;
-        [SerializeField, Attributes.DisableEdit] protected float3 max;
+        [SerializeField] protected float3 min;
+        [SerializeField] protected float3 max;
         [SerializeField] protected bool drawGizmos = false;
 
         public override void Init(params object[] parameter)
