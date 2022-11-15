@@ -21,7 +21,7 @@ namespace Simulation
 			}
 			ComputeShader sortCS = this.bitonicCS;
 
-			int KERNEL_ID_BITONICSORT = sortCS.FindKernel("BitonicSort");
+			int KERNEL_ID_BITONIC_SORT = sortCS.FindKernel("BitonicSort");
 			int KERNEL_ID_TRANSPOSE = sortCS.FindKernel("MatrixTranspose");
 
 			uint NUM_ELEMENTS = (uint)source.count;
@@ -33,8 +33,8 @@ namespace Simulation
 				SetGPUSortConstants(sortCS, level, level, MATRIX_HEIGHT, MATRIX_WIDTH);
 
 				// Sort the row data
-				sortCS.SetBuffer(KERNEL_ID_BITONICSORT, "Data", source);
-				sortCS.Dispatch(KERNEL_ID_BITONICSORT, (int)(NUM_ELEMENTS / BITONIC_BLOCK_SIZE), 1, 1);
+				sortCS.SetBuffer(KERNEL_ID_BITONIC_SORT, "Data", source);
+				sortCS.Dispatch(KERNEL_ID_BITONIC_SORT, (int)(NUM_ELEMENTS / BITONIC_BLOCK_SIZE), 1, 1);
 			}
 
 			// Then sort the rows and columns for the levels > than the block size
@@ -48,8 +48,8 @@ namespace Simulation
 				sortCS.Dispatch(KERNEL_ID_TRANSPOSE, (int)(MATRIX_WIDTH / TRANSPOSE_BLOCK_SIZE), (int)(MATRIX_HEIGHT / TRANSPOSE_BLOCK_SIZE), 1);
 
 				// Sort the transposed column data
-				sortCS.SetBuffer(KERNEL_ID_BITONICSORT, "Data", tempBuffer);
-				sortCS.Dispatch(KERNEL_ID_BITONICSORT, (int)(NUM_ELEMENTS / BITONIC_BLOCK_SIZE), 1, 1);
+				sortCS.SetBuffer(KERNEL_ID_BITONIC_SORT, "Data", tempBuffer);
+				sortCS.Dispatch(KERNEL_ID_BITONIC_SORT, (int)(NUM_ELEMENTS / BITONIC_BLOCK_SIZE), 1, 1);
 
 				// Transpose the data from buffer 2 back into buffer 1
 				SetGPUSortConstants(sortCS, BITONIC_BLOCK_SIZE, level, MATRIX_HEIGHT, MATRIX_WIDTH);
@@ -58,8 +58,8 @@ namespace Simulation
 				sortCS.Dispatch(KERNEL_ID_TRANSPOSE, (int)(MATRIX_HEIGHT / TRANSPOSE_BLOCK_SIZE), (int)(MATRIX_WIDTH / TRANSPOSE_BLOCK_SIZE), 1);
 
 				// Sort the row data
-				sortCS.SetBuffer(KERNEL_ID_BITONICSORT, "Data", source);
-				sortCS.Dispatch(KERNEL_ID_BITONICSORT, (int)(NUM_ELEMENTS / BITONIC_BLOCK_SIZE), 1, 1);
+				sortCS.SetBuffer(KERNEL_ID_BITONIC_SORT, "Data", source);
+				sortCS.Dispatch(KERNEL_ID_BITONIC_SORT, (int)(NUM_ELEMENTS / BITONIC_BLOCK_SIZE), 1, 1);
 			}
 
 		}
