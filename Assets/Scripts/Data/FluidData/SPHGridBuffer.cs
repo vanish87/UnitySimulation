@@ -13,9 +13,7 @@ namespace Simulation.Fluid.SPH
             var sph = data.Configures.OfType<ISPHConfigure>().FirstOrDefault();
             var space = data.Spaces.OfType<SimulationSpace>().FirstOrDefault();
 
-            this.spacing = sph.SmoothLength;
-            this.size = ScaleSpacingToSize(space.Scale, this.spacing);
-            base.Init(parameter);
+            this.Setup(space, sph.SmoothLength);
         }
     }
 

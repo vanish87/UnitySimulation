@@ -14,16 +14,24 @@ namespace Simulation
         }
 
         public float3 Spacing => this.spacing;
-        public float3 Origin => this.transform.localPosition;
         public float3 Min => this.min;
         public float3 Max => this.max;
         [SerializeField] protected float3 spacing = 0.1f;
-        [SerializeField] protected float3 min;
-        [SerializeField] protected float3 max;
+        [SerializeField, Attributes.DisableEdit] protected float3 min;
+        [SerializeField, Attributes.DisableEdit] protected float3 max;
+        [SerializeField] protected bool drawGizmos = false;
 
         public override void Init(params object[] parameter)
         {
-            this.min = this.Origin;
+            this.min = 0;
+            this.max = this.min + this.Size * this.Spacing;
+            this.OnCreateBuffer(this.Length);
+        }
+        public virtual void Setup(ISpace space, float3 spacing)
+        {
+            this.spacing = spacing;
+            this.size = ScaleSpacingToSize(space.Scale, this.spacing);
+            this.min = space.Center - 0.5f * space.Scale;
             this.max = this.min + this.Size * this.Spacing;
             this.OnCreateBuffer(this.Length);
         }
@@ -36,6 +44,11 @@ namespace Simulation
             cs.SetVector("_GridMax", new Vector4(this.Max.x, this.Max.y, this.Max.z, 0));
             var k = cs.FindKernel(kernel);
             cs.SetBuffer(k, "_GridBuffer", this.Data);
+        }
+
+        protected virtual void OnDrawGizmos()
+        {
+			if (Application.isPlaying && this.drawGizmos) GizmosTool.OnDrawGrid(this.Min, this.Max, this.Spacing);
         }
     }
 }

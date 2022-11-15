@@ -26,7 +26,7 @@ namespace Simulation
     }
     public class ParticleBuffer : GPUBuffer<Particle>
     {
-        public override string Identifier => this.ToString();
+        public override string Identifier => Fluid.DataType.Particle.ToString();
         protected override IGPUBufferConfigure OnGetConfigure(object[] parameter)
         {
             var data = parameter.OfType<ISimulationData>().FirstOrDefault();

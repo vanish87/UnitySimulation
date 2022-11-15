@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace Simulation
 {
-    public class AppendIndexBuffer : GPUBuffer<uint>
+    public class ParticleAppendIndexBuffer : GPUBuffer<uint>
     {
-        public override string Identifier => this.ToString();
+        public override string Identifier => Fluid.DataType.ParticleIndex.ToString();
         public ComputeBuffer AppendIndexCounterBuffer => this.appendIndexCounterBuffer;
         protected ComputeBuffer appendIndexCounterBuffer;
         protected const int CounterBufferSize = 5;
