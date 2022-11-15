@@ -3,7 +3,7 @@ namespace Simulation.Fluid.SPH
 {
     public enum Step
     {
-        Density = 0,
+        Density = 10,
         Vorticity,
         VorticityConfinement,
         Viscosity,

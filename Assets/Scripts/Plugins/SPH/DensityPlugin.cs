@@ -40,6 +40,7 @@ namespace Simulation.Fluid.SPH
             var k = cs.FindKernel(Kernel);
 
             cs.SetVector("_ParticleGamma", new Vector4(config.ParticleGamma.x, config.ParticleGamma.y, 0, 0));
+            cs.SetFloat("_H", config.SmoothLength);
             cs.SetFloat("_RestDensity", config.RestDensity);
             cs.SetFloat("_ParticleMass", config.ParticleMass);
         }

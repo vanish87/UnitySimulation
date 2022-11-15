@@ -1,0 +1,91 @@
+#pragma kernel Integrate
+
+#include "SPHParameter.hlsl"
+#include "Kernel.hlsl"
+
+#include "../DispatcherHelper.hlsl"
+#include "../GridData.hlsl"
+#include "../GridHelper.hlsl"
+#include "../DefaultParticle.hlsl"
+
+#include "UnityCG.cginc"
+
+StructuredBuffer<Particle> _ParticleBufferRead;
+RWStructuredBuffer<Particle> _ParticleBufferWrite;
+
+StructuredBuffer<ParticleDensity> _ParticleDensityBufferRead;
+
+RWStructuredBuffer<ParticleForce> _ParticleForceBufferRW;
+
+float3 GetSDFForce(inout Particle p)
+{
+	return _Gravity;
+	return _Gravity + float3(sin(_Time.y) * 100,0,0);
+}
+
+void OnHandleMaxSpeed(inout Particle p)
+{
+	float speed = length(p.vel);
+	if(speed > _MaxSpeed && _MaxSpeed > 0) p.vel = normalize(p.vel) * _MaxSpeed;
+}
+
+#define LIMIT_MIN(space, p, axis, b)\
+if(space.axis && p.pos.axis < b.axis){\
+p.vel.axis = 0; p.pos.axis = b.axis;}
+
+#define LIMIT_MAX(space, p, axis, b)\
+if(space.axis && p.pos.axis > b.axis){\
+p.vel.axis = 0; p.pos.axis = b.axis;}
+
+#define INACTIVE_IF_INVALID(p, gmin, gmax)\
+if(any(p.pos < gmin) || any(p.pos > gmax)) p.SetActive(false);
+
+void OnCheckBounds(inout Particle p, float3 gmin, float3 gmax, bool3 limitSpace = true)
+{
+	bool3 space = limitSpace;
+
+	LIMIT_MIN(space, p, x, gmin)
+	LIMIT_MAX(space, p, x, gmax)
+
+	LIMIT_MIN(space, p, y, gmin)
+	LIMIT_MAX(space, p, y, gmax)
+
+	LIMIT_MIN(space, p, z, gmin)
+	LIMIT_MAX(space, p, z, gmax)
+
+	INACTIVE_IF_INVALID(p, gmin, gmax)
+}
+
+[numthreads(128,1,1)]
+void Integrate(uint3 id : SV_DispatchThreadID)
+{
+    RETURN_IF_INVALID(id);
+
+    const uint p_id = id.x;
+	Particle p = _ParticleBufferRead[p_id];
+
+	if(p.IsFluid() && p.IsActive())
+	{
+		float3 force = _ParticleForceBufferRW[p_id].linearForce;
+		float3 transferForce = _ParticleForceBufferRW[p_id].transferForce;
+		float3 transferTorque = _ParticleForceBufferRW[p_id].transferTorque;
+
+		force += GetSDFForce(p);
+
+		p.vel = p.vel + _TimeStep * (force + transferForce) / _ParticleMass;
+
+		OnHandleMaxSpeed(p);
+
+		p.pos += _TimeStep * p.vel;
+		p.w +=  _TimeStep * (transferTorque + _NU_EXT) / (_ParticleMass * _Theta);
+
+		p.col = _ParticleDensityBufferRead[p_id].density/ 2000;
+	}
+
+	OnCheckBounds(p, _SpaceMin, _SpaceMax);
+	// Update
+	_ParticleBufferWrite[p_id] = p;
+
+	//reset force for next frame
+	_ParticleForceBufferRW[p_id] = (ParticleForce)0;
+}

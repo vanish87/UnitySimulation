@@ -4,13 +4,13 @@ using System.Linq;
 using UnityEngine;
 namespace Simulation.Fluid.SPH
 {
-    public class VorticityPlugin : MonoBehaviour, IPlugin
+    public class ViscosityPlugin : MonoBehaviour, IPlugin
     {
-        public IEnumerable<int> Steps => new List<int>() { (int)SimulationStep.OnSimulation + (int)Step.Vorticity };
+        public IEnumerable<int> Steps => new List<int>() { (int)SimulationStep.OnSimulation + (int)Step.Viscosity };
         public bool Inited => true;
         public bool Enabled => this.enabled;
-        [SerializeField] protected ComputeShader vorticityCS;
-        protected const string Kernel = "Vorticity";
+        [SerializeField] protected ComputeShader viscosityCS;
+        protected const string Kernel = "Viscosity";
         
         public void Init(params object[] parameter)
         {
@@ -31,22 +31,22 @@ namespace Simulation.Fluid.SPH
             var grid = data.Data.OfType<SPHGridBuffer>().FirstOrDefault();
             this.OnSetupGridParameter(grid);
 
-            DispatchTool.Dispatch(this.vorticityCS, Kernel, particle.Read.Size);
+            DispatchTool.Dispatch(this.viscosityCS, Kernel, particle.Read.Size);
         }
 
         protected void SetConstant(ISPHConfigure config)
         {
-            var cs = this.vorticityCS;
+            var cs = this.viscosityCS;
             var k = cs.FindKernel(Kernel);
 
 			cs.SetFloat("_H", config.SmoothLength);
             cs.SetFloat("_ParticleMass", config.ParticleMass);
-			cs.SetVector("_NU_T", new Vector4(config.NU_T.x, config.NU_T.y, config.NU_T.z, 0));
+            cs.SetFloat("_Viscosity", config.Viscosity);
         }
         protected virtual void OnSetupGridParameter(SPHGridBuffer grid)
         {
             // this.cs.SetInt("_GridCenterMode", grid.centerMode);
-            var cs = this.vorticityCS;
+            var cs = this.viscosityCS;
             cs.SetVector("_GridSize", new Vector4(grid.Size.x, grid.Size.y, grid.Size.z, 0));
             cs.SetVector("_GridSpacing", new Vector4(grid.Spacing.x, grid.Spacing.y, grid.Spacing.z, 0));
             cs.SetVector("_GridMin", new Vector4(grid.Min.x, grid.Min.y, grid.Min.z, 0));
@@ -57,7 +57,7 @@ namespace Simulation.Fluid.SPH
 
         protected void SetBuffer(ComputeBuffer particleRead, ComputeBuffer densityRead, ComputeBuffer force)
         {
-            var cs = this.vorticityCS;
+            var cs = this.viscosityCS;
             var k = cs.FindKernel(Kernel);
             cs.SetBuffer(k, "_ParticleBufferRead", particleRead);
             cs.SetBuffer(k, "_ParticleDensityBufferRead", densityRead);

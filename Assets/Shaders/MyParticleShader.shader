@@ -80,7 +80,6 @@ Shader "Unlit/MyParticleShader"
 	// --------------------------------------------------------------------
 	float4 frag(g2f i) : SV_Target
 	{
-		return 1;
 		return i.col;
 	}
 	ENDCG

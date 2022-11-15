@@ -1,4 +1,4 @@
-#pragma kernel Vorticity
+#pragma kernel Pressure
 
 #include "SPHParameter.hlsl"
 #include "Kernel.hlsl"
@@ -14,24 +14,25 @@ RWStructuredBuffer<ParticleForce> _ParticleForceBuffer;
 
 
 [numthreads(128,1,1)]
-void Vorticity(uint3 id : SV_DispatchThreadID)
+void Pressure(uint3 id : SV_DispatchThreadID)
 {
     RETURN_IF_INVALID(id);
 
     const uint p_id = id.x;
-	const float h_sq = pow(_H, 2);
 
 	Particle p = _ParticleBufferRead[p_id];
-	float3 nonPressureForce = 0;
-	float3 transferForce = 0;
-	float3 transferTorque = 0;
-
+	float3 force = _ParticleForceBuffer[p_id].linearForce;
 	if(p.IsActive())
 	{
-		float3 p_pos = p.pos;
-		float3 P_vel = p.vel;
-		float3 P_w = p.w;
+		const float h_sq = pow(_H, 2);
 
+		float3 p_pos = p.pos;
+		float  P_density  = _ParticleDensityBufferRead[p_id].density;
+		float3 P_velocity = p.vel;
+		float  P_pressure = CalculateSEPressure(P_density, _PressureK.x, _PressureK.y, _RestDensity);
+
+		float3 gradPressure = float3(0, 0, 0);
+		
 		FOR_EACH_NEIGHBOR_START(p, n_id)
 		{
 			Particle np = _ParticleBufferRead[n_id];
@@ -43,25 +44,17 @@ void Vorticity(uint3 id : SV_DispatchThreadID)
 			float r_sq = dot(r, r);
 			if (r_sq < h_sq && p_id != n_id)
 			{
-				float3 N_w = np.w;
-				float3 N_vel = np.vel;
+				float3 N_velocity = np.vel;
 				float  N_density = _ParticleDensityBufferRead[n_id].density;
+				float  N_pressure = CalculateSEPressure(N_density, _PressureK.x, _PressureK.y, _RestDensity);
 
-				float3 r = p_pos - n_pos;
-
-				float3 gradW = WGrad(r, _H);
-				transferForce  += -_ParticleMass/N_density *(cross(P_w - N_w, gradW));
-				transferTorque += -_ParticleMass/N_density *(cross(P_vel - N_vel, gradW));
+				gradPressure += CalculateGradPressure(_H, _ParticleMass, r, P_pressure, N_pressure, P_density, N_density);
 			}
 		}
 		FOR_EACH_NEIGHBOR_END
 
-		transferForce = _ParticleMass * _NU_T * transferForce;
-		transferTorque = _ParticleMass * _NU_T * (transferTorque - 2 * P_w);
+		force += -(1.0/P_density) * P_density *  gradPressure;
 	}
 
-
-	_ParticleForceBuffer[p_id].linearForce = nonPressureForce;
-	_ParticleForceBuffer[p_id].transferForce = transferForce;
-	_ParticleForceBuffer[p_id].transferTorque = transferTorque;
+	_ParticleForceBuffer[p_id].linearForce = force;
 }
