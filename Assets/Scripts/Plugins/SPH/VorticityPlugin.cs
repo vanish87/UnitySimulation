@@ -29,7 +29,7 @@ namespace Simulation.Fluid.SPH
             this.SetBuffer(particle.Read.Data, density.Data, force.Data);
 
             var grid = data.Data.OfType<SPHGridBuffer>().FirstOrDefault();
-            this.OnSetupGridParameter(grid);
+            grid.SetupGridParameter(this.vorticityCS, Kernel);
 
             DispatchTool.Dispatch(this.vorticityCS, Kernel, particle.Read.Size);
         }
@@ -43,18 +43,6 @@ namespace Simulation.Fluid.SPH
             cs.SetFloat("_ParticleMass", config.ParticleMass);
 			cs.SetVector("_NU_T", new Vector4(config.NU_T.x, config.NU_T.y, config.NU_T.z, 0));
         }
-        protected virtual void OnSetupGridParameter(SPHGridBuffer grid)
-        {
-            // this.cs.SetInt("_GridCenterMode", grid.centerMode);
-            var cs = this.vorticityCS;
-            cs.SetVector("_GridSize", new Vector4(grid.Size.x, grid.Size.y, grid.Size.z, 0));
-            cs.SetVector("_GridSpacing", new Vector4(grid.Spacing.x, grid.Spacing.y, grid.Spacing.z, 0));
-            cs.SetVector("_GridMin", new Vector4(grid.Min.x, grid.Min.y, grid.Min.z, 0));
-            cs.SetVector("_GridMax", new Vector4(grid.Max.x, grid.Max.y, grid.Max.z, 0));
-            var k = cs.FindKernel(Kernel);
-            cs.SetBuffer(k, "_GridBuffer", grid.Data);
-        }
-
         protected void SetBuffer(ComputeBuffer particleRead, ComputeBuffer densityRead, ComputeBuffer force)
         {
             var cs = this.vorticityCS;

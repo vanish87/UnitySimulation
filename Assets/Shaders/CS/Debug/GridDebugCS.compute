@@ -15,7 +15,7 @@ float3 pos;
 void Reset(uint3 id : SV_DispatchThreadID)
 {
     RETURN_IF_INVALID(id);
-    _ParticleBufferRW[id.x].col = 0;
+    _ParticleBufferRW[id.x].col = 0.1;
 }
 
 [numthreads(1,1,1)]

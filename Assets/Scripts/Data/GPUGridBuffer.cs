@@ -6,6 +6,13 @@ namespace Simulation
 {
     public abstract class GPUGridBuffer<Cell> : GPUBuffer<Cell>, IGrid
     {
+        public static int3 ScaleSpacingToSize(float3 scale, float3 spacing)
+        {
+			var newSize = scale / spacing;
+			var size = new int3(Mathf.CeilToInt(newSize.x), Mathf.CeilToInt(newSize.y), Mathf.CeilToInt(newSize.z));
+			return math.max(size, 1);
+        }
+
         public float3 Spacing => this.spacing;
         public float3 Origin => this.transform.localPosition;
         public float3 Min => this.min;
@@ -20,12 +27,15 @@ namespace Simulation
             this.max = this.min + this.Size * this.Spacing;
             this.OnCreateBuffer(this.Length);
         }
-
-        public static int3 ScaleSpacingToSize(float3 scale, float3 spacing)
+        public virtual void SetupGridParameter(ComputeShader cs, string kernel)
         {
-			var newSize = scale / spacing;
-			var size = new int3(Mathf.CeilToInt(newSize.x), Mathf.CeilToInt(newSize.y), Mathf.CeilToInt(newSize.z));
-			return math.max(size, 1);
+            // cs.SetInt("_GridCenterMode", grid.centerMode);
+            cs.SetVector("_GridSize", new Vector4(this.Size.x, this.Size.y, this.Size.z, 0));
+            cs.SetVector("_GridSpacing", new Vector4(this.Spacing.x, this.Spacing.y, this.Spacing.z, 0));
+            cs.SetVector("_GridMin", new Vector4(this.Min.x, this.Min.y, this.Min.z, 0));
+            cs.SetVector("_GridMax", new Vector4(this.Max.x, this.Max.y, this.Max.z, 0));
+            var k = cs.FindKernel(kernel);
+            cs.SetBuffer(k, "_GridBuffer", this.Data);
         }
     }
 }
