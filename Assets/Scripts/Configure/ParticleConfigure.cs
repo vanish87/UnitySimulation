@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Simulation
 {
-    public interface IParticleConfigure
+    public interface IParticleConfigure : IConfigure
     {
         int NumOfParticles { get; }
     }
