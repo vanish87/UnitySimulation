@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access" MembersFormat="FullSignature">
+  <Interface Name="Simulation.Fluid.SPH.ISPHConfigure">
+    <Position X="6.25" Y="3.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIgEAFIAEgAAgAEAAAAAAAAAAAAQIAAAgAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interface\ISPHConfigure.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Simulation.IParticleConfigure">
+    <Position X="9" Y="3.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Configure\ParticleConfigure.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Simulation.ICPUDataConfigure">
+    <Position X="1.25" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Data\CPUField2D.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Simulation.IGPUBufferConfigure">
+    <Position X="3.75" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Data\GPUBuffer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Simulation.IAccess">
+    <Position X="15.5" Y="4" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interface\IAccess.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Simulation.IConfigure" Collapsed="true">
+    <Position X="5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interface\IConfigure.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Simulation.IData">
+    <Position X="10.75" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interface\IData.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Simulation.IField&lt;Dim, Element&gt;">
+    <Position X="17.75" Y="4" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interface\IField.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Simulation.IGrid">
+    <Position X="19.75" Y="5.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAABAAgAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interface\IGrid.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Simulation.IInitialize" Collapsed="true">
+    <Position X="10.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACQBAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interface\IInitialize.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Simulation.IPlugin">
+    <Position X="13" Y="1.75" Width="5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAIAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interface\IPlugin.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Simulation.ISimulation">
+    <Position X="18.25" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>Assets\Scripts\Interface\ISimulation.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Simulation.ISimulationData">
+    <Position X="15.5" Y="7" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAAAAABAAAgAAAAAAAAg=</HashCode>
+      <FileName>Assets\Scripts\Interface\ISimulationData.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Simulation.ISpace">
+    <Position X="20.5" Y="1.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAIAAAAAABAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Assets\Scripts\Interface\ISpace.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Simulation.IStorage">
+    <Position X="15.5" Y="5.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Assets\Scripts\Interface\IStorage.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Simulation.IStructuredData&lt;StructType, ElementType&gt;">
+    <Position X="11.75" Y="4" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAABAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interface\IStructuredData.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Simulation.IValidator">
+    <Position X="17.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interface\IValidator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

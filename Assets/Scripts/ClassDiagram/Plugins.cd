@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Simulation.ParticleRenderPlugin" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5" Y="1.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAABEAAAAAAAAIAAAAIAAAAAAAAAgAAAAAACQBAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Plugins\ParticleRenderPlugin.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Simulation.RandomParticlePlugin" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="3.25" Y="2.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAIAAAAAAAAAAAAAAgQAAAAACQBAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Plugins\RandomParticlePlugin.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Simulation.Fluid.SPH.DensityPlugin" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="1.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAIgAAAAAAAAAAAAAgAAAAAACQhgAAEA=</HashCode>
+      <FileName>Assets\Scripts\Plugins\SPH\DensityPlugin.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Simulation.Fluid.SPH.IntegratePlugin" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="3.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAIgAAAAAAAAAAAAAgAAAAAACQhAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Plugins\SPH\IntegratePlugin.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Simulation.Fluid.SPH.PressurePlugin" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="1.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAIgAAAAAAAAAEAAAgAAAAAACQhAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Plugins\SPH\PressurePlugin.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Simulation.Fluid.SPH.ViscosityPlugin" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="3.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAIgAAAAAAAAAAAAAgAAAAAAGQhAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Plugins\SPH\ViscosityPlugin.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Simulation.Fluid.SPH.VorticityPlugin" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAIiAAAAAAAAAAAAAgAAAAAACQhAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Plugins\SPH\VorticityPlugin.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Simulation.Fluid.SortedParticlePlugin" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="1.5" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAIAAAAAAAAAAAAAAgAAAAAACQBAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Plugins\SortedParticlePlugin.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Simulation.Fluid.SimulationController" BaseTypeListCollapsed="true">
+    <Position X="9.75" Y="1.25" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAQACCAAAAEgAAABAAAAAAAAAAACABAIAgASQBAADEg=</HashCode>
+      <FileName>Assets\Scripts\Controller\SimulationController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Simulation.IPlugin">
+    <Position X="1.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAIAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interface\IPlugin.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

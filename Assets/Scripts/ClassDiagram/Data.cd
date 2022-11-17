@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Simulation.Fluid.SPH.ParticleDensityBuffer">
+    <Position X="1" Y="5.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Data\FluidData\ParticleDensityBuffer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Simulation.GPUBuffer&lt;T&gt;">
+    <Position X="6.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAIAAAABCAAAAABAAAQASRBAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Data\GPUBuffer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Simulation.GPUGridBuffer&lt;Cell&gt;">
+    <Position X="3.5" Y="5.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>EAAEUAAACRAQAAAAEAAAAAAAAAAAAAAIAAACAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Data\GPUGridBuffer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Simulation.GPUTexture&lt;T&gt;">
+    <Position X="15" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAIAAAABAAAgAABAAAAASRBAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Data\GPUTexture.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Simulation.ColorTexture">
+    <Position X="13.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAQAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Data\ColorTexture.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Simulation.ParticleAppendIndexBuffer">
+    <Position X="10.75" Y="5.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAIAgAAAAAAAACAAAAAAAAAAAARBAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Data\FluidData\ParticleAppendIndexBuffer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Simulation.ParticleBuffer">
+    <Position X="6" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Data\FluidData\ParticleBuffer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Simulation.ParticleBufferDouble" BaseTypeListCollapsed="true">
+    <Position X="6" Y="8.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAACQBEAAEg=</HashCode>
+      <FileName>Assets\Scripts\Data\FluidData\ParticleBufferDouble.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Simulation.VelocityTexture3D">
+    <Position X="16" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Data\VelocityTexture3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Simulation.Fluid.SPH.ParticleForceBuffer">
+    <Position X="8.25" Y="5.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Data\FluidData\ParticleForceBuffer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Simulation.Fluid.SPH.SPHGridBuffer">
+    <Position X="3.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACQAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Data\FluidData\SPHGridBuffer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Simulation.CPUField2D">
+    <Position X="19.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAgAAAAAAAAABCAAAAABAAAAASQBAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Data\CPUField2D.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Simulation.IStructuredData&lt;StructType, ElementType&gt;">
+    <Position X="2.5" Y="1" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAABAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interface\IStructuredData.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Simulation.IGrid">
+    <Position X="0.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAABAAgAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interface\IGrid.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
