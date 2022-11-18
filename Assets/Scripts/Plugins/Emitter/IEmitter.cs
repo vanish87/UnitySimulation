@@ -36,15 +36,19 @@ namespace Simulation
     public abstract class EmitterControllerBase<T> : MonoBehaviour, IEmitterController
     {
         public abstract bool Inited { get; }
-        public abstract void Init(params object[] parameter);
-        public abstract void Deinit(params object[] parameter);
-        protected IEnumerable<IEmitter> Emitters => this.emitters ??= this.GetComponentsInChildren<IEmitter>();
+        public virtual void Init(params object[] parameter)
+        {
+            this.UpdateCombinedTexture();
+        }
+        public virtual void Deinit(params object[] parameter)
+        {
+            if (this.combinedTexture != null) GameObject.Destroy(this.combinedTexture);
+        }
+        protected virtual IEnumerable<IEmitter> Emitters => this.emitters ??= this.GetComponentsInChildren<IEmitter>();
         protected IEnumerable<IEmitter> emitters;
-        protected IEnumerable<IEmitterTexture> EmitterTextures => this.GetComponentsInChildren<IEmitterTexture>();
-        // protected IEnumerable<IEmitterTexture> emitterTextures;
+        protected virtual IEnumerable<IEmitterTexture> EmitterTextures => this.GetComponentsInChildren<IEmitterTexture>();
         protected T[] EmitterCPU => this.emitterCPU ??= new T[this.Emitters.Count()];
         protected T[] emitterCPU;
-
         protected Texture CombinedTexture => this.combinedTexture;
         protected RenderTexture combinedTexture;
 
