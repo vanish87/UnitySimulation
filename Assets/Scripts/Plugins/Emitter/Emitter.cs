@@ -13,7 +13,7 @@ namespace Simulation
         public float4 Parameter { get => this.parameter; set => this.parameter = value; }
         public int ParticlePerEmit => this.particlePreEmit;
         public bool Inited => true;
-        public EmitterType Type => this.enabled ? EmitterType.SpaceBound : EmitterType.Disabled;
+        public virtual EmitterType Type => this.isActiveAndEnabled ? EmitterType.SpaceBound : EmitterType.Disabled;
         [SerializeField] protected int particlePreEmit;
         [SerializeField] protected float4 parameter;
         public void Init(params object[] parameter)

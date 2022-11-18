@@ -9,7 +9,7 @@ namespace Simulation.Fluid.SPH
     {
         public IEnumerable<int> Steps => new List<int>() { (int)SimulationStep.OnSimulation + (int)Step.Pressure };
         public bool Inited => true;
-        public bool Enabled => this.enabled;
+        public bool Enabled => this.isActiveAndEnabled;
         [SerializeField] protected ComputeShader pressureCS;
         protected const string Kernel = "Pressure";
         

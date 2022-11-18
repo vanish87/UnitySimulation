@@ -10,7 +10,7 @@ namespace Simulation.Fluid.SPH
     {
         public IEnumerable<int> Steps => new List<int>() { (int)SimulationStep.OnSimulation + (int)Step.Density };
         public bool Inited => true;
-        public bool Enabled => this.enabled;
+        public bool Enabled => this.isActiveAndEnabled;
         [SerializeField] protected ComputeShader densityCS;
         protected const string Kernel = "Density";
         

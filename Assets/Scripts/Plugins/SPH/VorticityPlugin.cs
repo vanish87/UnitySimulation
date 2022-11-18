@@ -9,7 +9,7 @@ namespace Simulation.Fluid.SPH
     {
         public IEnumerable<int> Steps => new List<int>() { (int)SimulationStep.OnSimulation + (int)Step.Vorticity };
         public bool Inited => true;
-        public bool Enabled => this.enabled;
+        public bool Enabled => this.isActiveAndEnabled;
         [SerializeField] protected ComputeShader vorticityCS;
         protected const string Kernel = "Vorticity";
         

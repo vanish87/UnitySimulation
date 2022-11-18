@@ -50,7 +50,8 @@ namespace Simulation
         protected T[] EmitterCPU => this.emitterCPU ??= new T[this.Emitters.Count()];
         protected T[] emitterCPU;
         protected Texture CombinedTexture => this.combinedTexture;
-        protected RenderTexture combinedTexture;
+        [SerializeField] protected RenderTexture combinedTexture;
+        [SerializeField] protected Material combinedTextureMat;
 
         protected virtual void UpdateCombinedTexture()
         {
@@ -68,6 +69,14 @@ namespace Simulation
             foreach (var et in this.EmitterTextures)
             {
                 et.ST = st[i++];
+            }
+        }
+        protected virtual void OnCombineEmitterTexture()
+        {
+            foreach (var et in this.EmitterTextures)
+            {
+                this.combinedTextureMat.SetVector("_ST", et.ST);
+                Graphics.Blit(et.Texture, this.combinedTexture, this.combinedTextureMat, 0);
             }
         }
         protected abstract void OnUpdateEmitterBuffer(ComputeBuffer emitter);

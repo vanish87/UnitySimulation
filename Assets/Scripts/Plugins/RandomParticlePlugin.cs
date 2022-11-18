@@ -10,7 +10,7 @@ namespace Simulation
     {
         public IEnumerable<int> Steps => new List<int> { };
         public bool Inited => this.inited;
-        public bool Enabled => this.enabled;
+        public bool Enabled => this.isActiveAndEnabled;
         [SerializeField] protected ComputeShader randomCS;
         protected bool inited = false;
         public void Deinit(params object[] parameter)

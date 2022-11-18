@@ -57,7 +57,7 @@ namespace Simulation
             }
         }
 
-        public bool Enabled => this.enabled;
+        public bool Enabled => this.isActiveAndEnabled;
 
         public bool Inited => throw new System.NotImplementedException();
 

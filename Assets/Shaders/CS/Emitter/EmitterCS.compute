@@ -3,6 +3,7 @@
 
 #include "../DefaultParticle.hlsl"
 #include "../Tools.hlsl"
+#include "../UVTools.cginc"
 
 struct Emitter
 {
@@ -59,6 +60,10 @@ void Emit(uint3 EmitterID : SV_GroupID, uint BaseIndex : SV_GroupIndex)
 				if(emitFromTexture)
 				{
 					// OnEmitTexture(p, e, p_id);
+                    float3 uv = GenerateRandomPos01(seed);
+                    // float3 uv = p.pos;
+                    int2 tuv = UV_LocalToGlobal(uv.xy, e.parameter, _EmitterTextureSize);
+                    p.col = _EmitterTexture[tuv];
 				}
 
 				// OnAfterEmit(p, e, p_id);

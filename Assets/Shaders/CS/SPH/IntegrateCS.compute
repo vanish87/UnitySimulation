@@ -79,7 +79,7 @@ void Integrate(uint3 id : SV_DispatchThreadID)
 		p.pos += _TimeStep * p.vel;
 		p.w +=  _TimeStep * (transferTorque + _NU_EXT) / (_ParticleMass * _Theta);
 
-		p.col = _ParticleDensityBufferRead[p_id].density/ 2000;
+		// p.col = _ParticleDensityBufferRead[p_id].density/ 2000;
 	}
 
 	OnCheckBounds(p, _SpaceMin, _SpaceMax);

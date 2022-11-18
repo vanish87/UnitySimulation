@@ -8,7 +8,7 @@ namespace Simulation.Fluid
     {
         public IEnumerable<int> Steps => new List<int>() { (int)SimulationStep.BeforeSimulation };
         public bool Inited => this.inited;
-        public bool Enabled => this.enabled;
+        public bool Enabled => this.isActiveAndEnabled;
         protected bool inited = false;
         public void OnSimulationStep(int stepIndex, ISimulation sim, ISimulationData data)
         {
