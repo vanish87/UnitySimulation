@@ -16,6 +16,5 @@ void RandomParticle(uint3 id : SV_DispatchThreadID)
 
     Particle p = _Buffer[pid];
     p.pos = GenerateRandomPos(pid, _SimSpaceLocalToWorld);
-    p.col = 1;
     _Buffer[pid] = p;
 }
