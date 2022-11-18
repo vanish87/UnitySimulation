@@ -14,7 +14,6 @@ void InitBuffer(uint3 id : SV_DispatchThreadID)
     Particle p = _Buffer[pid];
     p = (Particle)0;
     p.SetUUID(pid);
-    p.SetActive(true);
-    p.SetType(PT_FLUID);
+    p.SetActive(false);
     _Buffer[pid] = p;
 }

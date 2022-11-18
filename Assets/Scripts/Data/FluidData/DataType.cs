@@ -15,5 +15,8 @@ namespace Simulation.Fluid
         ParticleIndex,
 
         GridVorticity,
+
+
+        Emitter,
     }
 }

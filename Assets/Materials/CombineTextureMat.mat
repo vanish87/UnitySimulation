@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ParticleRender
-  m_Shader: {fileID: 4800000, guid: c1ab4e7cc23f9f1499ebf0216809d4eb, type: 3}
+  m_Name: CombineTextureMat
+  m_Shader: {fileID: 4800000, guid: b2261e9c2a5497048aa917d759f456e8, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []

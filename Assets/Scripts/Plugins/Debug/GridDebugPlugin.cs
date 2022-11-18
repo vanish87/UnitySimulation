@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Simulation.Tool;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ namespace Simulation.Fluid.Debug
     {
         public IEnumerable<int> Steps => new List<int>() { (int)SimulationStep.OnSimulation };
         public bool Inited => true;
-        public bool Enabled => this.enabled;
+        public bool Enabled => this.isActiveAndEnabled;
         [SerializeField] protected ComputeShader debugCS;
         protected const string Kernel = "Debug";
 

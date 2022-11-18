@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Simulation.Tool;
 using UnityEngine;
 namespace Simulation.Fluid.SPH
 {
@@ -8,7 +9,7 @@ namespace Simulation.Fluid.SPH
     {
         public IEnumerable<int> Steps => new List<int>() { (int)SimulationStep.OnSimulation + (int)Step.Integrate };
         public bool Inited => true;
-        public bool Enabled => this.enabled;
+        public bool Enabled => this.isActiveAndEnabled;
         [SerializeField] protected ComputeShader integrateCS;
         protected const string Kernel = "Integrate";
         

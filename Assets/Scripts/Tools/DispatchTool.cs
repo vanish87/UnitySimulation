@@ -2,7 +2,7 @@
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Simulation
+namespace Simulation.Tool
 {
     public class DispatchTool
     {
@@ -10,6 +10,18 @@ namespace Simulation
         {
             var k = cs.FindKernel(kernel);
             DispatchTool.Dispatch(cs, k, dsize);
+        }
+        public static void DispatchNoGroup(ComputeShader cs, string kernel, int3 dsize)
+        {
+            var k = cs.FindKernel(kernel);
+            DispatchTool.DispatchNoGroup(cs, k, dsize);
+        }
+        public static void DispatchNoGroup(ComputeShader cs, int k, int3 dsize)
+        {
+            cs.SetInt("_DispatchedX", dsize.x);
+            cs.SetInt("_DispatchedY", dsize.y);
+            cs.SetInt("_DispatchedZ", dsize.z);
+            cs.Dispatch(k, dsize.x, dsize.y, dsize.z);
         }
         public static void Dispatch(ComputeShader cs, int k, int3 dsize)
         {

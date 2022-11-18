@@ -17,5 +17,11 @@ namespace Simulation
         public void Deinit(params object[] parameter)
         {
         }
+
+        protected virtual void OnDrawGizmos()
+        {
+            Gizmos.matrix = this.TRS;
+            Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
+        }
     }
 }

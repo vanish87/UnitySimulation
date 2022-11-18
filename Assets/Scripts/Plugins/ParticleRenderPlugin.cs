@@ -9,7 +9,7 @@ namespace Simulation
     {
         public IEnumerable<int> Steps => new List<int>() { (int)SimulationStep.Render };
         public bool Inited => true;
-        public bool Enabled => this.enabled;
+        public bool Enabled => this.isActiveAndEnabled;
         public Material mat;
         protected ParticleBufferDouble particleBuffer;
         public void Init(params object[] parameter)

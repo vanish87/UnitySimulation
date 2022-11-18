@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Runtime.InteropServices;
+using Simulation.Tool;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -26,9 +27,9 @@ namespace Simulation
             if (this.Inited) return;
 
             var config = this.OnGetConfigure(parameter);
-            this.size = config.Size;
-            Debug.Assert(this.Length > 0);
+            if (config != null) this.size = config.Size;
 
+            Debug.Assert(this.Length > 0);
             this.OnCreateBuffer(this.Length);
 
             this.inited = true;
@@ -56,9 +57,7 @@ namespace Simulation
 
         protected virtual IGPUBufferConfigure OnGetConfigure(object[] parameter)
         {
-            var config = this.GetComponent<IGPUBufferConfigure>();
-            Debug.Assert(config != null);
-            return config;
+            return this.GetComponent<IGPUBufferConfigure>();
         }
 
     }
