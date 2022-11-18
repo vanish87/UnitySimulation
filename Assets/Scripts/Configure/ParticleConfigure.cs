@@ -23,6 +23,5 @@ namespace Simulation
         {
             this.inited = false;
         }
-
     }
 }

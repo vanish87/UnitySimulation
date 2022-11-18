@@ -2,7 +2,7 @@
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Simulation
+namespace Simulation.Tool
 {
     public class DispatchTool
     {

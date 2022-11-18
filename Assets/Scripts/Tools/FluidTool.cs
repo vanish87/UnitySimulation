@@ -1,7 +1,7 @@
 
-namespace Simulation.Fluid
+namespace Simulation.Tool
 {
-    public class Tool
+    public class FluidTool
     {
         public static float GetCFL(float h, float maxSpeed)
         {
