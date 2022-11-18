@@ -52,7 +52,7 @@ Shader "Unlit/MyParticleShader"
 		o.position = UnityObjectToViewPos(p.pos);
 		o.col = saturate(p.col);
 		o.size =  0.1;
-		// o.size *= shouldRender;
+		o.size *= shouldRender;
 		return o;
 	}
 
