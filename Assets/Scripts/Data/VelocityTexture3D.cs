@@ -3,7 +3,7 @@ namespace Simulation
 {
     public class VelocityTexture3D : GPUTexture<float3>
     {
-        public override string Identifier => this.ToString();
+        public override string Identifier => Fluid.DataType.VelocityTexture3D.ToString();
     }
 
 }
