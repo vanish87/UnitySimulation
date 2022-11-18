@@ -9,6 +9,7 @@ namespace Simulation
     {
         public EmitterType type;
         public int particlePreEmit;
+        public float2 lifeMinMax;
         public float4x4 localToWorld;
         public float4 parameter;
     }

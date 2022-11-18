@@ -18,6 +18,7 @@ namespace Simulation
         EmitterType Type { get; }
         string Identifier { get; }
         int ParticlePerEmit { get; }
+        float2 LifeMinMax { get; }
         float4 Parameter { get; set; }
     }
 

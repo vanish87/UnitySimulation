@@ -9,6 +9,7 @@ struct Emitter
 {
 	int type;
 	int particleEmit;
+    float2 lifeMinMax;
 	float4x4 localToWorld;
 	float4 parameter;
 };
@@ -54,14 +55,13 @@ void Emit(uint3 EmitterID : SV_GroupID, uint BaseIndex : SV_GroupIndex)
 				p.pos = GenerateRandomPos(seed, e.localToWorld);
                 p.SetType(PT_FLUID);
                 p.SetActive(true);
-				// p.life = lerp(e.lifeMinMax.x, e.lifeMinMax.y, rand);
+				p.life = lerp(e.lifeMinMax.x, e.lifeMinMax.y, rand);
 				p.col = 1;
 
 				if(emitFromTexture)
 				{
 					// OnEmitTexture(p, e, p_id);
                     float3 uv = GenerateRandomPos01(seed);
-                    // float3 uv = p.pos;
                     int2 tuv = UV_LocalToGlobal(uv.xy, e.parameter, _EmitterTextureSize);
                     p.col = _EmitterTexture[tuv];
 				}

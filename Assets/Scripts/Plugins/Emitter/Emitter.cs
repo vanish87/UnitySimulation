@@ -11,10 +11,12 @@ namespace Simulation
         public float3 Scale => this.transform.localScale;
         public float4x4 TRS => this.transform.localToWorldMatrix;
         public float4 Parameter { get => this.parameter; set => this.parameter = value; }
-        public int ParticlePerEmit => this.particlePreEmit;
+        public virtual int ParticlePerEmit => this.particlePreEmit;
         public bool Inited => true;
         public virtual EmitterType Type => this.isActiveAndEnabled ? EmitterType.SpaceBound : EmitterType.Disabled;
+        public virtual float2 LifeMinMax => this.lifeMinMax;
         [SerializeField] protected int particlePreEmit;
+        [SerializeField] protected float2 lifeMinMax = 1;
         [SerializeField] protected float4 parameter;
         public virtual void Init(params object[] parameter)
         {
