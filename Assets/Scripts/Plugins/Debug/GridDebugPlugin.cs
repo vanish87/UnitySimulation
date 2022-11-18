@@ -28,7 +28,7 @@ namespace Simulation.Fluid.Debug
             this.debugCS.SetVector("pos", this.transform.localPosition);
 
             var grid = data.Data.OfType<SPH.SPHGridBuffer>().FirstOrDefault();
-            this.OnSetupGridParameter(grid);
+            grid.SetupGridParameter(this.debugCS, Kernel);
 
             var k = this.debugCS.FindKernel("Reset");
             this.debugCS.SetBuffer(k, "_ParticleBufferRW", particle.Read.Data);
@@ -43,17 +43,6 @@ namespace Simulation.Fluid.Debug
             var k = cs.FindKernel(Kernel);
             cs.SetBuffer(k, "_ParticleBufferRW", particle);
 
-        }
-        protected void OnSetupGridParameter(SPH.SPHGridBuffer grid)
-        {
-            // this.cs.SetInt("_GridCenterMode", grid.centerMode);
-            var cs = this.debugCS;
-            cs.SetVector("_GridSize", new Vector4(grid.Size.x, grid.Size.y, grid.Size.z, 0));
-            cs.SetVector("_GridSpacing", new Vector4(grid.Spacing.x, grid.Spacing.y, grid.Spacing.z, 0));
-            cs.SetVector("_GridMin", new Vector4(grid.Min.x, grid.Min.y, grid.Min.z, 0));
-            cs.SetVector("_GridMax", new Vector4(grid.Max.x, grid.Max.y, grid.Max.z, 0));
-            var k = cs.FindKernel(Kernel);
-            cs.SetBuffer(k, "_GridBuffer", grid.Data);
         }
     }
 }
