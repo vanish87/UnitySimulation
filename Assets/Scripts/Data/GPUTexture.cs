@@ -21,7 +21,7 @@ namespace Simulation
             if (this.Inited) return;
 
             var config = this.OnGetConfigure(parameter);
-            this.size = config.Size;
+            if (config != null) this.size = config.Size;
             var format = this.Format;
             this.data = new RenderTexture(this.size.x, this.size.y, this.size.z, format);
 
@@ -32,11 +32,15 @@ namespace Simulation
             GameObject.Destroy(this.data);
             this.inited = false;
         }
+        public virtual void Resize(int3 newSize)
+        {
+            GameObject.Destroy(this.data);
+            this.size = newSize;
+            this.data = new RenderTexture(this.size.x, this.size.y, this.size.z, this.Format);
+        }
         protected virtual IGPUBufferConfigure OnGetConfigure(object[] parameter)
         {
-            var config = this.GetComponent<IGPUBufferConfigure>();
-            Debug.Assert(config != null);
-            return config;
+            return this.GetComponent<IGPUBufferConfigure>();
         }
         protected RenderTextureFormat Format
         {
