@@ -1,0 +1,69 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel Emit
+
+#include "../DefaultParticle.hlsl"
+#include "../Tools.hlsl"
+
+struct Emitter
+{
+	int type;
+	int particleEmit;
+	float4x4 localToWorld;
+	float4 parameter;
+};
+
+#define MAX_PARTICLE_PER_EMITTER_GROUP 1024
+
+const static int ET_Disabled = 0;
+const static int ET_SpaceBound = 1;
+const static int ET_Texture = 2;
+
+StructuredBuffer<Emitter> _EmitterBuffer;
+int _EmitterBufferCount;
+
+Texture2D<float4> _EmitterTexture;
+float2 _EmitterTextureSize;
+
+ConsumeStructuredBuffer<uint> _ParticleConsumeIndexBuffer;
+RWStructuredBuffer<Particle> _ParticleBufferRW;
+
+[numthreads(MAX_PARTICLE_PER_EMITTER_GROUP, 1, 1)]
+void Emit(uint3 EmitterID : SV_GroupID, uint BaseIndex : SV_GroupIndex)
+{
+    int eid = EmitterID.x;
+	int pid = BaseIndex;
+
+    Emitter e = _EmitterBuffer[eid];
+
+	if(e.type != ET_Disabled)
+	{
+		int total = e.particleEmit;
+		int iter = ceil(total * 1.0f / MAX_PARTICLE_PER_EMITTER_GROUP);
+
+		bool emitFromTexture = e.type == ET_Texture;
+		for(int i = 0; i < iter; ++i)
+		{
+			if((pid + i * MAX_PARTICLE_PER_EMITTER_GROUP)< total)
+			{
+				const uint p_id = _ParticleConsumeIndexBuffer.Consume();
+				const uint seed = p_id;
+                const float rand = wang_hash01(seed);
+				Particle p = _ParticleBufferRW[p_id];
+
+				p.pos = GenerateRandomPos(seed, e.localToWorld);
+                p.SetType(PT_FLUID);
+                p.SetActive(true);
+				// p.life = lerp(e.lifeMinMax.x, e.lifeMinMax.y, rand);
+				p.col = 1;
+
+				if(emitFromTexture)
+				{
+					// OnEmitTexture(p, e, p_id);
+				}
+
+				// OnAfterEmit(p, e, p_id);
+                _ParticleBufferRW[p_id] = p;
+			}
+		}
+	}
+}
