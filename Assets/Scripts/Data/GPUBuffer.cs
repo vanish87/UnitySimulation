@@ -45,8 +45,6 @@ namespace Simulation
             this.data = new ComputeBuffer(size, Marshal.SizeOf<T>(), type);
             this.data.SetCounterValue(0);
 
-            Debug.Log(this.name);
-
             if(this.initCS != null)
             {
                 var k = this.initCS.FindKernel("InitBuffer");
