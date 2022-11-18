@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Simulation.Tool;
-using Unity.Mathematics;
 using UnityEngine;
 
-namespace Simulation.Fluid.Debug
+namespace Simulation.Fluid
 {
     public class GridDebugPlugin : MonoBehaviour, IPlugin
     {
