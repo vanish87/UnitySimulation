@@ -16,14 +16,12 @@ namespace Simulation
         public virtual EmitterType Type => this.isActiveAndEnabled ? EmitterType.SpaceBound : EmitterType.Disabled;
         [SerializeField] protected int particlePreEmit;
         [SerializeField] protected float4 parameter;
-        public void Init(params object[] parameter)
+        public virtual void Init(params object[] parameter)
         {
         }
-
-        public void Deinit(params object[] parameter)
+        public virtual void Deinit(params object[] parameter)
         {
         }
-
         protected virtual void OnDrawGizmos()
         {
             Gizmos.matrix = this.TRS;
