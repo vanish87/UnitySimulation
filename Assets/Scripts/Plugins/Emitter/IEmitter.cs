@@ -25,7 +25,7 @@ namespace Simulation
         float4 ST { get; internal set; }
     }
 
-    public interface IEmitterController 
+    public interface IEmitterController: IInitialize
     {
         // void OnEmit(ISimulation sim, ISimulationData data);
         // void OnUpdateEmitterBuffer(ComputeBuffer emitter);
@@ -33,6 +33,9 @@ namespace Simulation
 
     public abstract class EmitterControllerBase<T> : MonoBehaviour, IEmitterController
     {
+        public abstract bool Inited { get; }
+        public abstract void Init(params object[] parameter);
+        public abstract void Deinit(params object[] parameter);
         protected IEnumerable<IEmitter> Emitters => this.emitters ??= this.GetComponentsInChildren<IEmitter>();
         protected IEnumerable<IEmitter> emitters;
         protected T[] EmitterCPU => this.emitterCPU ??= new T[this.Emitters.Count()];

@@ -9,15 +9,15 @@ namespace Simulation
     {
         public bool Enabled => this.enabled;
         public IEnumerable<int> Steps => new List<int>() { (int)SimulationStep.BeforeSimulation };
-        public bool Inited => this.inited;
+        public override bool Inited => this.inited;
         protected const string Kernel = "Emit";
         [SerializeField] protected ComputeShader emitterCS;
         protected bool inited = false;
-        public void Init(params object[] parameter)
+        public override void Init(params object[] parameter)
         {
             this.inited = true;
         }
-        public void Deinit(params object[] parameter)
+        public override void Deinit(params object[] parameter)
         {
             this.inited = false;
         }
