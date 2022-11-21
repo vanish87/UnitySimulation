@@ -25,7 +25,7 @@ namespace Simulation
         }
         public virtual bool Inited => this.inited;
         public virtual int Length => this.Data.Length;
-        public virtual Dimension Dim => this.Size.z > 1 ? Dimension.Dim3D : this.Size.y > 1 ? Dimension.Dim2D : Dimension.Dim1D;
+        public virtual Dimension Dim => Dimension.Dim2D;
         public int3 size = 1;
         protected float2[,] data = new float2[1, 1];
         protected bool inited = false;

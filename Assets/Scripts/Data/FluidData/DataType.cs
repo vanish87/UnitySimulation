@@ -20,10 +20,7 @@ namespace Simulation.Fluid
         Emitter,
 
 
-        VelocityTexture2D,
-        DensityTexture2D,
-        
-        VelocityTexture3D,
-        DensityTexture3D,
+        VelocityTexture,
+        DensityTexture,
     }
 }
