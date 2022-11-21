@@ -17,6 +17,8 @@ StructuredBuffer<ParticleDensity> _ParticleDensityBufferRead;
 
 RWStructuredBuffer<ParticleForce> _ParticleForceBufferRW;
 
+AppendStructuredBuffer<uint> _ParticleAppendIndexBuffer;
+
 float3 GetSDFForce(inout Particle p)
 {
 	return _Gravity;
@@ -79,7 +81,12 @@ void Integrate(uint3 id : SV_DispatchThreadID)
 		p.pos += _TimeStep * p.vel;
 		p.w +=  _TimeStep * (transferTorque + _NU_EXT) / (_ParticleMass * _Theta);
 
-		// p.col = _ParticleDensityBufferRead[p_id].density/ 2000;
+		// p.col = _ParticleDensityBufferRead[p_id].density/ 1000;
+	}
+
+	if(p.IsActive() == false)
+	{
+		_ParticleAppendIndexBuffer.Append(p_id);
 	}
 
 	OnCheckBounds(p, _SpaceMin, _SpaceMax);

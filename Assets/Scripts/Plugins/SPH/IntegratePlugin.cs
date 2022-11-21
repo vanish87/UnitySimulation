@@ -30,6 +30,9 @@ namespace Simulation.Fluid.SPH
             var density = data.Data.OfType<ParticleDensityBuffer>().FirstOrDefault();
             this.SetBuffer(particle.Read.Data, particle.Write.Data, force.Data, density.Data);
 
+            var append = data.Data.OfType<ParticleAppendIndexBuffer>().FirstOrDefault();
+            if(append != null) this.SetAppendIndexBuffer(append.Data);
+
             var grid = data.Data.OfType<SPHGridBuffer>().FirstOrDefault();
             grid.SetupGridParameter(this.integrateCS, Kernel);
 
@@ -65,6 +68,16 @@ namespace Simulation.Fluid.SPH
             cs.SetBuffer(k, "_ParticleBufferWrite", particleWrite);
             cs.SetBuffer(k, "_ParticleForceBufferRW", force);
             cs.SetBuffer(k, "_ParticleDensityBufferRead", density);
+
+        }
+        protected void SetAppendIndexBuffer(ComputeBuffer append)
+        {
+            var cs = this.integrateCS;
+            var k = cs.FindKernel(Kernel);
+
+            //IntegrateCS will rebuild current particle pool
+            append.SetCounterValue(0);
+            cs.SetBuffer(k, "_ParticleAppendIndexBuffer", append);
         }
     }
 }

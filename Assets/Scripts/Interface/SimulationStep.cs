@@ -15,7 +15,11 @@ namespace Simulation
 
         //Update sorted grid hash etc.
         PrepareData = 4000,
+
+        //Density/Pressure etc.
         OnSimulation = 5000,
+
+        //Field Update etc.
         AfterSimulation = 6000,
         PostProcess = 7000,
 
