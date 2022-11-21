@@ -10,7 +10,16 @@ namespace Simulation
         public abstract string Identifier { get; }
         // public abstract Access Access { get; }
         public virtual RenderTexture Data => this.data;
-        public int3 Size => this.size;
+        public int3 Size
+        {
+            get => this.size; 
+            set
+            {
+                this.size = value;
+                Debug.Assert(this.Length > 0);
+                this.OnCreateBuffer();
+            }
+        }
         public bool Inited => this.inited;
         public int Length => this.Size.x * this.Size.y * this.Size.z;
         [SerializeField] protected int3 size = new int3(1, 1, 1);
@@ -21,28 +30,27 @@ namespace Simulation
             if (this.Inited) return;
 
             var config = this.OnGetConfigure(parameter);
-            if (config != null) this.size = config.Size;
-            var format = this.Format;
-            this.data = new RenderTexture(this.size.x, this.size.y, this.size.z, format);
+            if (config != null) this.Size = config.Size;
+            else this.OnCreateBuffer();
 
             this.inited = true;
         }
         public virtual void Deinit(params object[] parameter)
         {
-            GameObject.Destroy(this.data);
+            if (this.data != null) GameObject.Destroy(this.data);
             this.inited = false;
-        }
-        public virtual void Resize(int3 newSize)
-        {
-            GameObject.Destroy(this.data);
-            this.size = newSize;
-            this.data = new RenderTexture(this.size.x, this.size.y, this.size.z, this.Format);
         }
         protected virtual IGPUBufferConfigure OnGetConfigure(object[] parameter)
         {
             return this.GetComponent<IGPUBufferConfigure>();
         }
-        protected RenderTextureFormat Format
+
+        protected virtual void OnCreateBuffer()
+        {
+            if(this.data != null )GameObject.Destroy(this.data);
+            this.data = new RenderTexture(this.Size.x, this.Size.y, this.Size.z, this.Format);
+        }
+        protected virtual RenderTextureFormat Format
         {
             get
             {

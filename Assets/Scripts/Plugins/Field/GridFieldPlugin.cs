@@ -23,7 +23,7 @@ namespace Simulation
             var data = parameter.OfType<ISimulationData>().FirstOrDefault();
             var grid = data.Data.OfType<GPUGridBuffer<uint2>>().FirstOrDefault();
 
-            this.Velocity.Resize(new int3(grid.Size.xz, 1));
+            this.Velocity.Size = new int3(grid.Size.xz, 1);
             this.Velocity.Data.enableRandomWrite = true;
 
             this.inited = true;

@@ -15,7 +15,16 @@ namespace Simulation
         public abstract string Identifier { get; }
         // public abstract Access Access { get; }
         public ComputeBuffer Data => this.data;
-        public int3 Size => this.size;
+        public int3 Size
+        {
+            get => this.size; 
+            set
+            {
+                this.size = value;
+                Debug.Assert(this.Length > 0);
+                this.OnCreateBuffer(this.Length);
+            }
+        }
         public int Length => this.Size.x * this.Size.y * this.Size.z;
         public bool Inited => this.inited;
         [SerializeField] protected int3 size = new int3(1, 1, 1);
@@ -27,10 +36,8 @@ namespace Simulation
             if (this.Inited) return;
 
             var config = this.OnGetConfigure(parameter);
-            if (config != null) this.size = config.Size;
-
-            Debug.Assert(this.Length > 0);
-            this.OnCreateBuffer(this.Length);
+            if (config != null) this.Size = config.Size;
+            else this.OnCreateBuffer(this.Length);
 
             this.inited = true;
         }

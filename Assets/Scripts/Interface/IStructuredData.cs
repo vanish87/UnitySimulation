@@ -8,7 +8,7 @@ namespace Simulation
         // Dimension Dim { get; }
         // Access Access { get; }
         StructType Data { get; }
-        int3 Size { get; }
+        int3 Size { get; set; }
         int Length { get; }
     }
 }
