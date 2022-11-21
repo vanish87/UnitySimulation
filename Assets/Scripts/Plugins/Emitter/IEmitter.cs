@@ -15,6 +15,7 @@ namespace Simulation
     }
     public interface IEmitter : ISpace
     {
+        int UUID { get; }
         EmitterType Type { get; }
         string Identifier { get; }
         int ParticlePerEmit { get; }

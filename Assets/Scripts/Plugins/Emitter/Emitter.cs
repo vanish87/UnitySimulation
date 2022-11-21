@@ -15,9 +15,11 @@ namespace Simulation
         public bool Inited => true;
         public virtual EmitterType Type => this.isActiveAndEnabled ? EmitterType.SpaceBound : EmitterType.Disabled;
         public virtual float2 LifeMinMax => this.lifeMinMax;
+        public virtual int UUID => this.uuid;
         [SerializeField] protected int particlePreEmit;
         [SerializeField] protected float2 lifeMinMax = 1;
         [SerializeField] protected float4 parameter;
+        [SerializeField] protected int uuid = -1;
         public virtual void Init(params object[] parameter)
         {
         }

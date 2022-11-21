@@ -7,6 +7,7 @@ namespace Simulation
 {
     public struct Emitter_S
     {
+        public int uuid;
         public EmitterType type;
         public int particlePreEmit;
         public float2 lifeMinMax;

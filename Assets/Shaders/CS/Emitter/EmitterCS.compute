@@ -7,6 +7,7 @@
 
 struct Emitter
 {
+	int uuid;
 	int type;
 	int particleEmit;
     float2 lifeMinMax;

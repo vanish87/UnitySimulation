@@ -43,6 +43,7 @@ namespace Simulation
             var eid = 0;
             foreach (var e in this.Emitters)
             {
+                this.EmitterCPU[eid].uuid = e.UUID;
                 this.EmitterCPU[eid].type = e.Type;
                 this.EmitterCPU[eid].localToWorld = e.TRS;
                 this.EmitterCPU[eid].particlePreEmit = e.ParticlePerEmit;
