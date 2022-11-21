@@ -5,8 +5,7 @@ namespace Simulation.Fluid.SPH
 {
     public class SPHGridBuffer : GPUGridBuffer<uint2>
     {
-        public override string Identifier => DataType.Grid.ToString();
-
+        public override string Identifier => this.name;
         public override void Init(params object[] parameter)
         {
             var data = parameter.OfType<ISimulationData>().FirstOrDefault();

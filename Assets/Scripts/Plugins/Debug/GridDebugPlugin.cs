@@ -22,7 +22,7 @@ namespace Simulation.Fluid
         }
         public void OnSimulationStep(int stepIndex, ISimulation sim, ISimulationData data)
         {
-            var particle = data.Data.OfType<ParticleBufferDouble>().FirstOrDefault();
+            var particle = data.Data.OfType<DoubleBuffer<Particle>>().FirstOrDefault();
             this.SetBuffer(particle.Read.Data);
             this.debugCS.SetVector("pos", this.transform.localPosition);
 

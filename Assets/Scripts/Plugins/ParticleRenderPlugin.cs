@@ -11,7 +11,6 @@ namespace Simulation
         public bool Inited => true;
         public bool Enabled => this.isActiveAndEnabled;
         public Material mat;
-        protected ParticleBufferDouble particleBuffer;
         public void Init(params object[] parameter)
         {
         }
@@ -20,11 +19,10 @@ namespace Simulation
         }
         public void OnSimulationStep(int stepIndex, ISimulation sim, ISimulationData data)
         {
-            if (this.particleBuffer == null) this.particleBuffer = data.Data.OfType<ParticleBufferDouble>().FirstOrDefault();
-            var buffer = this.particleBuffer.Read;
+            var particle = data.Data.OfType<DoubleBuffer<Particle>>().FirstOrDefault();
 
-            this.mat.SetBuffer("_ParticleBuffer", buffer.Data);
-            Graphics.DrawProcedural(this.mat, new Bounds(Vector3.zero, Vector3.one * 10000), MeshTopology.Points, buffer.Data.count);
+            this.mat.SetBuffer("_ParticleBuffer", particle.Read.Data);
+            Graphics.DrawProcedural(this.mat, new Bounds(Vector3.zero, Vector3.one * 10000), MeshTopology.Points, particle.Read.Data.count);
         }
     }
 

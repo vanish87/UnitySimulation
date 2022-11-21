@@ -3,23 +3,21 @@ using UnityEngine;
 
 namespace Simulation
 {
-    public class Emitter : MonoBehaviour, IEmitter
+    public class Boundary : MonoBehaviour, IBoundary
     {
+        public virtual int UUID => this.uuid;
         public virtual string Identifier => this.name;
+        public virtual BoundaryType Type => this.isActiveAndEnabled ? this.type : BoundaryType.Disabled;
+        public virtual float4 Parameter { get => this.parameter; set => this.parameter = value; }
         public virtual float3 Center => this.transform.localPosition;
         public virtual quaternion Rotation => this.transform.localRotation;
         public virtual float3 Scale => this.transform.localScale;
         public virtual float4x4 TRS => this.transform.localToWorldMatrix;
-        public virtual float4 Parameter { get => this.parameter; set => this.parameter = value; }
-        public virtual int ParticlePerEmit => this.particlePreEmit;
         public virtual bool Inited => true;
-        public virtual EmitterType Type => this.isActiveAndEnabled ? EmitterType.SpaceBound : EmitterType.Disabled;
-        public virtual float2 LifeMinMax => this.lifeMinMax;
-        public virtual int UUID => this.uuid;
         [SerializeField] protected int uuid = -1;
-        [SerializeField] protected int particlePreEmit;
-        [SerializeField] protected float2 lifeMinMax = 1;
         [SerializeField] protected float4 parameter;
+        [SerializeField] protected BoundaryType type = BoundaryType.Disabled;
+
         public virtual void Init(params object[] parameter)
         {
         }
@@ -28,10 +26,19 @@ namespace Simulation
         }
         protected virtual void OnDrawGizmos()
         {
-            if(this.Type == EmitterType.Disabled) return;
-            
+            if(this.Type == BoundaryType.Disabled) return;
+
             Gizmos.matrix = this.TRS;
-            Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
+            if (this.Type == BoundaryType.SDFSphere)
+            {
+                Gizmos.DrawWireSphere(Vector3.zero, 1);
+            }
+            else
+            {
+                Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
+            }
         }
+
     }
+
 }

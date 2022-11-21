@@ -8,7 +8,7 @@ namespace Simulation
 {
     public class EmitterPlugin : EmitterControllerBase<Emitter_S>, IPlugin
     {
-        public bool Enabled => this.isActiveAndEnabled;
+        public virtual bool Enabled => this.isActiveAndEnabled;
 
         //Note: Make sure emitting particle BEFORE SortedGrid update
         public IEnumerable<int> Steps => new List<int>() { (int)SimulationStep.BeforeSimulation };
@@ -30,7 +30,7 @@ namespace Simulation
         {
             var emitter = data.Data.OfType<GPUBuffer<Emitter_S>>().FirstOrDefault();
             var consume = data.Data.OfType<ParticleAppendIndexBuffer>().FirstOrDefault();
-            var particle = data.Data.OfType<ParticleBufferDouble>().FirstOrDefault();
+            var particle = data.Data.OfType<DoubleBuffer<Particle>>().FirstOrDefault();
 
             this.OnUpdateEmitterBuffer(emitter.Data);
             this.OnCombineEmitterTexture();
@@ -62,6 +62,7 @@ namespace Simulation
             cs.SetVector("_EmitterTextureSize", new Vector4(emitterTexture.width, emitterTexture.height, 0, 0));
 
             cs.SetBuffer(k, "_EmitterBuffer", emitter);
+            cs.SetInt("_EmitterBufferCount", emitter.count);
             cs.SetBuffer(k, "_ParticleBufferRW", particle);
             cs.SetBuffer(k, "_ParticleConsumeIndexBuffer", consumeIndex);
         }

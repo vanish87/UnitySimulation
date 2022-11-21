@@ -18,6 +18,8 @@ namespace Simulation.Fluid
 
 
         Emitter,
+        Boundary,
+        BoundaryParticle,
 
 
         VelocityTexture,

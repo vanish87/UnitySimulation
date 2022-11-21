@@ -36,7 +36,7 @@ namespace Simulation
         public void OnSimulationStep(int stepIndex, ISimulation sim, ISimulationData data)
         {
             var k = this.gridCS.FindKernel(Kernel);
-            var particle = data.Data.OfType<ParticleBufferDouble>().FirstOrDefault();
+            var particle = data.Data.OfType<DoubleBuffer<Particle>>().FirstOrDefault();
             this.gridCS.SetBuffer(k, "_ParticleBufferRead", particle.Read.Data);
 
             var grid = data.Data.OfType<GPUGridBuffer<uint2>>().FirstOrDefault();

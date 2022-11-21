@@ -25,7 +25,7 @@ namespace Simulation.Fluid.SPH
             var sphConfigure = data.Configures.OfType<ISPHConfigure>().FirstOrDefault();
             this.SetConstant(sphConfigure);
 
-            var particle = data.Data.OfType<ParticleBufferDouble>().FirstOrDefault();
+            var particle = data.Data.OfType<DoubleBuffer<Particle>>().FirstOrDefault();
             var density = data.Data.OfType<ParticleDensityBuffer>().FirstOrDefault();
             this.SetBuffer(particle.Read.Data, density.Data);
 
