@@ -5,7 +5,7 @@ namespace Simulation
 {
     public interface IStructuredData<StructType, ElementType> : IData
     {
-        // Dimension Dim { get; }
+        Dimension Dim { get; }
         // Access Access { get; }
         StructType Data { get; }
         int3 Size { get; set; }

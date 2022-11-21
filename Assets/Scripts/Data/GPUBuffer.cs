@@ -14,8 +14,8 @@ namespace Simulation
     {
         public abstract string Identifier { get; }
         // public abstract Access Access { get; }
-        public ComputeBuffer Data => this.data;
-        public int3 Size
+        public virtual ComputeBuffer Data => this.data;
+        public virtual int3 Size
         {
             get => this.size; 
             set
@@ -25,8 +25,9 @@ namespace Simulation
                 this.OnCreateBuffer(this.Length);
             }
         }
-        public int Length => this.Size.x * this.Size.y * this.Size.z;
-        public bool Inited => this.inited;
+        public virtual int Length => this.Size.x * this.Size.y * this.Size.z;
+        public virtual bool Inited => this.inited;
+        public virtual Dimension Dim => this.Size.z > 1 ? Dimension.Dim3D : this.Size.y > 1 ? Dimension.Dim2D : Dimension.Dim1D;
         [SerializeField] protected int3 size = new int3(1, 1, 1);
         [SerializeField] protected ComputeShader initCS;
         protected bool inited = false;

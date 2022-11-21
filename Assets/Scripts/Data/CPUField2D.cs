@@ -12,10 +12,10 @@ namespace Simulation
     public class CPUField2D : MonoBehaviour, IStructuredData<float2[,], float2>, IField<float2, float2>
     {
         public string Identifier => this.ToString();
-        public float2[,] Data => this.data;
+        public virtual float2[,] Data => this.data;
         public virtual int3 Size
         {
-            get => this.size; 
+            get => this.size;
             set
             {
                 this.size = value;
@@ -23,10 +23,11 @@ namespace Simulation
                 this.OnCreateBuffer();
             }
         }
-        public bool Inited => this.inited;
-        public int Length => this.Data.Length;
-        protected float2[,] data = new float2[1, 1];
+        public virtual bool Inited => this.inited;
+        public virtual int Length => this.Data.Length;
+        public virtual Dimension Dim => this.Size.z > 1 ? Dimension.Dim3D : this.Size.y > 1 ? Dimension.Dim2D : Dimension.Dim1D;
         public int3 size = 1;
+        protected float2[,] data = new float2[1, 1];
         protected bool inited = false;
         public virtual void Init(params object[] parameter)
         {

@@ -10,7 +10,7 @@ namespace Simulation
         public abstract string Identifier { get; }
         // public abstract Access Access { get; }
         public virtual RenderTexture Data => this.data;
-        public int3 Size
+        public virtual int3 Size
         {
             get => this.size; 
             set
@@ -20,8 +20,9 @@ namespace Simulation
                 this.OnCreateBuffer();
             }
         }
-        public bool Inited => this.inited;
-        public int Length => this.Size.x * this.Size.y * this.Size.z;
+        public virtual bool Inited => this.inited;
+        public virtual int Length => this.Size.x * this.Size.y * this.Size.z;
+        public virtual Dimension Dim => this.Size.z > 1 ? Dimension.Dim3D : this.Size.y > 1 ? Dimension.Dim2D : Dimension.Dim1D;
         [SerializeField] protected int3 size = new int3(1, 1, 1);
         [SerializeField] protected RenderTexture data;
         protected bool inited = false;
