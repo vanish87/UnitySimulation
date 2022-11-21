@@ -31,7 +31,7 @@ namespace Simulation
     public interface IEmitterController : IInitialize
     {
         // void OnEmit(ISimulation sim, ISimulationData data);
-        // void OnUpdateEmitterBuffer(ComputeBuffer emitter);
+        // void OnSetupEmitterData(ComputeShader cs, string kernel);
     }
 
     public abstract class EmitterControllerBase<T> : MonoBehaviour, IEmitterController
@@ -81,6 +81,7 @@ namespace Simulation
             }
         }
         protected abstract void OnUpdateEmitterBuffer(ComputeBuffer emitter);
+
     }
 
 }
