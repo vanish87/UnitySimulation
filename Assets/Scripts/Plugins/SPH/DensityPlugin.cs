@@ -25,11 +25,11 @@ namespace Simulation.Fluid.SPH
             var sphConfigure = data.Configures.OfType<ISPHConfigure>().FirstOrDefault();
             this.SetConstant(sphConfigure);
 
-            var particle = data.Data.OfType<DoubleBuffer<Particle>>().FirstOrDefault();
+            var particle = data.Data.OfType<DoubleBufferInGrid<Particle>>().FirstOrDefault();
             var density = data.Data.OfType<ParticleDensityBuffer>().FirstOrDefault();
             this.SetBuffer(particle.Read.Data, density.Data);
 
-            var grid = data.Data.OfType<SPHGridBuffer>().FirstOrDefault();
+            var grid = particle.Grid;
             grid.SetupGridParameter(this.densityCS, Kernel);
 
             DispatchTool.Dispatch(this.densityCS, Kernel, particle.Read.Size);

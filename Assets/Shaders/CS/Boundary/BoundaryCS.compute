@@ -1,7 +1,8 @@
 // Each #kernel tells which function to compile; you can have many kernels
-#pragma kernel Emit
+#pragma kernel UpdateBoundaryParticle
 
-#include "../DefaultParticle.hlsl"
+#include "BoundaryParticle.cginc"
+#include "../DispatcherHelper.hlsl"
 #include "../Tools.hlsl"
 #include "../UVTools.cginc"
 
@@ -32,48 +33,13 @@ int _BoundaryBufferCount;
 Texture2D<float4> _BoundaryTexture;
 float2 _BoundaryTextureSize;
 
-RWStructuredBuffer<Particle> _ParticleBufferRW;
+RWStructuredBuffer<BoundaryParticle> _BoundaryParticleBufferRW;
 
-[numthreads(MAX_PARTICLE_PER_EMITTER_GROUP, 1, 1)]
-void UpdateBoundaryParticle(uint3 EmitterID : SV_GroupID, uint BaseIndex : SV_GroupIndex)
+[numthreads(128,1,1)]
+void UpdateBoundaryParticle(uint3 id : SV_DispatchThreadID)
 {
-    int eid = EmitterID.x;
-	int pid = BaseIndex;
+    RETURN_IF_INVALID(id);
 
-    Emitter e = _EmitterBuffer[eid];
-
-	if(e.type != ET_Disabled)
-	{
-		int total = e.particleEmit;
-		int iter = ceil(total * 1.0f / MAX_PARTICLE_PER_EMITTER_GROUP);
-
-		bool emitFromTexture = e.type == ET_Texture;
-		for(int i = 0; i < iter; ++i)
-		{
-			if((pid + i * MAX_PARTICLE_PER_EMITTER_GROUP)< total)
-			{
-				const uint p_id = _ParticleConsumeIndexBuffer.Consume();
-				const uint seed = p_id;
-                const float rand = wang_hash01(seed);
-				Particle p = _ParticleBufferRW[p_id];
-
-				p.pos = GenerateRandomPos(seed, e.localToWorld);
-                p.SetType(PT_FLUID);
-                p.SetActive(true);
-				p.life = lerp(e.lifeMinMax.x, e.lifeMinMax.y, rand);
-				p.col = 1;
-
-				if(emitFromTexture)
-				{
-					// OnEmitTexture(p, e, p_id);
-                    float3 uv = GenerateRandomPos01(seed);
-                    int2 tuv = UV_LocalToGlobal(uv.xy, e.parameter, _EmitterTextureSize);
-                    p.col = _EmitterTexture[tuv];
-				}
-
-				// OnAfterEmit(p, e, p_id);
-                _ParticleBufferRW[p_id] = p;
-			}
-		}
-	}
+    const uint p_id = id.x;
+	// Particle p = _ParticleBufferRead[p_id];
 }

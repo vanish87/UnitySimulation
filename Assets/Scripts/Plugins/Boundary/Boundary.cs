@@ -13,16 +13,19 @@ namespace Simulation
         public virtual quaternion Rotation => this.transform.localRotation;
         public virtual float3 Scale => this.transform.localScale;
         public virtual float4x4 TRS => this.transform.localToWorldMatrix;
-        public virtual bool Inited => true;
+        public virtual bool Inited => this.inited;
         [SerializeField] protected int uuid = -1;
         [SerializeField] protected float4 parameter;
         [SerializeField] protected BoundaryType type = BoundaryType.Disabled;
+        protected bool inited = false;
 
         public virtual void Init(params object[] parameter)
         {
+            this.inited = true;
         }
         public virtual void Deinit(params object[] parameter)
         {
+            this.inited = false;
         }
         protected virtual void OnDrawGizmos()
         {

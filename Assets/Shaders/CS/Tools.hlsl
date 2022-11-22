@@ -53,10 +53,10 @@ float3 GenerateRandomPos(int seed, float4x4 localToWorld = IDENTITY)
 	return TransformPoint(GenerateRandomPos01(seed) - 0.5f, localToWorld);
 }
 
-void DeactiveParticle(inout Particle p, float4x4 localToWorld = IDENTITY)
-{
-	int seed = p.UUID();
-	p.SetActive(false);
-	p.SetType(0);
-	p.pos = GenerateRandomPos(seed, localToWorld);
-}
+// void DeactiveParticle(inout Particle p, float4x4 localToWorld = IDENTITY)
+// {
+// 	int seed = p.UUID();
+// 	p.SetActive(false);
+// 	p.SetType(0);
+// 	p.pos = GenerateRandomPos(seed, localToWorld);
+// }

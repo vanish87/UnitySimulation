@@ -32,7 +32,7 @@ namespace Simulation
             this.OnCombineBoundaryField();
 
             this.OnSetupBuffer(boundary.Data, this.CombinedTexture, particle.Read.Data);
-            DispatchTool.DispatchNoGroup(this.boundaryCS, Kernel, boundary.Size);
+            DispatchTool.Dispatch(this.boundaryCS, Kernel, boundary.Size);
         }
         protected override void OnUpdateBoundaryBuffer(ComputeBuffer boundary)
         {
