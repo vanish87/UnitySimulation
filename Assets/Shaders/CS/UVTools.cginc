@@ -21,7 +21,7 @@ int2 UV_GlobalToLocal(float2 uv, float4 st, int2 texSize)
 	// return lerp(int2(0,0), texSize-1, UV_GlobalToLocal(uv, st));
 }
 
-float RGBToNormal(float3 rgbNormal)
+float3 RGBToNormal(float3 rgbNormal)
 {
 	return normalize(rgbNormal * 2.0f - 1.0f);
 }
