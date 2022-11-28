@@ -28,10 +28,6 @@ namespace Simulation
             this.OnUpdateBoundaryBuffer(this.BoundaryBuffer);
             this.OnCombineBoundaryField();
         }
-        protected virtual void OnSampleBoundary()
-        {
-
-        }
         protected override void OnUpdateBoundaryBuffer(ComputeBuffer boundary)
         {
             var bid = 0;

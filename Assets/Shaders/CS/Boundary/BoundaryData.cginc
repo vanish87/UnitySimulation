@@ -1,8 +1,9 @@
 
 const static int BT_DISABLED = 0;
 const static int BT_SDF_SPHERE = 1;
-const static int BT_SDF_FIELD = 2;
-const static int BT_PARTICLE = 3;
+const static int BT_SDF_CUBE = 2;
+const static int BT_SDF_FIELD = 3;
+const static int BT_PARTICLE = 4;
 // const static int BT_PARTICLE_SPHERE = 4;
 // const static int BT_PARTICLE_MESH = 5;
 

@@ -19,7 +19,7 @@ float3 OnSDFBoundary(float3 pos, in Boundary b)
 		case BT_SDF_FIELD:
 		{
 			float3 uv = WorldPosToUV(pos, b.worldToLocal);
-			if(!(uv.x < 0 || uv.y < 0 || uv.x > 1 || uv.y > 1))
+			if(all(0 < uv) && all(uv < 1))
 			{ 
 				int2 tuv = UV_LocalToGlobal(uv.xy, b.parameter , _BoundaryTextureSize);
 				float3 col = _BoundaryTexture[tuv].rgb;

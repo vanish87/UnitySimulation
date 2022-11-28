@@ -33,6 +33,7 @@ namespace Simulation
     {
         IEnumerable<IBoundary> Boundaries { get; }
         IEnumerable<ISDFFieldBoundary> SDFFieldBoundaries { get; }
+        IEnumerable<IParticleBoundary> ParticleBoundaries { get; }
         Texture BoundaryTexture { get; }
         ComputeBuffer BoundaryBuffer { get; }
         DoubleBufferInGrid<BoundaryParticle> BoundaryParticleBuffer { get; }
@@ -43,6 +44,7 @@ namespace Simulation
         public abstract bool Inited { get; }
         public virtual IEnumerable<IBoundary> Boundaries => this.boundaries ??= this.GetComponentsInChildren<IBoundary>();
         public virtual IEnumerable<ISDFFieldBoundary> SDFFieldBoundaries => this.Boundaries.OfType<ISDFFieldBoundary>();
+        public virtual IEnumerable<IParticleBoundary> ParticleBoundaries => this.Boundaries.OfType<IParticleBoundary>();
         public virtual Texture BoundaryTexture => this.combinedTexture;
         public virtual ComputeBuffer BoundaryBuffer => (this.boundaryBuffer ??= this.GetComponentInChildren<GPUBuffer<T>>()).Data;
         public virtual DoubleBufferInGrid<BoundaryParticle> BoundaryParticleBuffer => this.boundaryParticle ??= this.GetComponentInChildren<BoundaryParticleBufferInSortedGrid>();
@@ -99,6 +101,10 @@ namespace Simulation
                 this.combinedTextureMat.SetVector("_ST", et.ST);
                 Graphics.Blit(et.Field, this.combinedTexture, this.combinedTextureMat, 0);
             }
+        }
+        protected virtual void OnSampleBoundary()
+        {
+
         }
         protected abstract void OnUpdateBoundaryBuffer(ComputeBuffer emitter);
 

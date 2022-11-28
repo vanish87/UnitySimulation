@@ -29,7 +29,7 @@ namespace Simulation.Fluid.SPH
             var force = data.Data.OfType<ParticleForceBuffer>().FirstOrDefault();
             this.SetBuffer(particle.Read.Data, force.Data);
 
-            var boundary = data.Data.OfType<IBoundaryController>().FirstOrDefault();
+            var boundary = data.Plugins.OfType<IBoundaryController>().FirstOrDefault();
             boundary?.OnSetupBuffer(this.addSDFForceCS, Kernel);
 
             DispatchTool.Dispatch(this.addSDFForceCS, Kernel, particle.Read.Size);
