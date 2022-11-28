@@ -8,6 +8,8 @@
 #include "../GridHelper.hlsl"
 #include "../DefaultParticle.hlsl"
 
+#include "../Tools.hlsl"
+
 #include "UnityCG.cginc"
 
 StructuredBuffer<Particle> _ParticleBufferRead;
@@ -74,10 +76,13 @@ void Integrate(uint3 id : SV_DispatchThreadID)
 		p.w +=  _TimeStep * (transferTorque + _NU_EXT) / (_ParticleMass * _Theta);
 
 		// p.col = _ParticleDensityBufferRead[p_id].density/ 1000;
+
+		// if(p.pos.y < -150) p.SetActive(false);
 	}
 
 	if(p.IsActive() == false)
 	{
+		p.pos = lerp(_SpaceMin, _SpaceMax, GenerateRandomPos01(p_id));
 		_ParticleAppendIndexBuffer.Append(p_id);
 	}
 
