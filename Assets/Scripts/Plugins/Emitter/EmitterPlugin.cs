@@ -28,15 +28,14 @@ namespace Simulation
         }
         public void OnSimulationStep(int stepIndex, ISimulation sim, ISimulationData data)
         {
-            var emitter = data.Data.OfType<GPUBuffer<Emitter_S>>().FirstOrDefault();
             var consume = data.Data.OfType<ParticleAppendIndexBuffer>().FirstOrDefault();
             var particle = data.Data.OfType<DoubleBuffer<Particle>>().FirstOrDefault();
 
-            this.OnUpdateEmitterBuffer(emitter.Data);
+            this.OnUpdateEmitterBuffer(this.EmitterBuffer);
             this.OnCombineEmitterTexture();
 
-            this.OnSetupBuffer(emitter.Data, this.CombinedTexture, consume.Data, particle.Read.Data);
-            DispatchTool.DispatchNoGroup(this.emitterCS, Kernel, emitter.Size);
+            this.OnSetupBuffer(consume.Data, particle.Read.Data);
+            DispatchTool.DispatchNoGroup(this.emitterCS, Kernel, this.emitterBuffer.Size);
         }
         protected override void OnUpdateEmitterBuffer(ComputeBuffer emitter)
         {
@@ -53,16 +52,13 @@ namespace Simulation
 
             emitter.SetData(this.EmitterCPU);
         }
-        protected virtual void OnSetupBuffer(ComputeBuffer emitter, Texture emitterTexture, ComputeBuffer consumeIndex, ComputeBuffer particle)
+        protected virtual void OnSetupBuffer(ComputeBuffer consumeIndex, ComputeBuffer particle)
         {
             var cs = this.emitterCS;
             var k = cs.FindKernel(Kernel);
 
-            cs.SetTexture(k, "_EmitterTexture", emitterTexture);
-            cs.SetVector("_EmitterTextureSize", new Vector4(emitterTexture.width, emitterTexture.height, 0, 0));
+            this.OnSetupBuffer(cs, Kernel);
 
-            cs.SetBuffer(k, "_EmitterBuffer", emitter);
-            cs.SetInt("_EmitterBufferCount", emitter.count);
             cs.SetBuffer(k, "_ParticleBufferRW", particle);
             cs.SetBuffer(k, "_ParticleConsumeIndexBuffer", consumeIndex);
         }

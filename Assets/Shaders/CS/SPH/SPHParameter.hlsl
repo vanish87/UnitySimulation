@@ -6,7 +6,7 @@ float _RestDensity;
 float _ParticleMass;
 float2 _ParticleGamma;// x is boundary gamma; y is fluid gamma
 float _Viscosity;
-float3 _Gravity;
+// float3 _Gravity;
 float _TimeStep;
 int _StepIteration;
 float _MaxSpeed;

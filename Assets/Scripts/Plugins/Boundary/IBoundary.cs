@@ -31,11 +31,28 @@ namespace Simulation
     }
     public interface IBoundaryController : IInitialize
     {
-
+        IEnumerable<IBoundary> Boundaries { get; }
+        IEnumerable<ISDFFieldBoundary> SDFFieldBoundaries { get; }
+        Texture BoundaryTexture { get; }
+        ComputeBuffer BoundaryBuffer { get; }
+        DoubleBufferInGrid<BoundaryParticle> BoundaryParticleBuffer { get; }
+        void OnSetupBuffer(ComputeShader cs, string kernel);
     }
     public abstract class BoundaryControllerBase<T> : MonoBehaviour, IBoundaryController
     {
         public abstract bool Inited { get; }
+        public virtual IEnumerable<IBoundary> Boundaries => this.boundaries ??= this.GetComponentsInChildren<IBoundary>();
+        public virtual IEnumerable<ISDFFieldBoundary> SDFFieldBoundaries => this.Boundaries.OfType<ISDFFieldBoundary>();
+        public virtual Texture BoundaryTexture => this.combinedTexture;
+        public virtual ComputeBuffer BoundaryBuffer => (this.boundaryBuffer ??= this.GetComponentInChildren<GPUBuffer<T>>()).Data;
+        public virtual DoubleBufferInGrid<BoundaryParticle> BoundaryParticleBuffer => this.boundaryParticle ??= this.GetComponentInChildren<BoundaryParticleBufferInSortedGrid>();
+        protected IEnumerable<IBoundary> boundaries;
+        protected T[] BoundaryCPU => this.boundaryCPU ??= new T[this.Boundaries.Count()];
+        protected T[] boundaryCPU;
+        protected GPUBuffer<T> boundaryBuffer;
+        protected BoundaryParticleBufferInSortedGrid boundaryParticle;
+        [SerializeField] protected RenderTexture combinedTexture;
+        [SerializeField] protected Material combinedTextureMat;
         public virtual void Init(params object[] parameter)
         {
             this.UpdateCombinedTexture();
@@ -44,15 +61,19 @@ namespace Simulation
         {
             if (this.combinedTexture != null) GameObject.Destroy(this.combinedTexture);
         }
-        protected virtual IEnumerable<IBoundary> Boundaries => this.boundaries ??= this.GetComponentsInChildren<IBoundary>();
-        protected IEnumerable<IBoundary> boundaries;
-        protected virtual IEnumerable<ISDFFieldBoundary> SDFFieldBoundaries => this.GetComponentsInChildren<ISDFFieldBoundary>();
-        protected T[] BoundaryCPU => this.boundaryCPU ??= new T[this.Boundaries.Count()];
-        protected T[] boundaryCPU;
-        protected Texture CombinedTexture => this.combinedTexture;
-        [SerializeField] protected RenderTexture combinedTexture;
-        [SerializeField] protected Material combinedTextureMat;
+        public virtual void OnSetupBuffer(ComputeShader cs, string kernel)
+        {
+            var k = cs.FindKernel(kernel);
 
+            cs.SetTexture(k, "_BoundaryTexture", this.BoundaryTexture);
+            cs.SetVector("_BoundaryTextureSize", new Vector4(this.BoundaryTexture.width, this.BoundaryTexture.height, 0, 0));
+
+            cs.SetBuffer(k, "_BoundaryBuffer", this.BoundaryBuffer);
+            cs.SetInt("_BoundaryBufferCount", this.BoundaryBuffer.count);
+
+            this.BoundaryParticleBuffer.Grid.SetupGridParameter(cs, kernel);
+            cs.SetBuffer(k, "_BoundaryParticleBuffer", this.BoundaryParticleBuffer.Read.Data);
+        }
         protected virtual void UpdateCombinedTexture()
         {
             var total = default(int2);

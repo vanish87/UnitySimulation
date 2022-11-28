@@ -1,0 +1,39 @@
+
+const static int BT_DISABLED = 0;
+const static int BT_SDF_SPHERE = 1;
+const static int BT_SDF_FIELD = 2;
+const static int BT_PARTICLE = 3;
+// const static int BT_PARTICLE_SPHERE = 4;
+// const static int BT_PARTICLE_MESH = 5;
+
+struct Boundary
+{
+    int uuid;
+	int type;
+	float4x4 localToWorld;
+	float4x4 worldToLocal;
+	float4 parameter;
+
+	inline bool IsActive()
+	{
+		return type != BT_DISABLED;
+	}
+};
+
+struct BoundaryParticle
+{
+    uint bid;
+    float3 localPos;
+    float3 worldPos;
+
+    inline float3 Position(){return worldPos;}
+};
+
+
+StructuredBuffer<Boundary> _BoundaryBuffer;
+int _BoundaryBufferCount;
+
+Texture2D<float4> _BoundaryTexture;
+float2 _BoundaryTextureSize;
+
+RWStructuredBuffer<BoundaryParticle> _BoundaryParticleBufferRW;

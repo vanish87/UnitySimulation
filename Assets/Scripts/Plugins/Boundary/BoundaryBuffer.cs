@@ -7,6 +7,7 @@ namespace Simulation
         public int uuid;
         public BoundaryType type;
         public float4x4 localToWorld;
+        public float4x4 worldToLocal;
         public float4 parameter;
     }
     public class BoundaryBuffer : GPUBuffer<Boundary_S>

@@ -25,6 +25,16 @@ float wang_hash01(uint seed)
 	return float(seed) / 4294967295.0; // 2^32-1
 }
 
+float3 GetPos(float4x4 localToWorld)
+{
+	return float3(localToWorld[0][3], localToWorld[1][3], localToWorld[2][3]);
+}
+
+float3 GetScale(float4x4 localToWorld)
+{
+	return float3(localToWorld[0][0], localToWorld[1][1], localToWorld[2][2]);
+}
+
 #include "UnityCG.cginc"
 float3 GenerateRandomPos01(int seed)
 {

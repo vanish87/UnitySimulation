@@ -1,39 +1,10 @@
 // Each #kernel tells which function to compile; you can have many kernels
 #pragma kernel UpdateBoundaryParticle
 
-#include "BoundaryParticle.cginc"
 #include "../DispatcherHelper.hlsl"
 #include "../Tools.hlsl"
 #include "../UVTools.cginc"
 
-const static int BT_DISABLED = 0;
-const static int BT_SDF_SPHERE = 1;
-const static int BT_SDF_FIELD = 2;
-const static int BT_PARTICLE = 3;
-// const static int BT_PARTICLE_SPHERE = 4;
-// const static int BT_PARTICLE_MESH = 5;
-
-struct Boundary
-{
-	int type;
-	float4x4 localToWorld;
-	float4x4 worldToLocal;
-	float4 parameter;
-
-	inline bool IsActive()
-	{
-		return type != BT_DISABLED;
-	}
-};
-
-
-StructuredBuffer<Boundary> _BoundaryBuffer;
-int _BoundaryBufferCount;
-
-Texture2D<float4> _BoundaryTexture;
-float2 _BoundaryTextureSize;
-
-RWStructuredBuffer<BoundaryParticle> _BoundaryParticleBufferRW;
 
 [numthreads(128,1,1)]
 void UpdateBoundaryParticle(uint3 id : SV_DispatchThreadID)

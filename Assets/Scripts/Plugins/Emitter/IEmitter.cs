@@ -31,13 +31,19 @@ namespace Simulation
 
     public interface IEmitterController : IInitialize
     {
+        IEnumerable<IEmitter> Emitters { get; }
+        Texture EmitterTexture { get; }
+        ComputeBuffer EmitterBuffer { get; }
         // void OnEmit(ISimulation sim, ISimulationData data);
-        // void OnSetupEmitterData(ComputeShader cs, string kernel);
+        void OnSetupBuffer(ComputeShader cs, string kernel);
     }
 
     public abstract class EmitterControllerBase<T> : MonoBehaviour, IEmitterController
     {
         public abstract bool Inited { get; }
+        public virtual IEnumerable<IEmitter> Emitters => this.emitters ??= this.GetComponentsInChildren<IEmitter>();
+        public virtual Texture EmitterTexture => this.combinedTexture;
+        public virtual ComputeBuffer EmitterBuffer => (this.emitterBuffer ??= this.GetComponentInChildren<GPUBuffer<T>>()).Data;
         public virtual void Init(params object[] parameter)
         {
             this.UpdateCombinedTexture();
@@ -46,15 +52,24 @@ namespace Simulation
         {
             if (this.combinedTexture != null) GameObject.Destroy(this.combinedTexture);
         }
-        protected virtual IEnumerable<IEmitter> Emitters => this.emitters ??= this.GetComponentsInChildren<IEmitter>();
         protected IEnumerable<IEmitter> emitters;
         protected virtual IEnumerable<IEmitterTexture> EmitterTextures => this.GetComponentsInChildren<IEmitterTexture>();
         protected T[] EmitterCPU => this.emitterCPU ??= new T[this.Emitters.Count()];
         protected T[] emitterCPU;
-        protected Texture CombinedTexture => this.combinedTexture;
+        protected GPUBuffer<T> emitterBuffer;
         [SerializeField] protected RenderTexture combinedTexture;
         [SerializeField] protected Material combinedTextureMat;
+        public virtual void OnSetupBuffer(ComputeShader cs, string kernel)
+        {
+            var k = cs.FindKernel(kernel);
 
+            cs.SetTexture(k, "_EmitterTexture", this.EmitterTexture);
+            cs.SetVector("_EmitterTextureSize", new Vector4(this.EmitterTexture.width, this.EmitterTexture.height, 0, 0));
+
+            cs.SetBuffer(k, "_EmitterBuffer", this.EmitterBuffer);
+            cs.SetInt("_EmitterBufferCount", this.EmitterBuffer.count);
+
+        }
         protected virtual void UpdateCombinedTexture()
         {
             var total = default(int2);
@@ -81,6 +96,7 @@ namespace Simulation
                 Graphics.Blit(et.Texture, this.combinedTexture, this.combinedTextureMat, 0);
             }
         }
+
         protected abstract void OnUpdateEmitterBuffer(ComputeBuffer emitter);
 
     }

@@ -1,0 +1,28 @@
+
+#pragma kernel AddSDFForce
+
+#include "../DispatcherHelper.hlsl"
+#include "../Tools.hlsl"
+#include "../UVTools.cginc"
+
+#include "../DefaultParticle.hlsl"
+
+#include "BoundaryData.cginc"
+#include "Boundary.cginc"
+
+StructuredBuffer<Particle> _ParticleBufferRead;
+RWStructuredBuffer<ParticleForce> _ParticleForceBufferRW;
+
+float3 _Gravity;
+
+[numthreads(128,1,1)]
+void AddSDFForce(uint3 id : SV_DispatchThreadID)
+{
+    RETURN_IF_INVALID(id);
+
+    const uint p_id = id.x;
+	Particle p = _ParticleBufferRead[p_id];
+
+    float3 force = GetBoundaryForce(p.Position()) + _Gravity;
+    _ParticleForceBufferRW[p_id].linearForce += force;
+}

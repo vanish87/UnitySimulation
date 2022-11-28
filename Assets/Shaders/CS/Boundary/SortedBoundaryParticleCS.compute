@@ -1,4 +1,4 @@
-﻿#include "BoundaryParticle.cginc"
+﻿#include "BoundaryData.cginc"
 #include "../GridData.hlsl"
 #define DataType BoundaryParticle
 

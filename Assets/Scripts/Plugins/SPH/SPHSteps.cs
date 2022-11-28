@@ -8,6 +8,7 @@ namespace Simulation.Fluid.SPH
         VorticityConfinement,
         Viscosity,
         Pressure,
+        AddSDFForce,
         Integrate
     }
 }

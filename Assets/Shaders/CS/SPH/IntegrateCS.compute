@@ -19,12 +19,6 @@ RWStructuredBuffer<ParticleForce> _ParticleForceBufferRW;
 
 AppendStructuredBuffer<uint> _ParticleAppendIndexBuffer;
 
-float3 GetSDFForce(inout Particle p)
-{
-	return _Gravity;
-	return _Gravity + float3(sin(_Time.y) * 100,0,0);
-}
-
 void OnHandleMaxSpeed(inout Particle p)
 {
 	float speed = length(p.vel);
@@ -71,8 +65,6 @@ void Integrate(uint3 id : SV_DispatchThreadID)
 		float3 force = _ParticleForceBufferRW[p_id].linearForce;
 		float3 transferForce = _ParticleForceBufferRW[p_id].transferForce;
 		float3 transferTorque = _ParticleForceBufferRW[p_id].transferTorque;
-
-		force += GetSDFForce(p);
 
 		p.vel = p.vel + _TimeStep * (force + transferForce) / _ParticleMass;
 
