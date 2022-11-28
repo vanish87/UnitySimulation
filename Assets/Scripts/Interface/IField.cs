@@ -1,4 +1,6 @@
 
+using UnityEngine;
+
 namespace Simulation
 {
     public enum SampleType
@@ -12,5 +14,9 @@ namespace Simulation
         Element Sample(Dim uv, SampleType sp = SampleType.Center);
         Element Gradient(Dim uv, SampleType sp = SampleType.Center);
 
+    }
+    public interface ITextureField : ISpace
+    {
+        Texture Texture { get; }
     }
 }

@@ -23,9 +23,8 @@ namespace Simulation
         float4 Parameter { get; set; }
     }
 
-    public interface IEmitterTexture
+    public interface IEmitterTexture : ITextureField
     {
-        Texture Texture { get; }
         float4 ST { get; set; }
     }
 

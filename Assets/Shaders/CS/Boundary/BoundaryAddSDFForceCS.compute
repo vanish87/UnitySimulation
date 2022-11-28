@@ -23,6 +23,7 @@ void AddSDFForce(uint3 id : SV_DispatchThreadID)
     const uint p_id = id.x;
 	Particle p = _ParticleBufferRead[p_id];
 
-    float3 force = GetBoundaryForce(p.Position()) + _Gravity;
+    float3 force = GetBoundaryForce(p.Position());
+    force += _Gravity;
     _ParticleForceBufferRW[p_id].linearForce += force;
 }

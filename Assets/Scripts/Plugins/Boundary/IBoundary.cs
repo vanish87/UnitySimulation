@@ -20,10 +20,9 @@ namespace Simulation
         BoundaryType Type { get; }
         float4 Parameter { get; set; }
     }
-    public interface ISDFFieldBoundary : IBoundary
+    public interface ISDFFieldBoundary : IBoundary, ITextureField
     {
         float4 ST { get; set; }
-        Texture Field { get; }
     }
     public interface IParticleBoundary : IBoundary
     {
@@ -80,7 +79,7 @@ namespace Simulation
         {
             var total = default(int2);
             var st = default(List<float4>);
-            var input = this.SDFFieldBoundaries.Select(et => et.Field).ToList();
+            var input = this.SDFFieldBoundaries.Select(et => et.Texture).ToList();
             TextureTool.CalculateTextureSizeAndOffset(input, out total, out st);
 
             if (this.combinedTexture != null) GameObject.Destroy(this.combinedTexture);
@@ -99,7 +98,7 @@ namespace Simulation
             foreach (var et in this.SDFFieldBoundaries)
             {
                 this.combinedTextureMat.SetVector("_ST", et.ST);
-                Graphics.Blit(et.Field, this.combinedTexture, this.combinedTextureMat, 0);
+                Graphics.Blit(et.Texture, this.combinedTexture, this.combinedTextureMat, 0);
             }
         }
         protected virtual void OnSampleBoundary()
