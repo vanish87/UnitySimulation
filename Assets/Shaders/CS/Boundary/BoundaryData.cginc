@@ -23,11 +23,12 @@ struct Boundary
 
 struct BoundaryParticle
 {
-    uint bid;
+    int bid;
     float3 localPos;
     float3 worldPos;
 
     inline float3 Position(){return worldPos;}
+    inline bool IsActive(){return bid != -1;}
 };
 
 

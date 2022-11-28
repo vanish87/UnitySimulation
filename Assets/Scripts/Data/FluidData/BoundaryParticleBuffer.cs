@@ -6,10 +6,11 @@ namespace Simulation
 {
     [System.Serializable]
     [StructLayout(LayoutKind.Sequential)]
-    public class BoundaryParticle
+    public struct BoundaryParticle
     {
-        public uint bid;
+        public int bid;
         public float3 localPos;
+        public float3 worldPos;
     }
     public class BoundaryParticleBuffer : GPUBuffer<BoundaryParticle>
     {

@@ -57,6 +57,7 @@ namespace Simulation
         public virtual void Init(params object[] parameter)
         {
             this.UpdateCombinedTexture();
+            this.OnSampleBoundary();
         }
         public virtual void Deinit(params object[] parameter)
         {
@@ -103,6 +104,21 @@ namespace Simulation
         }
         protected virtual void OnSampleBoundary()
         {
+            var data = new List<BoundaryParticle>();
+            foreach(var b in this.ParticleBoundaries)
+            {
+                var sample = b.Sample();
+                foreach(var p in sample)
+                {
+                    data.Add(new BoundaryParticle() { bid = b.UUID, localPos = p });
+                    // Debug.Log(b.UUID + " " + p);
+                }
+            }
+
+            while (data.Count < this.BoundaryParticleBuffer.Read.Length) data.Add(new BoundaryParticle() { bid = -1 });
+
+            this.BoundaryParticleBuffer.Read.Data.SetData(data.ToArray());
+            this.BoundaryParticleBuffer.Write.Data.SetData(data.ToArray());
 
         }
         protected abstract void OnUpdateBoundaryBuffer(ComputeBuffer emitter);
