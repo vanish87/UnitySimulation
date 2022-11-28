@@ -15,6 +15,8 @@ namespace Simulation
         public virtual void Init(params object[] parameter)
         {
             var buffers = this.GetComponentsInChildren<GPUBuffer<T>>();
+            Debug.Assert(buffers.Count() == 2);
+            
             this.Read = buffers.First();
             this.Write = buffers.Last();
         }
