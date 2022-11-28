@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Simulation.Tool;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Simulation.Fluid.SPH
@@ -12,6 +13,7 @@ namespace Simulation.Fluid.SPH
         public bool Inited => true;
         public bool Enabled => this.isActiveAndEnabled;
         [SerializeField] protected ComputeShader addSDFForceCS;
+        [SerializeField] protected float4 gravity = new float4(0, -9.8f, 0, 0);
         protected const string Kernel = "AddSDFForce";
 
         public void Init(params object[] parameter)
@@ -22,8 +24,7 @@ namespace Simulation.Fluid.SPH
         }
         public void OnSimulationStep(int stepIndex, ISimulation sim, ISimulationData data)
         {
-            var sphConfigure = data.Configures.OfType<ISPHConfigure>().FirstOrDefault();
-            this.SetConstant(sphConfigure);
+            this.SetConstant();
 
             var particle = data.Data.OfType<DoubleBuffer<Particle>>().FirstOrDefault();
             var force = data.Data.OfType<ParticleForceBuffer>().FirstOrDefault();
@@ -35,11 +36,11 @@ namespace Simulation.Fluid.SPH
             DispatchTool.Dispatch(this.addSDFForceCS, Kernel, particle.Read.Size);
         }
 
-        protected void SetConstant(ISPHConfigure config)
+        protected void SetConstant()
         {
             var cs = this.addSDFForceCS;
             var k = cs.FindKernel(Kernel);
-            cs.SetVector("_Gravity", new Vector4(config.Gravity.x, config.Gravity.y, config.Gravity.z, 0));
+            cs.SetVector("_Gravity", new Vector4(this.gravity.x, this.gravity.y, this.gravity.z, 0));
         }
         protected void SetBuffer(ComputeBuffer particleRead, ComputeBuffer particleForceRW)
         {

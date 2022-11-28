@@ -49,11 +49,10 @@ namespace Simulation.Fluid.SPH
 			cs.SetFloat("_H", config.SmoothLength);
             cs.SetFloat("_ParticleMass", config.ParticleMass);
             cs.SetFloat("_TimeStep", config.PreferredTimeStep);
-            // cs.SetFloat("_TimeStep", Tool.GetCFL(config.SmoothLength, config.MaxSpeed));
             cs.SetFloat("_MaxSpeed", config.MaxSpeed);
             cs.SetVector("_Theta", new Vector4(config.Theta.x, config.Theta.y, config.Theta.z, 0));
             cs.SetVector("_NU_EXT", new Vector4(config.NU_EXT.x, config.NU_EXT.y, config.NU_EXT.z, 0));
-            cs.SetVector("_Gravity", new Vector4(config.Gravity.x, config.Gravity.y, config.Gravity.z, 0));
+            // cs.SetVector("_Gravity", new Vector4(config.Gravity.x, config.Gravity.y, config.Gravity.z, 0));
 
             var min = simSpace.Center - 0.5f * simSpace.Scale;
 			var max = simSpace.Center + 0.5f * simSpace.Scale;

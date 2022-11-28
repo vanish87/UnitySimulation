@@ -1,3 +1,4 @@
+using Simulation.Tool;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -19,7 +20,8 @@ namespace Simulation.Fluid.SPH
             public float3 nu_t = 0.05f;
             public float3 nu_ext = 0f;
             public float3 theta = 1f;
-            public float3 gravity = new float3(0, -9.8f, 0);
+
+            public bool useCFL = false;
             public float preferredTimeStep = 0.05f;
             //x is max speed to assure cfl condition
             public float maxSpeed = 1f;
@@ -35,8 +37,7 @@ namespace Simulation.Fluid.SPH
         public float3 NU_T => this.data.nu_t;
         public float3 NU_EXT => this.data.nu_ext;
         public float3 Theta => this.data.theta;
-        public float3 Gravity => this.data.gravity;
-        public float PreferredTimeStep => this.data.preferredTimeStep;
+        public float PreferredTimeStep => this.data.useCFL ? this.data.preferredTimeStep = FluidTool.GetCFL(this.SmoothLength, this.MaxSpeed) : this.data.preferredTimeStep;
         public float MaxSpeed => this.data.maxSpeed;
         [SerializeField] protected Data data = new Data();
         public void Init(params object[] parameter)

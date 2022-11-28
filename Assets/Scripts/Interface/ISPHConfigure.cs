@@ -15,7 +15,6 @@ namespace Simulation.Fluid.SPH
 		public float3 NU_T { get; }
 		public float3 NU_EXT { get; }
 		public float3 Theta { get; }
-		public float3 Gravity { get; }
 		public float PreferredTimeStep { get; }
 		public float MaxSpeed { get; }
 
