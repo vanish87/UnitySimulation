@@ -27,6 +27,7 @@ namespace Simulation
             this.min = 0;
             this.max = this.min + this.Size * this.Spacing;
             this.OnCreateBuffer(this.Length);
+            this.inited = true;
         }
         public virtual void Setup(ISpace space, float3 spacing)
         {
@@ -35,6 +36,7 @@ namespace Simulation
             this.min = space.Center - 0.5f * space.Scale;
             this.max = this.min + this.Size * this.Spacing;
             this.OnCreateBuffer(this.Length);
+            this.inited = true;
         }
         public virtual void SetupGridParameter(ComputeShader cs, string kernel)
         {
