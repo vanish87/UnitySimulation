@@ -8,6 +8,7 @@ namespace Simulation.Fluid.SPH
 {
     public class DensityPlugin : MonoBehaviour, IPlugin
     {
+        public string Identifier => this.ToString();
         public IEnumerable<int> Steps => new List<int>() { (int)SimulationStep.OnSimulation + (int)Step.Density };
         public bool Inited => true;
         public bool Enabled => this.isActiveAndEnabled;

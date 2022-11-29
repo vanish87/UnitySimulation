@@ -9,6 +9,7 @@ namespace Simulation
     public class EmitterPlugin : EmitterControllerBase<Emitter_S>, IPlugin
     {
         public virtual bool Enabled => this.isActiveAndEnabled;
+        public virtual string Identifier => this.ToString();
 
         //Note: Make sure emitting particle BEFORE SortedGrid update
         public IEnumerable<int> Steps => new List<int>() { (int)SimulationStep.BeforeSimulation };

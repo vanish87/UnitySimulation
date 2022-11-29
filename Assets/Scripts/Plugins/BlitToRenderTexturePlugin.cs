@@ -22,6 +22,8 @@ namespace Simulation
 
         public bool Inited => throw new System.NotImplementedException();
 
+        public string Identifier => throw new System.NotImplementedException();
+
         public void Deinit(params object[] parameter)
         {
             throw new System.NotImplementedException();
@@ -60,6 +62,8 @@ namespace Simulation
         public bool Enabled => this.isActiveAndEnabled;
 
         public bool Inited => throw new System.NotImplementedException();
+
+        public string Identifier => throw new System.NotImplementedException();
 
         public void Deinit(params object[] parameter)
         {

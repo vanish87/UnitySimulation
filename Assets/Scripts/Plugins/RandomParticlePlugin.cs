@@ -8,6 +8,7 @@ namespace Simulation
 {
     public class RandomParticlePlugin : MonoBehaviour, IPlugin
     {
+        public string Identifier => this.ToString();
         public IEnumerable<int> Steps => new List<int> { };
         public bool Inited => this.inited;
         public bool Enabled => this.isActiveAndEnabled;

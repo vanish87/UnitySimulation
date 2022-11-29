@@ -7,6 +7,7 @@ namespace Simulation.Fluid.SPH
 {
     public class IntegratePlugin : MonoBehaviour, IPlugin
     {
+        public string Identifier => this.ToString();
         public IEnumerable<int> Steps => new List<int>() { (int)SimulationStep.OnSimulation + (int)Step.Integrate };
         public bool Inited => true;
         public bool Enabled => this.isActiveAndEnabled;

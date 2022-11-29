@@ -7,11 +7,10 @@ namespace Simulation
 {
     public class BoundaryPlugin : BoundaryControllerBase<Boundary_S>, IPlugin
     {
+        public string Identifier => this.ToString();
         public virtual bool Enabled => this.isActiveAndEnabled;
         public IEnumerable<int> Steps => new List<int>() { (int)SimulationStep.BeforeSimulation };
         public override bool Inited => this.inited;
-        protected const string Kernel = "UpdateBoundaryParticle";
-        [SerializeField] protected ComputeShader boundaryUpdateCS;
         protected bool inited = false;
         public override void Init(params object[] parameter)
         {

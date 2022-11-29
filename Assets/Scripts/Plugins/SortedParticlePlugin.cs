@@ -6,6 +6,7 @@ namespace Simulation.Fluid
 {
     public class SortedParticlePlugin : SortObjectInGrid, IPlugin
     {
+        public string Identifier => this.ToString();
         public IEnumerable<int> Steps => new List<int>() { (int)SimulationStep.PrepareData };
         public bool Inited => this.inited;
         public bool Enabled => this.isActiveAndEnabled;

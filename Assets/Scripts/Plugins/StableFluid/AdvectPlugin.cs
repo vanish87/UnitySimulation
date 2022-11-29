@@ -8,6 +8,7 @@ namespace Simulation.Fluid.StableFluid
 {
     public class AdvectPlugin : MonoBehaviour, IPlugin
     {
+        public string Identifier => this.ToString();
         public bool Enabled => this.isActiveAndEnabled;
         public IEnumerable<int> Steps => new List<int>() { (int)SimulationStep.OnSimulation + (int)Step.Advect };
         public bool Inited => this.inited;

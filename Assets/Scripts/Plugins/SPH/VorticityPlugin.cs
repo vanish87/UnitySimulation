@@ -7,6 +7,7 @@ namespace Simulation.Fluid.SPH
 {
     public class VorticityPlugin : MonoBehaviour, IPlugin
     {
+        public string Identifier => this.ToString();
         public IEnumerable<int> Steps => new List<int>() { (int)SimulationStep.OnSimulation + (int)Step.Vorticity };
         public bool Inited => true;
         public bool Enabled => this.isActiveAndEnabled;

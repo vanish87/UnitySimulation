@@ -9,6 +9,7 @@ namespace Simulation.Fluid.SPH
 {
     public class AddSDFForcePlugin : MonoBehaviour, IPlugin
     {
+        public string Identifier => this.ToString();
         public IEnumerable<int> Steps => new List<int>() { (int)SimulationStep.OnSimulation + (int)Step.AddSDFForce };
         public bool Inited => true;
         public bool Enabled => this.isActiveAndEnabled;

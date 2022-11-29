@@ -8,6 +8,7 @@ namespace Simulation.Fluid
 {
     public class GridDebugPlugin : MonoBehaviour, IPlugin
     {
+        public string Identifier => this.ToString();
         public IEnumerable<int> Steps => new List<int>() { (int)SimulationStep.OnSimulation };
         public bool Inited => true;
         public bool Enabled => this.isActiveAndEnabled;
