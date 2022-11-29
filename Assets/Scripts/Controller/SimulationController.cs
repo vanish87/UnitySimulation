@@ -12,8 +12,8 @@ namespace Simulation.Fluid
         public virtual IEnumerable<ISpace> Spaces => this.spaces ??= this.GetComponentsInChildren<ISpace>();
         public virtual IEnumerable<IPlugin> Plugins => this.plugins ??= this.GetComponentsInChildren<IPlugin>();
         public bool Inited => this.inited;
+        public virtual IEnumerable<KeyValuePair<int, List<IPlugin>>> SortedPlugins => this.sortedPlugins.OrderBy(k => k.Key);
         protected Dictionary<int, List<IPlugin>> sortedPlugins = new Dictionary<int, List<IPlugin>>();
-        protected virtual IEnumerable<KeyValuePair<int, List<IPlugin>>> SortedPlugins => this.sortedPlugins.OrderBy(k => k.Key);
         protected IEnumerable<IPlugin> plugins;
         protected IEnumerable<IConfigure> configures;
         protected IEnumerable<ISpace> spaces;
