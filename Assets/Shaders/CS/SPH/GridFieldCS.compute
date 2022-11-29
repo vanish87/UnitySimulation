@@ -8,7 +8,7 @@
 RWTexture2D<float4> _Velocity;
 RWTexture2D<float4> _Vorticity;
 StructuredBuffer<Particle> _ParticleBufferRead;
-// StructuredBuffer<ParticleDensity> _ParticleDensityBuffer;
+StructuredBuffer<ParticleDensity> _ParticleDensityBuffer;
 
 [numthreads(1,1,1)]
 void GridToTexture(uint3 id : SV_DispatchThreadID)
@@ -17,26 +17,30 @@ void GridToTexture(uint3 id : SV_DispatchThreadID)
 	float4 velocity = 0;
 	float4 vorticity = 0;
 	float2 density = 0;
-	for(int h = 0; h < _GridSize.y; ++h)
+	for(int h = 0; h < _GridSize.z; ++h)
 	{
-		FOR_EACH_PARTICLE_IN_CELL_START(int3(uv.x, h, uv.y), p_id)
+		FOR_EACH_PARTICLE_IN_CELL_START(int3(uv.x, uv.y, h), p_id)
 		{
 			Particle p = _ParticleBufferRead[p_id];
 			if(!p.IsActive()) continue;
 
-			// float p_density = _ParticleDensityBuffer[p_id].density;
+			float p_density = _ParticleDensityBuffer[p_id].density;
 
-			velocity += float4(p.vel.xz, 1, 1.0f);
-			vorticity += float4(p.w.y, -p.w.y, 1, 1.0f);
-			// density += float2(p_density, 1);
+			velocity += float4(p.vel.xy, 1, 1.0f);
+			vorticity += float4(p.w.z, -p.w.z, 1, 1.0f);
+			density += float2(p_density, 1);
 		}
 		FOR_EACH_PARTICLE_IN_CELL_END
 	}
 
 	int2 tex_uv = uv;
 	float4 currentVel = _Velocity[tex_uv];
+	// currentVel.xy /= currentVel.z;
+	// currentVel.xy += 0.5f;
 	// float4 currentVor = _Vorticity[tex_uv];
 	_Velocity[tex_uv] = lerp(currentVel, velocity, 0.5);
+	// _Velocity[tex_uv] = vorticity;
+	// _Velocity[tex_uv] = (density.x/(density.y>0?density.y:1)/ 5000);
 	// _Vorticity[tex_uv] = lerp(currentVor , float4(1-(den+vor)*speed,0,0,1), 1);
 
 }
