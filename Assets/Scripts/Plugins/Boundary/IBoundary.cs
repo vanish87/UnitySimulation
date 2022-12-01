@@ -121,12 +121,17 @@ namespace Simulation
 
             this.BoundaryParticleBuffer.SetData(data.ToArray());
 
-            this.OnUpdateBoundaryParticleBuffer();
+            this.OnUpdateBoundaryParticleBuffer(Identity.Instance);
         }
-        protected virtual void OnUpdateBoundaryParticleBuffer()
+        protected virtual void OnUpdateBoundaryParticleBuffer(ISpace boundarySpace)
         {
             var cs = this.updateBoundaryParticleCS;
             var k = cs.FindKernel(UpdateBoundaryParticleKernel);
+
+            var min = boundarySpace.Center - 0.5f * boundarySpace.Scale;
+            var max = boundarySpace.Center + 0.5f * boundarySpace.Scale;
+            cs.SetVector("_BoundarySpaceMin", new Vector4(min.x, min.y, min.z, 0));
+            cs.SetVector("_BoundarySpaceMax", new Vector4(max.x, max.y, max.z, 0));
 
             cs.SetBuffer(k, "_BoundaryBuffer", this.BoundaryBuffer);
             cs.SetInt("_BoundaryBufferCount", this.BoundaryBuffer.count);

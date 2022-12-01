@@ -16,6 +16,19 @@ float3 OnSDFBoundary(float3 pos, in Boundary b)
 			}
 		}
 		break;
+        case BT_SDF_CUBE:
+        {
+			float3 p = pos;
+            float3 bp = GetPos(b.localToWorld);
+            float3 q = abs(p) - bp;
+            float3 dir = normalize(p-bp);
+
+            float sdf = length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0);
+
+            //not implemented
+            // force =  sdf * dir;
+        }
+        break;
 		case BT_SDF_FIELD:
 		{
 			float3 uv = WorldPosToUV(pos, b.worldToLocal);

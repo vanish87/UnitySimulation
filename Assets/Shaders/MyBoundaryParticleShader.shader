@@ -50,7 +50,7 @@ Shader "Unlit/BoundaryParticleShader"
 		bool shouldRender = p.IsActive();
 
 		o.position = UnityObjectToViewPos(p.Position());
-		o.col = 1;
+		o.col = shouldRender?float4(1,0,0,1):float4(0,1,0,1);
 		o.size =  shouldRender?0.1:0.05;
 		o.size *= shouldRender;
 		return o;

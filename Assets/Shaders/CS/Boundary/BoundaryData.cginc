@@ -31,8 +31,6 @@ struct BoundaryParticle
     inline bool IsActive(){return bid != -1;}
 };
 
-
-
 StructuredBuffer<Boundary> _BoundaryBuffer;
 int _BoundaryBufferCount;
 
@@ -41,6 +39,9 @@ float2 _BoundaryTextureSize;
 
 RWStructuredBuffer<BoundaryParticle> _BoundaryParticleBuffer;
 StructuredBuffer<uint2> _BoundaryGridBuffer;
+
+float3 _BoundarySpaceMin;
+float3 _BoundarySpaceMax;
 
 int FindIndexByUUID(int uuid)
 {

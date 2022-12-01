@@ -15,9 +15,9 @@ void UpdateBoundaryParticle(uint3 id : SV_DispatchThreadID)
     const uint p_id = id.x;
 	BoundaryParticle p = _BoundaryParticleBuffer[p_id];
     int bid = FindIndexByUUID(p.bid);
-    if(bid < 0) 
+    if(bid < 0)
     {
-        // p.worldPos = GenerateRandomPos(p_id, )
+        p.worldPos = lerp(_BoundarySpaceMin, _BoundarySpaceMax, GenerateRandomPos01(p_id));
     }
     else
     {
