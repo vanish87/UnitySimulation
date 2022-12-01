@@ -22,7 +22,7 @@ namespace Simulation
             base.Deinit(parameter);
         }
 
-        protected virtual void OnSortParticle()
+        public virtual void OnSortParticle()
         {
             this.GridSorter.Sort(this.Read.Data, this.Grid.Data, this.Grid.Size, this.Grid.Spacing, this.Grid.Min, this.Grid.Max, this.Write.Data);
             this.SwipeBuffer();

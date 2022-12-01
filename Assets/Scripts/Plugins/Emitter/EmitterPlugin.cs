@@ -38,7 +38,7 @@ namespace Simulation
             this.OnSetupBuffer(consume.Data, particle.Read.Data);
             DispatchTool.DispatchNoGroup(this.emitterCS, Kernel, this.emitterBuffer.Size);
         }
-        protected override void OnUpdateEmitterBuffer(ComputeBuffer emitter)
+        protected override void OnUpdateEmitterBuffer(GraphicsBuffer emitter)
         {
             var eid = 0;
             foreach (var e in this.Emitters)
@@ -53,7 +53,7 @@ namespace Simulation
 
             emitter.SetData(this.EmitterCPU);
         }
-        protected virtual void OnSetupBuffer(ComputeBuffer consumeIndex, ComputeBuffer particle)
+        protected virtual void OnSetupBuffer(GraphicsBuffer consumeIndex, GraphicsBuffer particle)
         {
             var cs = this.emitterCS;
             var k = cs.FindKernel(Kernel);

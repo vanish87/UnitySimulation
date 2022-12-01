@@ -690,8 +690,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 455847447}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 40.7, y: 0, z: -5.22}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalPosition: {x: 8.7, y: 6.1, z: 0}
+  m_LocalScale: {x: 15, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1403900713}
@@ -711,7 +711,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uuid: 0
   parameter:
-    x: 0
+    x: 65536
     y: 0
     z: 0
     w: 0
@@ -2043,7 +2043,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   combinedTexture: {fileID: 0}
   combinedTextureMat: {fileID: 2100000, guid: a3dcc0efe764f7a45ba32d4ac72e2fa2, type: 2}
-  updateBoundaryParticleCS: {fileID: 0}
+  updateBoundaryParticleCS: {fileID: 7200000, guid: 08a9a3f7c55bc8a4c8fd181a37f3b2fe,
+    type: 3}
 --- !u!1 &1438035260
 GameObject:
   m_ObjectHideFlags: 0

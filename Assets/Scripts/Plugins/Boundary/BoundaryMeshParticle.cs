@@ -11,7 +11,7 @@ namespace Simulation
         [SerializeField] protected Mesh mesh;
         public IEnumerable<float3> Sample()
         {
-            return Sampler.SampleMeshSurface(this.mesh);
+            return Sampler.SampleMeshSurface(this.mesh, Mathf.CeilToInt(this.Parameter.x));
         }
     }
 

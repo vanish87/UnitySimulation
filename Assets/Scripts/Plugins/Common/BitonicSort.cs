@@ -8,8 +8,8 @@ namespace Simulation
 		protected const int BITONIC_BLOCK_SIZE = 1024;
 		protected const int TRANSPOSE_BLOCK_SIZE = 32;
 		[SerializeField] protected ComputeShader bitonicCS;
-		protected ComputeBuffer tempBuffer;
-		public void Sort(ref ComputeBuffer source)
+		protected GraphicsBuffer tempBuffer;
+		public void Sort(ref GraphicsBuffer source)
 		{
 			// LogTool.LogAssertIsTrue(Mathf.IsPowerOfTwo(source.Size), "num of source should be power of 2");
 			// LogTool.LogAssertIsTrue(source.Size >= BITONIC_BLOCK_SIZE * TRANSPOSE_BLOCK_SIZE, "source size must bigger than " + (BITONIC_BLOCK_SIZE * TRANSPOSE_BLOCK_SIZE));
@@ -17,7 +17,7 @@ namespace Simulation
 			if (this.tempBuffer == null || this.tempBuffer.count != source.count)
 			{
 				this.tempBuffer?.Release();
-				this.tempBuffer = new ComputeBuffer(source.count, Marshal.SizeOf<T>());
+                this.tempBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, source.count, Marshal.SizeOf<T>());
 			}
 			ComputeShader sortCS = this.bitonicCS;
 

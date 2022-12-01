@@ -33,6 +33,12 @@ namespace Simulation.Fluid.SPH
             var grid = particle.Grid;
             grid.SetupGridParameter(this.densityCS, Kernel);
 
+            var boundaryParticle = data.Data.OfType<BoundaryParticleBufferInSortedGrid>().FirstOrDefault();
+            var cs = this.densityCS;
+            var k = cs.FindKernel(Kernel);
+            cs.SetBuffer(k, "_BoundaryParticleBuffer", boundaryParticle.Read.Data);
+            cs.SetBuffer(k, "_BoundaryGridBuffer", boundaryParticle.Grid.Data);
+
             DispatchTool.Dispatch(this.densityCS, Kernel, particle.Read.Size);
         }
 
@@ -47,7 +53,7 @@ namespace Simulation.Fluid.SPH
             cs.SetFloat("_ParticleMass", config.ParticleMass);
         }
 
-        protected void SetBuffer(ComputeBuffer particleRead, ComputeBuffer density)
+        protected void SetBuffer(GraphicsBuffer particleRead, GraphicsBuffer density)
         {
             var cs = this.densityCS;
             var k = cs.FindKernel(Kernel);

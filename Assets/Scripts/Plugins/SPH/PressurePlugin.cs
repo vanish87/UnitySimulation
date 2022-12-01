@@ -46,7 +46,7 @@ namespace Simulation.Fluid.SPH
             cs.SetFloat("_RestDensity", config.RestDensity);
             cs.SetVector("_PressureK", new Vector4(config.PressureK.x, config.PressureK.y, 0, 0));
         }
-        protected void SetBuffer(ComputeBuffer particleRead, ComputeBuffer densityRead, ComputeBuffer force)
+        protected void SetBuffer(GraphicsBuffer particleRead, GraphicsBuffer densityRead, GraphicsBuffer force)
         {
             var cs = this.pressureCS;
             var k = cs.FindKernel(Kernel);

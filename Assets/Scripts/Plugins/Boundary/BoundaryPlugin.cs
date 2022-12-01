@@ -26,8 +26,9 @@ namespace Simulation
         {
             this.OnUpdateBoundaryBuffer(this.BoundaryBuffer);
             this.OnCombineBoundaryField();
+            this.OnUpdateBoundaryParticleBuffer();
         }
-        protected override void OnUpdateBoundaryBuffer(ComputeBuffer boundary)
+        protected override void OnUpdateBoundaryBuffer(GraphicsBuffer boundary)
         {
             var bid = 0;
             foreach (var b in this.Boundaries)

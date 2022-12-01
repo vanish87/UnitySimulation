@@ -32,7 +32,7 @@ namespace Simulation
     {
         IEnumerable<IEmitter> Emitters { get; }
         Texture EmitterTexture { get; }
-        ComputeBuffer EmitterBuffer { get; }
+        GraphicsBuffer EmitterBuffer { get; }
         // void OnEmit(ISimulation sim, ISimulationData data);
         void OnSetupBuffer(ComputeShader cs, string kernel);
     }
@@ -42,7 +42,7 @@ namespace Simulation
         public abstract bool Inited { get; }
         public virtual IEnumerable<IEmitter> Emitters => this.emitters ??= this.GetComponentsInChildren<IEmitter>();
         public virtual Texture EmitterTexture => this.combinedTexture;
-        public virtual ComputeBuffer EmitterBuffer => (this.emitterBuffer ??= this.GetComponentInChildren<GPUBuffer<T>>()).Data;
+        public virtual GraphicsBuffer EmitterBuffer => (this.emitterBuffer ??= this.GetComponentInChildren<GPUBuffer<T>>()).Data;
         public virtual void Init(params object[] parameter)
         {
             this.UpdateCombinedTexture();
@@ -96,7 +96,7 @@ namespace Simulation
             }
         }
 
-        protected abstract void OnUpdateEmitterBuffer(ComputeBuffer emitter);
+        protected abstract void OnUpdateEmitterBuffer(GraphicsBuffer emitter);
 
     }
 

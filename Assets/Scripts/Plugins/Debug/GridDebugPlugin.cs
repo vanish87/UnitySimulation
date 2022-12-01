@@ -37,7 +37,7 @@ namespace Simulation.Fluid
             DispatchTool.Dispatch(this.debugCS, Kernel, 1);
         }
 
-        protected void SetBuffer(ComputeBuffer particle)
+        protected void SetBuffer(GraphicsBuffer particle)
         {
             var cs = this.debugCS;
             var k = cs.FindKernel(Kernel);

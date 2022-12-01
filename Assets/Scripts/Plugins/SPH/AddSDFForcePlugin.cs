@@ -43,7 +43,7 @@ namespace Simulation.Fluid.SPH
             var k = cs.FindKernel(Kernel);
             cs.SetVector("_Gravity", new Vector4(this.gravity.x, this.gravity.y, this.gravity.z, 0));
         }
-        protected void SetBuffer(ComputeBuffer particleRead, ComputeBuffer particleForceRW)
+        protected void SetBuffer(GraphicsBuffer particleRead, GraphicsBuffer particleForceRW)
         {
             var cs = this.addSDFForceCS;
             var k = cs.FindKernel(Kernel);

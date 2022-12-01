@@ -34,7 +34,7 @@ namespace Simulation
         IEnumerable<ISDFFieldBoundary> SDFFieldBoundaries { get; }
         IEnumerable<IParticleBoundary> ParticleBoundaries { get; }
         Texture BoundaryTexture { get; }
-        ComputeBuffer BoundaryBuffer { get; }
+        GraphicsBuffer BoundaryBuffer { get; }
         DoubleBufferInGrid<BoundaryParticle> BoundaryParticleBuffer { get; }
         void OnSetupBuffer(ComputeShader cs, string kernel);
     }
@@ -45,7 +45,7 @@ namespace Simulation
         public virtual IEnumerable<ISDFFieldBoundary> SDFFieldBoundaries => this.Boundaries.OfType<ISDFFieldBoundary>();
         public virtual IEnumerable<IParticleBoundary> ParticleBoundaries => this.Boundaries.OfType<IParticleBoundary>();
         public virtual Texture BoundaryTexture => this.combinedTexture;
-        public virtual ComputeBuffer BoundaryBuffer => (this.boundaryBuffer ??= this.GetComponentInChildren<GPUBuffer<T>>()).Data;
+        public virtual GraphicsBuffer BoundaryBuffer => (this.boundaryBuffer ??= this.GetComponentInChildren<GPUBuffer<T>>()).Data;
         public virtual DoubleBufferInGrid<BoundaryParticle> BoundaryParticleBuffer => this.boundaryParticle ??= this.GetComponentInChildren<BoundaryParticleBufferInSortedGrid>();
         protected IEnumerable<IBoundary> boundaries;
         protected T[] BoundaryCPU => this.boundaryCPU ??= new T[this.Boundaries.Count()];
@@ -54,8 +54,11 @@ namespace Simulation
         protected BoundaryParticleBufferInSortedGrid boundaryParticle;
         [SerializeField] protected RenderTexture combinedTexture;
         [SerializeField] protected Material combinedTextureMat;
+        [SerializeField] protected ComputeShader updateBoundaryParticleCS;
+        protected const string UpdateBoundaryParticleKernel = "UpdateBoundaryParticle";
         public virtual void Init(params object[] parameter)
         {
+            this.OnUpdateBoundaryBuffer(this.BoundaryBuffer);
             this.UpdateCombinedTexture();
             this.OnSampleBoundary();
         }
@@ -111,17 +114,30 @@ namespace Simulation
                 foreach(var p in sample)
                 {
                     data.Add(new BoundaryParticle() { bid = b.UUID, localPos = p });
-                    // Debug.Log(b.UUID + " " + p);
                 }
             }
 
             while (data.Count < this.BoundaryParticleBuffer.Read.Length) data.Add(new BoundaryParticle() { bid = -1 });
 
-            this.BoundaryParticleBuffer.Read.Data.SetData(data.ToArray());
-            this.BoundaryParticleBuffer.Write.Data.SetData(data.ToArray());
+            this.BoundaryParticleBuffer.SetData(data.ToArray());
 
+            this.OnUpdateBoundaryParticleBuffer();
         }
-        protected abstract void OnUpdateBoundaryBuffer(ComputeBuffer emitter);
+        protected virtual void OnUpdateBoundaryParticleBuffer()
+        {
+            var cs = this.updateBoundaryParticleCS;
+            var k = cs.FindKernel(UpdateBoundaryParticleKernel);
+
+            cs.SetBuffer(k, "_BoundaryBuffer", this.BoundaryBuffer);
+            cs.SetInt("_BoundaryBufferCount", this.BoundaryBuffer.count);
+
+            cs.SetBuffer(k, "_BoundaryParticleBuffer", this.BoundaryParticleBuffer.Read.Data);
+            cs.SetInt("_BoundaryParticleBufferCount", this.BoundaryParticleBuffer.Read.Data.count);
+            DispatchTool.Dispatch(cs, k, this.BoundaryParticleBuffer.Read.Size);
+
+            this.BoundaryParticleBuffer.OnSortParticle();
+        }
+        protected abstract void OnUpdateBoundaryBuffer(GraphicsBuffer boundary);
 
     }
 }

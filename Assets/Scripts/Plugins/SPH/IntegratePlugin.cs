@@ -60,7 +60,7 @@ namespace Simulation.Fluid.SPH
 			cs.SetVector("_SpaceMin", new Vector4(min.x, min.y, min.z, 0));
 			cs.SetVector("_SpaceMax", new Vector4(max.x, max.y, max.z, 0));
         }
-        protected void SetBuffer(ComputeBuffer particleRead, ComputeBuffer particleWrite, ComputeBuffer force, ComputeBuffer density)
+        protected void SetBuffer(GraphicsBuffer particleRead, GraphicsBuffer particleWrite, GraphicsBuffer force, GraphicsBuffer density)
         {
             var cs = this.integrateCS;
             var k = cs.FindKernel(Kernel);
@@ -70,7 +70,7 @@ namespace Simulation.Fluid.SPH
             cs.SetBuffer(k, "_ParticleDensityBufferRead", density);
 
         }
-        protected void SetAppendIndexBuffer(ComputeBuffer append)
+        protected void SetAppendIndexBuffer(GraphicsBuffer append)
         {
             var cs = this.integrateCS;
             var k = cs.FindKernel(Kernel);

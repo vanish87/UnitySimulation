@@ -49,7 +49,7 @@ Shader "Unlit/BoundaryParticleShader"
 		// bool shouldRender = (p.type != PT_INACTIVE);
 		bool shouldRender = p.IsActive();
 
-		o.position = UnityObjectToViewPos(p.localPos);
+		o.position = UnityObjectToViewPos(p.Position());
 		o.col = 1;
 		o.size =  shouldRender?0.1:0.05;
 		o.size *= shouldRender;

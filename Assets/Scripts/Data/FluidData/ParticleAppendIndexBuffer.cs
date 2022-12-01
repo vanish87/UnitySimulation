@@ -8,8 +8,8 @@ namespace Simulation
     public class ParticleAppendIndexBuffer : GPUBuffer<uint>
     {
         public override string Identifier => Fluid.DataType.ParticleIndex.ToString();
-        public ComputeBuffer AppendIndexCounterBuffer => this.appendIndexCounterBuffer;
-        protected ComputeBuffer appendIndexCounterBuffer;
+        public GraphicsBuffer AppendIndexCounterBuffer => this.appendIndexCounterBuffer;
+        protected GraphicsBuffer appendIndexCounterBuffer;
         protected const int CounterBufferSize = 5;
         public override void Deinit(params object[] parameter)
         {
@@ -17,10 +17,11 @@ namespace Simulation
             base.Deinit(parameter);
         }
 
-        protected override void OnCreateBuffer(int size, ComputeBufferType type = ComputeBufferType.Default)
+        protected override void OnCreateBuffer(int size, GraphicsBuffer.Target target = GraphicsBuffer.Target.Append)
         {
-            base.OnCreateBuffer(size, ComputeBufferType.Append);
-            this.appendIndexCounterBuffer = new ComputeBuffer(CounterBufferSize, Marshal.SizeOf<int>(), ComputeBufferType.IndirectArguments);
+            // Debug.Assert(target == GraphicsBuffer.Target.Append);
+            base.OnCreateBuffer(size, GraphicsBuffer.Target.Append);
+            this.appendIndexCounterBuffer = new GraphicsBuffer(GraphicsBuffer.Target.IndirectArguments, CounterBufferSize, Marshal.SizeOf<int>());
 
             // ComputeBuffer.CopyCount(this.Data, this.AppendIndexCounterBuffer,0);
             // var counter = new int[5];

@@ -10,11 +10,11 @@ namespace Simulation
     {
         public int3 Size { get; }
     }
-    public abstract class GPUBuffer<T> : MonoBehaviour, IStructuredData<ComputeBuffer, T>
+    public abstract class GPUBuffer<T> : MonoBehaviour, IStructuredData<GraphicsBuffer, T>
     {
         public abstract string Identifier { get; }
         // public abstract Access Access { get; }
-        public virtual ComputeBuffer Data => this.data;
+        public virtual GraphicsBuffer Data => this.data;
         public virtual int3 Size
         {
             get => this.size; 
@@ -31,7 +31,7 @@ namespace Simulation
         [SerializeField] protected int3 size = new int3(1, 1, 1);
         [SerializeField] protected ComputeShader initCS;
         protected bool inited = false;
-        protected ComputeBuffer data;
+        protected GraphicsBuffer data;
         public virtual void Init(params object[] parameter)
         {
             if (this.Inited) return;
@@ -48,10 +48,10 @@ namespace Simulation
             this.inited = false;
         }
 
-        protected virtual void OnCreateBuffer(int size, ComputeBufferType type = ComputeBufferType.Default)
+        protected virtual void OnCreateBuffer(int size, GraphicsBuffer.Target target = GraphicsBuffer.Target.Structured)
         {
             this.data?.Release();
-            this.data = new ComputeBuffer(size, Marshal.SizeOf<T>(), type);
+            this.data = new GraphicsBuffer(target, size, Marshal.SizeOf<T>());
             this.data.SetCounterValue(0);
 
             if(this.initCS != null)

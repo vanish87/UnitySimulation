@@ -32,10 +32,23 @@ struct BoundaryParticle
 };
 
 
+
 StructuredBuffer<Boundary> _BoundaryBuffer;
 int _BoundaryBufferCount;
 
 Texture2D<float4> _BoundaryTexture;
 float2 _BoundaryTextureSize;
 
-RWStructuredBuffer<BoundaryParticle> _BoundaryParticleBufferRW;
+RWStructuredBuffer<BoundaryParticle> _BoundaryParticleBuffer;
+StructuredBuffer<uint2> _BoundaryGridBuffer;
+
+int FindIndexByUUID(int uuid)
+{
+    if(uuid < 0) return -1;
+
+    for(int bid = 0; bid < _BoundaryBufferCount; ++bid)
+    {
+        if(_BoundaryBuffer[bid].uuid == uuid) return bid;
+    }    
+    return -1;
+}

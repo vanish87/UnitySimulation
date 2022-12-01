@@ -45,7 +45,7 @@ namespace Simulation.Fluid.SPH
             cs.SetFloat("_ParticleMass", config.ParticleMass);
 			cs.SetVector("_NU_T", new Vector4(config.NU_T.x, config.NU_T.y, config.NU_T.z, 0));
         }
-        protected void SetBuffer(ComputeBuffer particleRead, ComputeBuffer densityRead, ComputeBuffer force)
+        protected void SetBuffer(GraphicsBuffer particleRead, GraphicsBuffer densityRead, GraphicsBuffer force)
         {
             var cs = this.vorticityCS;
             var k = cs.FindKernel(Kernel);

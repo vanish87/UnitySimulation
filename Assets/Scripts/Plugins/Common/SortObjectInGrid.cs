@@ -19,8 +19,8 @@ namespace Simulation
         [SerializeField] protected ComputeShader gridCS;
         protected GridIndexSort GridSort => this.gridSort ??= this.GetComponent<GridIndexSort>();
         protected GridIndexSort gridSort;
-        protected ComputeBuffer objectGridIndexBuffer;
-        public void Sort(ComputeBuffer objectBuffer, ComputeBuffer grid, int3 size, float3 spacing, float3 min, float3 max, ComputeBuffer sortedBuffer)
+        protected GraphicsBuffer objectGridIndexBuffer;
+        public void Sort(GraphicsBuffer objectBuffer, GraphicsBuffer grid, int3 size, float3 spacing, float3 min, float3 max, GraphicsBuffer sortedBuffer)
         {
             var count = objectBuffer.count;
             this.CheckBufferChanged(objectBuffer);
@@ -54,7 +54,7 @@ namespace Simulation
             return (int)((desired + threadNum - 1) / threadNum);
         }
 
-        protected void SetBuffer(int kernel, ComputeBuffer objectBuffer, ComputeBuffer grid, ComputeBuffer sorted)
+        protected void SetBuffer(int kernel, GraphicsBuffer objectBuffer, GraphicsBuffer grid, GraphicsBuffer sorted)
         {
             this.gridCS.SetBuffer(kernel, "_ObjectBufferRead", objectBuffer);
             this.gridCS.SetBuffer(kernel, "_ObjectBufferSorted", sorted);
@@ -62,14 +62,14 @@ namespace Simulation
 
             this.gridCS.SetBuffer(kernel, "_GridBuffer", grid);
         }
-        protected void CheckBufferChanged(ComputeBuffer objectBuffer)
+        protected void CheckBufferChanged(GraphicsBuffer objectBuffer)
         {
             if (this.objectGridIndexBuffer == null || this.objectGridIndexBuffer.count != objectBuffer.count)
             {
                 this.objectGridIndexBuffer?.Release();
                 //create new buffer for object index
 				//int2(grid index, particle index)
-                this.objectGridIndexBuffer = new ComputeBuffer(objectBuffer.count, Marshal.SizeOf<uint2>());
+                this.objectGridIndexBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, objectBuffer.count, Marshal.SizeOf<uint2>());
             }
         }
         protected void Dispatch(int k, int X, int Y, int Z)

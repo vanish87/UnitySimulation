@@ -6,6 +6,9 @@
 #include "../GridData.hlsl"
 #include "../GridHelper.hlsl"
 #include "../DefaultParticle.hlsl"
+#include "../Tools.hlsl"
+
+#include "../Boundary/BoundaryData.cginc"
 
 StructuredBuffer<Particle> _ParticleBufferRead;
 RWStructuredBuffer<ParticleDensity> _ParticleDensityBuffer;
@@ -35,13 +38,25 @@ void Density(uint3 id : SV_DispatchThreadID)
 
 			float3 n_pos = np.pos;
 
-			float gamma = GetParticleGamma(np);//IsBoundary(np)?20:1;
-			// float gamma = 1;
+			float gamma = _ParticleGamma.y;
 
 			float3 r = p_pos - n_pos;
 			density += _ParticleMass * W(r, _H) * gamma;
 		}
 		FOR_EACH_NEIGHBOR_END
+
+		FOR_EACH_NEIGHBOR_IN_GRID_START(p_pos, n_id, _BoundaryGridBuffer)
+		{
+			BoundaryParticle bp = _BoundaryParticleBuffer[n_id];
+			if(!bp.IsActive()) continue;
+
+			float3 n_pos = bp.Position();
+
+			float gamma = _ParticleGamma.x;
+			float3 r = p_pos - n_pos;
+			density += _ParticleMass * W(r, _H) * gamma;
+		}
+		FOR_EACH_NEIGHBOR_IN_GRID_END
 
 		density = max(density, _RestDensity);
 	}

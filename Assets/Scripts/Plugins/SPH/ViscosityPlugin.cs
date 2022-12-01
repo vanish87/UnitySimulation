@@ -45,7 +45,7 @@ namespace Simulation.Fluid.SPH
             cs.SetFloat("_ParticleMass", config.ParticleMass);
             cs.SetFloat("_Viscosity", config.Viscosity);
         }
-        protected void SetBuffer(ComputeBuffer particleRead, ComputeBuffer densityRead, ComputeBuffer force)
+        protected void SetBuffer(GraphicsBuffer particleRead, GraphicsBuffer densityRead, GraphicsBuffer force)
         {
             var cs = this.viscosityCS;
             var k = cs.FindKernel(Kernel);
