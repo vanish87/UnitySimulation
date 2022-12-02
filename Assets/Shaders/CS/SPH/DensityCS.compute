@@ -8,7 +8,7 @@
 #include "../DefaultParticle.hlsl"
 #include "../Tools.hlsl"
 
-#include "../Boundary/BoundaryData.cginc"
+#include "../Boundary/BoundaryData.hlsl"
 
 StructuredBuffer<Particle> _ParticleBufferRead;
 RWStructuredBuffer<ParticleDensity> _ParticleDensityBuffer;

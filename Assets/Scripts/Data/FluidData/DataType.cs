@@ -22,7 +22,13 @@ namespace Simulation.Fluid
         BoundaryParticle,
 
 
+        ForceTexture,
         VelocityTexture,
+        VelocityDivergenceTexture,
         DensityTexture,
+        PressureTexture,
+        VorticityTexture,
+
+        MPMGrid,
     }
 }

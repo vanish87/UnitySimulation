@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Simulation
 {
+    [SelectionBase]
     public class BoundarySDFField : Boundary, ISDFFieldBoundary
     {
 		public float4 ST { get => this.parameter; set => this.parameter = value; }

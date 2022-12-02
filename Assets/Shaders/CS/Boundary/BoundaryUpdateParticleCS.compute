@@ -1,0 +1,29 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel UpdateBoundaryParticle
+
+#include "../DispatcherHelper.hlsl"
+#include "../Tools.hlsl"
+#include "../UVTools.hlsl"
+#include "BoundaryData.hlsl"
+
+
+[numthreads(128,1,1)]
+void UpdateBoundaryParticle(uint3 id : SV_DispatchThreadID)
+{
+    RETURN_IF_INVALID(id);
+
+    const uint p_id = id.x;
+	BoundaryParticle p = _BoundaryParticleBuffer[p_id];
+    int bid = FindIndexByUUID(p.bid);
+    if(bid < 0)
+    {
+        p.worldPos = lerp(_BoundarySpaceMin, _BoundarySpaceMax, GenerateRandomPos01(p_id));
+    }
+    else
+    {
+        Boundary b = _BoundaryBuffer[bid];
+        p.worldPos = TransformPoint(p.localPos, b.localToWorld);
+    }
+
+	_BoundaryParticleBuffer[p_id] = p;
+}

@@ -24,7 +24,10 @@ AppendStructuredBuffer<uint> _ParticleAppendIndexBuffer;
 void OnHandleMaxSpeed(inout Particle p)
 {
 	float speed = length(p.vel);
-	if(speed > _MaxSpeed && _MaxSpeed > 0) p.vel = normalize(p.vel) * _MaxSpeed;
+	// float rand = wang_hash01(p.UUID());
+	// float maxSpeed = _MaxSpeed + lerp(-1,1,rand);
+	float maxSpeed = _MaxSpeed;
+	if(speed > maxSpeed && maxSpeed > 0) p.vel = normalize(p.vel) * maxSpeed;
 }
 
 #define LIMIT_MIN(space, p, axis, b)\
@@ -77,11 +80,13 @@ void Integrate(uint3 id : SV_DispatchThreadID)
 
 		// p.col = _ParticleDensityBufferRead[p_id].density/ 1000;
 
-		// if(p.pos.y < -150) p.SetActive(false);
+		// if(p.pos.y < _SpaceMin.y) p.pos.y = _SpaceMax.y;
+		// if(p.pos.y < _SpaceMin.y) p.SetActive(false);
 	}
 
 	if(p.IsActive() == false)
 	{
+		//it is important to randomly distributing particle in the whole space
 		p.pos = lerp(_SpaceMin, _SpaceMax, GenerateRandomPos01(p_id));
 		_ParticleAppendIndexBuffer.Append(p_id);
 	}
@@ -91,5 +96,5 @@ void Integrate(uint3 id : SV_DispatchThreadID)
 	_ParticleBufferWrite[p_id] = p;
 
 	//reset force for next frame
-	_ParticleForceBufferRW[p_id] = (ParticleForce)0;
+	// _ParticleForceBufferRW[p_id] = (ParticleForce)0;
 }

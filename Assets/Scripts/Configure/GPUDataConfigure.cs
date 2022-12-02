@@ -7,7 +7,7 @@ namespace Simulation
     public class GPUDataConfigure : MonoBehaviour, IGPUBufferConfigure
     {
         public bool Inited => this.inited;
-        public int3 Size => this.size;
+        public int3 Size { get => this.size;}
         [SerializeField] protected int3 size = 1;
         protected bool inited = false;
         public virtual void Init(params object[] parameter)

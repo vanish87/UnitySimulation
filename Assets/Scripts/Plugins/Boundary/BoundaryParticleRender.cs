@@ -20,7 +20,7 @@ namespace Simulation
         }
         public void OnSimulationStep(int stepIndex, ISimulation sim, ISimulationData data)
         {
-            var particle = data.Data.OfType<DoubleBuffer<BoundaryParticle>>().FirstOrDefault();
+            var particle = data.Data.OfType<DoubleBuffer<GraphicsBuffer, BoundaryParticle>>().FirstOrDefault();
 
             this.mat.SetBuffer("_ParticleBuffer", particle.Read.Data);
             Graphics.DrawProcedural(this.mat, new Bounds(Vector3.zero, Vector3.one * 10000), MeshTopology.Points, particle.Read.Data.count);

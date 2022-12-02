@@ -1,5 +1,5 @@
 
-int _NumberOfParticle;
+// int _NumberOfParticle;
 float _H;
 float2 _PressureK;// k1 and k2 in State Equation Pressure
 float _RestDensity;

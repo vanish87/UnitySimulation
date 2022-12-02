@@ -124,5 +124,10 @@ struct Particle
 		return pos;
 	}
 
+	// inline Reset(int uuid = -1, float4x4 localToWorld = 0)
+	// {
+
+	// }
+
 	
 };

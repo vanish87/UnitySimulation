@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace Simulation.Fluid
 {
@@ -14,7 +15,7 @@ namespace Simulation.Fluid
         public void OnSimulationStep(int stepIndex, ISimulation sim, ISimulationData data)
         {
             var grid = data.Data.OfType<GPUGridBuffer<uint2>>().FirstOrDefault();
-            var particle = data.Data.OfType<DoubleBuffer<Particle>>().FirstOrDefault();
+            var particle = data.Data.OfType<DoubleBuffer<GraphicsBuffer, Particle>>().FirstOrDefault();
 
             this.Sort(particle.Read.Data, grid.Data, grid.Size, grid.Spacing, grid.Min, grid.Max, particle.Write.Data);
             particle.SwipeBuffer();

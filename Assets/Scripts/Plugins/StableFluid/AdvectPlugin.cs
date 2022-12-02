@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Simulation.Tool;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -23,10 +24,22 @@ namespace Simulation.Fluid.StableFluid
         }
         public void OnSimulationStep(int stepIndex, ISimulation sim, ISimulationData data)
         {
-            var velocity = data.Data.OfType<VelocityTexture2D>().FirstOrDefault();
-            var density = data.Data.OfType<DensityTexture2D>().FirstOrDefault();
-            Assert.IsNotNull(velocity.Data);
-            Assert.IsNotNull(density.Data);
+            var velocity = data.Data.Find<DoubleVelocityTexture2D>();
+            var velocityDivergence = data.Data.Find<DoubleVelocityDivergenceTexture2D>();
+            var density = data.Data.Find<DoubleDensityTexture2D>();
+            var pressure = data.Data.Find<DoublePressureTexture2D>();
+
+
+            var emitter = data.Plugins.Find<IEmitterController>();
+            var boundary = data.Plugins.Find<IBoundaryController>();
+
+            Assert.IsNotNull(velocity.Read.Data);
+            Assert.IsNotNull(velocity.Write.Data);
+
+            Assert.IsNotNull(density.Read.Data);
+            Assert.IsNotNull(density.Write.Data);
+
+            velocity.SwipeBuffer();
 
         }
     }

@@ -3,7 +3,7 @@
 
 #include "../DefaultParticle.hlsl"
 #include "../Tools.hlsl"
-#include "../UVTools.cginc"
+#include "../UVTools.hlsl"
 
 struct Emitter
 {

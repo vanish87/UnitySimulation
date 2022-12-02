@@ -30,7 +30,7 @@ namespace Simulation
         public void OnSimulationStep(int stepIndex, ISimulation sim, ISimulationData data)
         {
             var consume = data.Data.OfType<ParticleAppendIndexBuffer>().FirstOrDefault();
-            var particle = data.Data.OfType<DoubleBuffer<Particle>>().FirstOrDefault();
+            var particle = data.Data.OfType<DoubleBuffer<GraphicsBuffer, Particle>>().FirstOrDefault();
 
             this.OnUpdateEmitterBuffer(this.EmitterBuffer);
             this.OnCombineEmitterTexture();

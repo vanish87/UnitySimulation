@@ -1,4 +1,6 @@
 
+#include "../Constant.hlsl"
+
 void MinMaxScaleDissipation(inout float value, float4 minMaxScaleDissipation)
 {
 	const float s = minMaxScaleDissipation.x;
@@ -57,7 +59,6 @@ float3 WorldPosToUV(float3 pos, float4x4 martix)
 	return uv + 0.5f;
 }
 
-const static float4x4 IDENTITY = float4x4 (1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1);
 float3 GenerateRandomPos(int seed, float4x4 localToWorld = IDENTITY)
 {
 	return TransformPoint(GenerateRandomPos01(seed) - 0.5f, localToWorld);

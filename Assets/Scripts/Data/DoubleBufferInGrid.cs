@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Simulation
 {
-    public abstract class DoubleBufferInGrid<T> : DoubleBuffer<T>, IData
+    public abstract class DoubleBufferInGrid<T> : DoubleBuffer<GraphicsBuffer, T>
     {
         public GPUGridBuffer<uint2> Grid { get; protected set; }
         protected SortObjectInGrid GridSorter { get; set; }
@@ -26,6 +26,13 @@ namespace Simulation
         {
             this.GridSorter.Sort(this.Read.Data, this.Grid.Data, this.Grid.Size, this.Grid.Spacing, this.Grid.Min, this.Grid.Max, this.Write.Data);
             this.SwipeBuffer();
+        }
+        public override void SetData(T[] data)
+        {
+            Debug.Assert(data.Length == this.Read.Data.count);
+            Debug.Assert(data.Length == this.Write.Data.count);
+            this.Read.Data.SetData(data);
+            this.Write.Data.SetData(data);
         }
     }
 }

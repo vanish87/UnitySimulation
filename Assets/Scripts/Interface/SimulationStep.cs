@@ -16,7 +16,7 @@ namespace Simulation
         //Update sorted grid hash etc.
         PrepareData = 4000,
 
-        //Density/Pressure etc.
+        //Density/Pressure/Integrate etc.
         OnSimulation = 5000,
 
         //Field Update etc.

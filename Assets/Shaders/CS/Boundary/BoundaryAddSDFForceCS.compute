@@ -3,17 +3,18 @@
 
 #include "../DispatcherHelper.hlsl"
 #include "../Tools.hlsl"
-#include "../UVTools.cginc"
+#include "../UVTools.hlsl"
 
 #include "../DefaultParticle.hlsl"
 
-#include "BoundaryData.cginc"
-#include "Boundary.cginc"
+#include "BoundaryData.hlsl"
+#include "Boundary.hlsl"
 
 StructuredBuffer<Particle> _ParticleBufferRead;
 RWStructuredBuffer<ParticleForce> _ParticleForceBufferRW;
 
 float3 _Gravity;
+float _SDFForceScale;
 
 [numthreads(128,1,1)]
 void AddSDFForce(uint3 id : SV_DispatchThreadID)
@@ -25,6 +26,6 @@ void AddSDFForce(uint3 id : SV_DispatchThreadID)
 
     float3 force = 0;
     force += _Gravity;
-    force += GetBoundaryForce(p.Position());
+    force += GetBoundaryForce(p.Position()) * _SDFForceScale;
     _ParticleForceBufferRW[p_id].linearForce += force;
 }

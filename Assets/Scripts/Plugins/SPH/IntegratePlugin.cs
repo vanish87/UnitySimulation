@@ -22,19 +22,19 @@ namespace Simulation.Fluid.SPH
         }
         public void OnSimulationStep(int stepIndex, ISimulation sim, ISimulationData data)
         {
-            var sphConfigure = data.Configures.OfType<ISPHConfigure>().FirstOrDefault();
-            var simSpace = data.Spaces.OfType<SimulationSpace>().FirstOrDefault();
+            var sphConfigure = data.Configures.Find<ISPHConfigure>();
+            var simSpace = data.Spaces.Find<SimulationSpace>();
             this.SetConstant(sphConfigure, simSpace);
 
-            var particle = data.Data.OfType<DoubleBuffer<Particle>>().FirstOrDefault();
-            var force = data.Data.OfType<ParticleForceBuffer>().FirstOrDefault();
-            var density = data.Data.OfType<ParticleDensityBuffer>().FirstOrDefault();
+            var particle = data.Data.Find<DoubleBuffer<GraphicsBuffer, Particle>>();
+            var force = data.Data.Find<ParticleForceBuffer>();
+            var density = data.Data.Find<ParticleDensityBuffer>();
             this.SetBuffer(particle.Read.Data, particle.Write.Data, force.Data, density.Data);
 
-            var append = data.Data.OfType<ParticleAppendIndexBuffer>().FirstOrDefault();
+            var append = data.Data.Find<ParticleAppendIndexBuffer>();
             if(append != null) this.SetAppendIndexBuffer(append.Data);
 
-            var grid = data.Data.OfType<SPHGridBuffer>().FirstOrDefault();
+            var grid = data.Data.Find<SPHGridBuffer>();
             grid.SetupGridParameter(this.integrateCS, Kernel);
 
             DispatchTool.Dispatch(this.integrateCS, Kernel, particle.Read.Size);

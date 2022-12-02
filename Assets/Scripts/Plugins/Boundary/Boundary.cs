@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Simulation
 {
+    [SelectionBase]
     public class Boundary : MonoBehaviour, IBoundary
     {
         public virtual int UUID => this.uuid;

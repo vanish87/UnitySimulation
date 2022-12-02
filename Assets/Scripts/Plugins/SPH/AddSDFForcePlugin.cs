@@ -15,6 +15,7 @@ namespace Simulation.Fluid.SPH
         public bool Enabled => this.isActiveAndEnabled;
         [SerializeField] protected ComputeShader addSDFForceCS;
         [SerializeField] protected float4 gravity = new float4(0, -9.8f, 0, 0);
+        [SerializeField] protected float SDFForceScale = 100;
         protected const string Kernel = "AddSDFForce";
 
         public void Init(params object[] parameter)
@@ -27,7 +28,7 @@ namespace Simulation.Fluid.SPH
         {
             this.SetConstant();
 
-            var particle = data.Data.OfType<DoubleBuffer<Particle>>().FirstOrDefault();
+            var particle = data.Data.OfType<DoubleBuffer<GraphicsBuffer, Particle>>().FirstOrDefault();
             var force = data.Data.OfType<ParticleForceBuffer>().FirstOrDefault();
             this.SetBuffer(particle.Read.Data, force.Data);
 
@@ -42,6 +43,7 @@ namespace Simulation.Fluid.SPH
             var cs = this.addSDFForceCS;
             var k = cs.FindKernel(Kernel);
             cs.SetVector("_Gravity", new Vector4(this.gravity.x, this.gravity.y, this.gravity.z, 0));
+            cs.SetVector("_SDFForceScale", new Vector4(this.SDFForceScale, 0, 0, 0));
         }
         protected void SetBuffer(GraphicsBuffer particleRead, GraphicsBuffer particleForceRW)
         {
