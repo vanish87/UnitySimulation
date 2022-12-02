@@ -28,7 +28,7 @@ namespace Simulation.Fluid.SPH
         {
             this.SetConstant();
 
-            var particle = data.Data.OfType<DoubleBuffer<GraphicsBuffer, Particle>>().FirstOrDefault();
+            var particle = data.Data.Find<DoubleBuffer<GraphicsBuffer, Particle>>();
             var force = data.Data.OfType<ParticleForceBuffer>().FirstOrDefault();
             this.SetBuffer(particle.Read.Data, force.Data);
 
