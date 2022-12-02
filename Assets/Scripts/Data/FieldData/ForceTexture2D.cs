@@ -18,7 +18,7 @@ namespace Simulation
         protected override IGPUBufferConfigure OnGetConfigure(object[] parameter)
         {
             var data = parameter.OfType<ISimulationData>().FirstOrDefault();
-            var space = data.Spaces.OfType<SimulationSpace>().FirstOrDefault();
+            var space = data.Spaces.OfType<ISimulationSpace>().FirstOrDefault();
 
             var config = this.GetComponent<IGPUBufferConfigure>();
             config?.Init(space);

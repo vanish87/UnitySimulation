@@ -30,7 +30,7 @@ namespace Simulation.Fluid.SPH
             var force = data.Data.OfType<ParticleForceBuffer>().FirstOrDefault();
             this.SetBuffer(particle.Read.Data, density.Data, force.Data);
 
-            var grid = data.Data.OfType<SPHGridBuffer>().FirstOrDefault();
+            var grid = data.Data.Find<GridBuffer>();
             grid.SetupGridParameter(this.pressureCS, Kernel);
 
             DispatchTool.Dispatch(this.pressureCS, Kernel, particle.Read.Size);

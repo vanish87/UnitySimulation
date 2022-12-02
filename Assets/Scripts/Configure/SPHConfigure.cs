@@ -39,6 +39,8 @@ namespace Simulation.Fluid.SPH
         public float3 Theta => this.data.theta;
         public float PreferredTimeStep => this.data.useCFL ? this.data.preferredTimeStep = FluidTool.GetCFL(this.SmoothLength, this.MaxSpeed) : this.data.preferredTimeStep;
         public float MaxSpeed => this.data.maxSpeed;
+
+
         [SerializeField] protected Data data = new Data();
         public void Init(params object[] parameter)
         {

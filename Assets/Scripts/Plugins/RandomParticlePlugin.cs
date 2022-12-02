@@ -23,7 +23,7 @@ namespace Simulation
         {
             var data = parameter.OfType<ISimulationData>().FirstOrDefault();
             var particle = data.Data.OfType<DoubleBuffer<GraphicsBuffer, Particle>>().FirstOrDefault();
-            var space = data.Spaces.OfType<SimulationSpace>().FirstOrDefault();
+            var space = data.Spaces.OfType<ISimulationSpace>().FirstOrDefault();
             var k = this.randomCS.FindKernel("RandomParticle");
             this.randomCS.SetBuffer(k, "_Buffer", particle.Read.Data);
             this.randomCS.SetInt("_BufferCount", particle.Read.Data.count);

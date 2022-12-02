@@ -23,7 +23,7 @@ namespace Simulation.Fluid.SPH
         public void OnSimulationStep(int stepIndex, ISimulation sim, ISimulationData data)
         {
             var sphConfigure = data.Configures.Find<ISPHConfigure>();
-            var simSpace = data.Spaces.Find<SimulationSpace>();
+            var simSpace = data.Spaces.Find<ISimulationSpace>();
             this.SetConstant(sphConfigure, simSpace);
 
             var particle = data.Data.Find<DoubleBuffer<GraphicsBuffer, Particle>>();
@@ -34,7 +34,7 @@ namespace Simulation.Fluid.SPH
             var append = data.Data.Find<ParticleAppendIndexBuffer>();
             if(append != null) this.SetAppendIndexBuffer(append.Data);
 
-            var grid = data.Data.Find<SPHGridBuffer>();
+            var grid = data.Data.Find<GridBuffer>();
             grid.SetupGridParameter(this.integrateCS, Kernel);
 
             DispatchTool.Dispatch(this.integrateCS, Kernel, particle.Read.Size);

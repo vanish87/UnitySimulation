@@ -27,7 +27,7 @@ namespace Simulation.Fluid
             this.SetBuffer(particle.Read.Data);
             this.debugCS.SetVector("pos", this.transform.localPosition);
 
-            var grid = data.Data.OfType<SPH.SPHGridBuffer>().FirstOrDefault();
+            var grid = data.Data.Find<GridBuffer>();
             grid.SetupGridParameter(this.debugCS, Kernel);
 
             var k = this.debugCS.FindKernel("Reset");

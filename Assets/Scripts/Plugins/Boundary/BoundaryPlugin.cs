@@ -26,8 +26,8 @@ namespace Simulation
         {
             this.OnUpdateBoundaryBuffer(this.BoundaryBuffer);
             this.OnCombineBoundaryField();
-            
-            var space = data.Spaces.OfType<SimulationSpace>().FirstOrDefault();
+
+            var space = data.Spaces.OfType<ISimulationSpace>().FirstOrDefault();
             this.OnUpdateBoundaryParticleBuffer(space);
         }
         protected override void OnUpdateBoundaryBuffer(GraphicsBuffer boundary)
