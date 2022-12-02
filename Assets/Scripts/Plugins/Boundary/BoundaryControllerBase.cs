@@ -15,7 +15,7 @@ namespace Simulation
         public virtual IEnumerable<IParticleBoundary> ParticleBoundaries => this.Boundaries.OfType<IParticleBoundary>();
         public virtual Texture BoundaryTexture => this.combinedTexture;
         public virtual GraphicsBuffer BoundaryBuffer => (this.boundaryBuffer ??= this.GetComponentInChildren<GPUBuffer<T>>()).Data;
-        public virtual DoubleBufferInGrid<BoundaryParticle> BoundaryParticleBuffer => this.boundaryParticle ??= this.GetComponentInChildren<BoundaryParticleBufferInSortedGrid>();
+        public virtual DoubleBufferInGrid<BoundaryParticle, uint2> BoundaryParticleBuffer => this.boundaryParticle ??= this.GetComponentInChildren<BoundaryParticleBufferInSortedGrid>();
         protected IEnumerable<IBoundary> boundaries;
         protected T[] BoundaryCPU => this.boundaryCPU ??= new T[this.Boundaries.Count()];
         protected T[] boundaryCPU;

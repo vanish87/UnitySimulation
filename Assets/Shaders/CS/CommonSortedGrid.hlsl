@@ -29,7 +29,7 @@ void ClearGridIndex(uint3 DTid : SV_DispatchThreadID)
 	RETURN_IF_INVALID(DTid);
 
 	uint C_ID = CellIndexToCellID(DTid, _GridSize);
-	_GridBuffer[C_ID] = uint2(0, 0);
+	_GridBuffer[C_ID].SetIndex(0);
 }
 
 [numthreads(SIMULATION_BLOCK_SIZE, 1, 1)]
@@ -47,12 +47,12 @@ void BuildGridIndex(uint3 DTid : SV_DispatchThreadID)
 
 	if (cell != cell_prev) {
 		// I'm the start of a cell
-		_GridBuffer[cell].x = G_ID;
+		_GridBuffer[cell].SetIndexX(G_ID);
 	}
 
 	if (cell != cell_next) {
 		// I'm the end of a cell
-		_GridBuffer[cell].y = G_ID + 1;
+		_GridBuffer[cell].SetIndexY(G_ID + 1);
 	}
 }
 

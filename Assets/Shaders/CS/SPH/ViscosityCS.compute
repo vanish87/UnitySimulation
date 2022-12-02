@@ -4,6 +4,7 @@
 #include "Kernel.hlsl"
 
 #include "../DispatcherHelper.hlsl"
+#include "../DefaultGrid.hlsl"
 #include "../GridData.hlsl"
 #include "../GridHelper.hlsl"
 #include "../DefaultParticle.hlsl"
@@ -30,7 +31,7 @@ void Viscosity(uint3 id : SV_DispatchThreadID)
 		float3 P_velocity = p.vel;
 		float  P_density  = _ParticleDensityBufferRead[p_id].density;
 		
-		FOR_EACH_NEIGHBOR_START(p, n_id)
+		FOR_EACH_NEIGHBOR_START(p_pos, n_id, _GridBuffer)
 		{
 			Particle np = _ParticleBufferRead[n_id];
 			if(!np.IsActive()) continue;

@@ -40,7 +40,16 @@ Texture2D<float4> _BoundaryTexture;
 float2 _BoundaryTextureSize;
 
 RWStructuredBuffer<BoundaryParticle> _BoundaryParticleBuffer;
-StructuredBuffer<uint2> _BoundaryGridBuffer;
+struct BoundaryCell
+{
+	uint2 index; //Particle start/end index
+	inline uint2 Index(){return index;}
+	inline void SetIndex(uint2 new_index){index = new_index;}
+	inline void SetIndexX(uint new_index){index.x = new_index;}
+	inline void SetIndexY(uint new_index){index.y = new_index;}
+	
+};
+StructuredBuffer<BoundaryCell> _BoundaryGridBuffer;
 
 float3 _BoundarySpaceMin;
 float3 _BoundarySpaceMax;

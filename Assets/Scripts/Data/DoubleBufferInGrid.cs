@@ -3,15 +3,15 @@ using UnityEngine;
 
 namespace Simulation
 {
-    public abstract class DoubleBufferInGrid<T> : DoubleBuffer<GraphicsBuffer, T>
+    public abstract class DoubleBufferInGrid<T, Cell> : DoubleBuffer<GraphicsBuffer, T>
     {
-        public GPUGridBuffer<uint2> Grid { get; protected set; }
+        public GPUGridBuffer<Cell> Grid { get; protected set; }
         protected SortObjectInGrid GridSorter { get; set; }
         public override void Init(params object[] parameter)
         {
             base.Init(parameter);
 
-            this.Grid = this.GetComponentInChildren<GPUGridBuffer<uint2>>();
+            this.Grid = this.GetComponentInChildren<GPUGridBuffer<Cell>>();
             this.GridSorter = this.GetComponentInChildren<SortObjectInGrid>();
 
             Debug.Assert(this.Grid != null);

@@ -1,9 +1,10 @@
 
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Simulation
 {
-    public class BoundaryParticleBufferInSortedGrid : DoubleBufferInGrid<BoundaryParticle>
+    public class BoundaryParticleBufferInSortedGrid : DoubleBufferInGrid<BoundaryParticle, uint2>
     {
         public override string Identifier => Fluid.DataType.BoundaryParticle.ToString();
 

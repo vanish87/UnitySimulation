@@ -35,7 +35,7 @@ namespace Simulation
         IEnumerable<IParticleBoundary> ParticleBoundaries { get; }
         Texture BoundaryTexture { get; }
         GraphicsBuffer BoundaryBuffer { get; }
-        DoubleBufferInGrid<BoundaryParticle> BoundaryParticleBuffer { get; }
+        DoubleBufferInGrid<BoundaryParticle, uint2> BoundaryParticleBuffer { get; }
         void OnSetupBuffer(ComputeShader cs, string kernel);
     }
 }

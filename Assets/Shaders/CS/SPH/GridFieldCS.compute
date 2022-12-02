@@ -1,6 +1,7 @@
 #pragma kernel GridToTexture
 
 #include "../DispatcherHelper.hlsl"
+#include "../DefaultGrid.hlsl"
 #include "../GridData.hlsl"
 #include "../GridHelper.hlsl"
 #include "../DefaultParticle.hlsl"
@@ -23,7 +24,7 @@ void GridToTexture(uint3 id : SV_DispatchThreadID)
 	float4 force = 0;
 	for(int h = 0; h < _GridSize.z; ++h)
 	{
-		FOR_EACH_PARTICLE_IN_CELL_START(int3(uv.x, uv.y, h), p_id)
+		FOR_EACH_PARTICLE_IN_CELL_START(int3(uv.x, uv.y, h), p_id, _GridBuffer)
 		{
 			Particle p = _ParticleBufferRead[p_id];
 			if(!p.IsActive()) continue;
