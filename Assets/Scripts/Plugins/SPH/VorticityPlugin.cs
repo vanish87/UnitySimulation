@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Simulation.Tool;
+using Unity.Mathematics;
 using UnityEngine;
 namespace Simulation.Fluid.SPH
 {
@@ -25,13 +26,13 @@ namespace Simulation.Fluid.SPH
             var sphConfigure = data.Configures.OfType<ISPHConfigure>().FirstOrDefault();
             this.SetConstant(sphConfigure);
 
-            var particle = data.Data.OfType<DoubleBuffer<GraphicsBuffer, Particle>>().FirstOrDefault();
+            var particle = data.Data.Find<DoubleBufferInGrid<Particle, uint2>>();
             var density = data.Data.OfType<ParticleDensityBuffer>().FirstOrDefault();
             var force = data.Data.OfType<ParticleForceBuffer>().FirstOrDefault();
             this.SetBuffer(particle.Read.Data, density.Data, force.Data);
 
-            var grid = data.Data.Find<GridBuffer>();
-            grid.SetupGridParameter(this.vorticityCS, Kernel);
+            var grid = particle.Grid;
+            grid.OnSetupGridParameter(this.vorticityCS, Kernel);
 
             DispatchTool.Dispatch(this.vorticityCS, Kernel, particle.Read.Size);
         }

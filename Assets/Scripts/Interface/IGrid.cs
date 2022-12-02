@@ -1,4 +1,5 @@
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace Simulation
 {
@@ -8,5 +9,6 @@ namespace Simulation
         float3 Max { get; }
         int3 Size { get; }
         float3 Spacing { get; }
+        void OnSetupGridParameter(ComputeShader cs, string kernel);
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Simulation.Tool;
+using Unity.Mathematics;
 using UnityEngine;
 namespace Simulation.Fluid.SPH
 {
@@ -26,7 +27,7 @@ namespace Simulation.Fluid.SPH
             var simSpace = data.Spaces.Find<ISimulationSpace>();
             this.SetConstant(sphConfigure, simSpace);
 
-            var particle = data.Data.Find<DoubleBuffer<GraphicsBuffer, Particle>>();
+            var particle = data.Data.Find<DoubleBufferInGrid<Particle, uint2>>();
             var force = data.Data.Find<ParticleForceBuffer>();
             var density = data.Data.Find<ParticleDensityBuffer>();
             this.SetBuffer(particle.Read.Data, particle.Write.Data, force.Data, density.Data);
@@ -34,8 +35,8 @@ namespace Simulation.Fluid.SPH
             var append = data.Data.Find<ParticleAppendIndexBuffer>();
             if(append != null) this.SetAppendIndexBuffer(append.Data);
 
-            var grid = data.Data.Find<GridBuffer>();
-            grid.SetupGridParameter(this.integrateCS, Kernel);
+            var grid = particle.Grid;
+            grid.OnSetupGridParameter(this.integrateCS, Kernel);
 
             DispatchTool.Dispatch(this.integrateCS, Kernel, particle.Read.Size);
 

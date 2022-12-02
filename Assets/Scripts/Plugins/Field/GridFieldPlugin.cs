@@ -61,8 +61,8 @@ namespace Simulation
             this.gridCS.SetBuffer(k, "_ParticleDensityBuffer", density.Data);
             this.gridCS.SetBuffer(k, "_ParticleForceBuffer", force.Data);
 
-            var grid = data.Data.OfType<GPUGridBuffer<uint2>>().FirstOrDefault();
-            grid.SetupGridParameter(this.gridCS, Kernel);
+            var grid = data.Data.Find<IGrid>();
+            grid.OnSetupGridParameter(this.gridCS, Kernel);
 
             this.gridCS.SetTexture(k, "_Velocity", this.Velocity.Data);
             this.gridCS.SetTexture(k, "_Force", this.force.Data);

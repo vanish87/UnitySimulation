@@ -27,12 +27,12 @@ namespace Simulation.Fluid.SPH
             var sphConfigure = data.Configures.OfType<ISPHConfigure>().FirstOrDefault();
             this.SetConstant(sphConfigure);
 
-            var particle = data.Data.Find<ParticleDoubleBufferInSortedGrid>();
+            var particle = data.Data.Find<DoubleBufferInGrid<Particle, uint2>>();
             var density = data.Data.Find<ParticleDensityBuffer>();
             this.SetBuffer(particle.Read.Data, density.Data);
 
             var grid = particle.Grid;
-            grid.SetupGridParameter(this.densityCS, Kernel);
+            grid.OnSetupGridParameter(this.densityCS, Kernel);
 
             var boundary = data.Plugins.OfType<IBoundaryController>().FirstOrDefault();
             var cs = this.densityCS;

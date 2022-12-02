@@ -45,7 +45,7 @@ namespace Simulation
             cs.SetBuffer(k, "_BoundaryBuffer", this.BoundaryBuffer);
             cs.SetInt("_BoundaryBufferCount", this.BoundaryBuffer.count);
 
-            this.BoundaryParticleBuffer.Grid.SetupGridParameter(cs, kernel);
+            this.BoundaryParticleBuffer.Grid.OnSetupGridParameter(cs, kernel);
             cs.SetBuffer(k, "_BoundaryParticleBuffer", this.BoundaryParticleBuffer.Read.Data);
         }
         protected virtual void UpdateCombinedTexture()

@@ -9,9 +9,9 @@ namespace Simulation
     {
         public static int3 ScaleSpacingToSize(float3 scale, float3 spacing)
         {
-			var newSize = scale / spacing;
-			var size = new int3(Mathf.CeilToInt(newSize.x), Mathf.CeilToInt(newSize.y), Mathf.CeilToInt(newSize.z));
-			return math.max(size, 1);
+            var newSize = scale / spacing;
+            var size = new int3(Mathf.CeilToInt(newSize.x), Mathf.CeilToInt(newSize.y), Mathf.CeilToInt(newSize.z));
+            return math.max(size, 1);
         }
 
         public float3 Spacing => this.spacing;
@@ -24,9 +24,18 @@ namespace Simulation
 
         public override void Init(params object[] parameter)
         {
-            this.min = 0;
-            this.max = this.min + this.Size * this.Spacing;
-            this.OnCreateBuffer(this.Length);
+            var data = parameter.Find<ISimulationData>();
+            var config = data.Configures.Find<IGridConfigure>();
+            if (config != null)
+            {
+                this.Setup(config.Space, config.Spacing);
+            }
+            else
+            {
+                this.min = 0;
+                this.max = this.min + this.Size * this.Spacing;
+                this.OnCreateBuffer(this.Length);
+            }
             this.inited = true;
         }
         public virtual void Setup(ISpace space, float3 spacing)
@@ -38,7 +47,7 @@ namespace Simulation
             this.OnCreateBuffer(this.Length);
             this.inited = true;
         }
-        public virtual void SetupGridParameter(ComputeShader cs, string kernel)
+        public virtual void OnSetupGridParameter(ComputeShader cs, string kernel)
         {
             // cs.SetInt("_GridCenterMode", grid.centerMode);
             cs.SetVector("_GridSize", new Vector4(this.Size.x, this.Size.y, this.Size.z, 0));
@@ -51,7 +60,7 @@ namespace Simulation
 
         protected virtual void OnDrawGizmos()
         {
-			if (Application.isPlaying && this.drawGizmos) GizmosTool.OnDrawGrid(this.Min, this.Max, this.Spacing);
+            if (Application.isPlaying && this.drawGizmos) GizmosTool.OnDrawGrid(this.Min, this.Max, this.Spacing);
         }
     }
 }

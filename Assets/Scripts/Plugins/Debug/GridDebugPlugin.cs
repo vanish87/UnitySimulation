@@ -23,12 +23,12 @@ namespace Simulation.Fluid
         }
         public void OnSimulationStep(int stepIndex, ISimulation sim, ISimulationData data)
         {
-            var particle = data.Data.OfType<DoubleBuffer<GraphicsBuffer, Particle>>().FirstOrDefault();
+            var particle = data.Data.Find<ParticleDoubleBufferInSortedGrid>();
             this.SetBuffer(particle.Read.Data);
             this.debugCS.SetVector("pos", this.transform.localPosition);
 
-            var grid = data.Data.Find<GridBuffer>();
-            grid.SetupGridParameter(this.debugCS, Kernel);
+            var grid = particle.Grid;
+            grid.OnSetupGridParameter(this.debugCS, Kernel);
 
             var k = this.debugCS.FindKernel("Reset");
             this.debugCS.SetBuffer(k, "_ParticleBufferRW", particle.Read.Data);
