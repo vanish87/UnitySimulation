@@ -14,7 +14,6 @@ namespace Simulation.MPM
         public ISpace Space => this;
         public float3 Spacing => this.spacing;
         public bool Inited => this.inited;
-
         [SerializeField] protected float3 spacing = 1;
         protected bool inited = false;
         protected virtual void OnDrawGizmos()
@@ -32,6 +31,7 @@ namespace Simulation.MPM
         {
             this.inited = false;
         }
+
     }
 
 }

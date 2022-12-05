@@ -2,6 +2,9 @@
 struct Cell
 {
 	uint2 index; //Particle start/end index
+    float3 velocity;
+    float mass;
+
 	inline uint2 Index(){return index;}
 	inline void SetIndex(uint2 new_index){index = new_index;}
 	inline void SetIndexX(uint new_index){index.x = new_index;}

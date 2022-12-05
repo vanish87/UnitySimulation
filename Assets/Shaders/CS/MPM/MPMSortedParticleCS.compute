@@ -1,8 +1,7 @@
-﻿
-#include "DefaultParticle.hlsl"
+#include "MPMParticle.hlsl"
 
-#include "DefaultGrid.hlsl"
-#include "GridData.hlsl"
+#include "MPMGrid.hlsl"
+#include "../GridData.hlsl"
 
 #define DataType Particle
 
@@ -13,4 +12,4 @@
 #pragma kernel ClearGridIndex
 #pragma kernel BuildGridIndex
 #pragma kernel BuildSortedObject
-#include "CommonSortedGrid.hlsl"
+#include "../CommonSortedGrid.hlsl"

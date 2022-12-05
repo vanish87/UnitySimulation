@@ -1,0 +1,32 @@
+#pragma kernel ParticleToGrid
+
+#include "MPMParticle.hlsl"
+#include "MPMGrid.hlsl"
+
+#include "../DispatcherHelper.hlsl"
+#include "../GridData.hlsl"
+#include "../GridHelper.hlsl"
+#include "../Tools.hlsl"
+
+StructuredBuffer<Particle> _ParticleBufferRead;
+
+[numthreads(1,1,1)]
+void ParticleToGrid(uint3 id : SV_DispatchThreadID)
+{
+    RETURN_IF_INVALID(id);
+
+    const uint3 g_id = id;
+
+    float3 velocity = 0;
+
+    FOR_EACH_PARTICLE_IN_CELL_START(g_id, p_id, _GridBuffer)
+    {
+        Particle p = _ParticleBufferRead[p_id];
+        if(!p.IsActive()) continue;
+
+        velocity += p.vel;
+    }
+    FOR_EACH_PARTICLE_IN_CELL_END
+
+	_GridBuffer[CellIndexToCellID(g_id, _GridSize)].velocity = velocity;
+}

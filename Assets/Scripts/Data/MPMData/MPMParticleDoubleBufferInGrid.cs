@@ -1,21 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
-using UnityEngine;
 
 namespace Simulation.MPM
 {
-    public struct Particle
-    {
-        public uint uuid;
-        public float3 pos;
-        public float3 vel;
-        public ParticleType type;
-        public float3 w;
-        public float life;
-        public float4 col;
-        public float3x3 J;
-    }
     public class MPMParticleDoubleBufferInGrid : DoubleBufferInGrid<Particle, Cell>, IPlugin
     {
         public virtual bool Enabled => this.isActiveAndEnabled;

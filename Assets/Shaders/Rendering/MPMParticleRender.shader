@@ -1,8 +1,8 @@
-Shader "Simulation/ParticleShader"
+Shader "Simulation/MPMParticleShader"
 {
 	CGINCLUDE
 	#include "UnityCG.cginc"
-	#include "../CS/DefaultParticle.hlsl"
+	#include "../CS//MPM/MPMParticle.hlsl"
 
 	struct v2g
 	{
@@ -53,6 +53,7 @@ Shader "Simulation/ParticleShader"
 		o.col = shouldRender?saturate(p.col):float4(0.5,0,0,1);
 		o.size =  shouldRender?0.1:0.05;
 		// o.size *= shouldRender;
+		// o.size = 1;
 		return o;
 	}
 

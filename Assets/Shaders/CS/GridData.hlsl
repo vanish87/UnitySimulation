@@ -4,6 +4,7 @@ float3 _GridSize;
 float3 _GridSpacing;
 
 static const int3 _GridRange = int3(1,1,1);
+RWStructuredBuffer<Cell> _GridBuffer;
 
 #define FOR_EACH_NEIGHBOR_START(POS, NID, GRID) {\
 int3 cid = PosToCellIndex(POS, _GridMin, _GridMax, _GridSpacing); \

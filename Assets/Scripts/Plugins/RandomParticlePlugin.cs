@@ -22,13 +22,16 @@ namespace Simulation
         public void Init(params object[] parameter)
         {
             var data = parameter.OfType<ISimulationData>().FirstOrDefault();
-            var particle = data.Data.OfType<DoubleBuffer<GraphicsBuffer, Particle>>().FirstOrDefault();
-            var space = data.Spaces.OfType<ISimulationSpace>().FirstOrDefault();
-            var k = this.randomCS.FindKernel("RandomParticle");
-            this.randomCS.SetBuffer(k, "_Buffer", particle.Read.Data);
-            this.randomCS.SetInt("_BufferCount", particle.Read.Data.count);
-            this.randomCS.SetMatrix("_SimSpaceLocalToWorld", space.TRS);
-            DispatchTool.Dispatch(this.randomCS, k, particle.Read.Size);
+            var particleBuffers = data.Data.OfType<DoubleBuffer<GraphicsBuffer, Particle>>();
+            foreach (var particle in particleBuffers)
+            {
+                var space = data.Spaces.OfType<ISimulationSpace>().FirstOrDefault();
+                var k = this.randomCS.FindKernel("RandomParticle");
+                this.randomCS.SetBuffer(k, "_Buffer", particle.Read.Data);
+                this.randomCS.SetInt("_BufferCount", particle.Read.Data.count);
+                this.randomCS.SetMatrix("_SimSpaceLocalToWorld", space.TRS);
+                DispatchTool.Dispatch(this.randomCS, k, particle.Read.Size);
+            }
 
             this.inited = true;
         }

@@ -1,0 +1,30 @@
+#pragma kernel InitParticleCS
+
+#include "MPMParticle.hlsl"
+#include "MPMGrid.hlsl"
+
+#include "../DispatcherHelper.hlsl"
+#include "../GridData.hlsl"
+#include "../GridHelper.hlsl"
+#include "../Tools.hlsl"
+
+RWStructuredBuffer<Particle> _ParticleBufferRW;
+
+float4 _SpaceMin;
+float4 _SpaceMax;
+
+[numthreads(128,1,1)]
+void InitParticleCS(uint3 id : SV_DispatchThreadID)
+{
+    RETURN_IF_INVALID(id);
+
+    const int p_id = id.x;
+
+    Particle p = _ParticleBufferRW[p_id];
+    p = (Particle)0;
+    p.SetUUID(p_id);
+    p.SetActive(false);
+    p.pos = lerp(_SpaceMin, _SpaceMax, GenerateRandomPos01(p_id));
+    _ParticleBufferRW[p_id] = p;
+
+}

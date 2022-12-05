@@ -24,8 +24,7 @@ namespace Simulation
 
         public override void Init(params object[] parameter)
         {
-            var data = parameter.Find<ISimulationData>();
-            var config = data.Configures.Find<IGridConfigure>();
+            var config = this.OnGetGridConfigure(parameter);
             if (config != null)
             {
                 this.Setup(config.Space, config.Spacing);
@@ -56,6 +55,11 @@ namespace Simulation
             cs.SetVector("_GridMax", new Vector4(this.Max.x, this.Max.y, this.Max.z, 0));
             var k = cs.FindKernel(kernel);
             cs.SetBuffer(k, "_GridBuffer", this.Data);
+        }
+
+        protected virtual IGridConfigure OnGetGridConfigure(params object[] parameter)
+        {
+            return this.GetComponent<IGridConfigure>();
         }
 
         protected virtual void OnDrawGizmos()

@@ -1,4 +1,5 @@
 
+using Simulation.Tool;
 using Unity.Mathematics;
 
 namespace Simulation.MPM
@@ -11,6 +12,11 @@ namespace Simulation.MPM
     public class MPMGridBuffer : GPUGridBuffer<Cell>
     {
         public override string Identifier => Fluid.DataType.MPMGrid.ToString();
+
+        protected override IGridConfigure OnGetGridConfigure(object[] parameter)
+        {
+            return parameter.Find<ISimulationData>().Configures.Find<MPMSimulationSpace>();
+        }
     }
 
 }

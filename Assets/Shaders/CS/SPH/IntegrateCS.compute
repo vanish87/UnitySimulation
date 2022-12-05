@@ -4,8 +4,8 @@
 #include "Kernel.hlsl"
 
 #include "../DispatcherHelper.hlsl"
-#include "../GridData.hlsl"
-#include "../GridHelper.hlsl"
+// #include "../GridData.hlsl"
+// #include "../GridHelper.hlsl"
 #include "../DefaultParticle.hlsl"
 
 #include "../Tools.hlsl"
