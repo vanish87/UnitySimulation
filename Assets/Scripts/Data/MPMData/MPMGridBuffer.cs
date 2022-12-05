@@ -7,7 +7,10 @@ namespace Simulation.MPM
     public struct Cell
     {
         public uint2 index;
+        public float mass;
+        public float3 mv;
         public float3 velocity;
+        public float3 force;
     }
     public class MPMGridBuffer : GPUGridBuffer<Cell>
     {

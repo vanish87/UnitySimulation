@@ -1,0 +1,25 @@
+#pragma kernel CalculateDensity
+
+#include "MPMParticle.hlsl"
+#include "MPMGrid.hlsl"
+
+#include "../DispatcherHelper.hlsl"
+#include "../GridData.hlsl"
+#include "../GridHelper.hlsl"
+#include "../Tools.hlsl"
+
+StructuredBuffer<Particle> _ParticleBufferRead;
+float _H;
+
+[numthreads(1,1,1)]
+void CalculateDensity(uint3 id : SV_DispatchThreadID)
+{
+    RETURN_IF_INVALID(id);
+
+    const uint g_id = CellIndexToCellID(id, _GridSize);
+
+    float volume =  _H*_H*_H;
+	Cell c = _GridBuffer[g_id];
+	c.mass /= volume;
+	_GridBuffer[g_id] = c;
+}

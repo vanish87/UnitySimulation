@@ -59,7 +59,7 @@ float3 WorldPosToUV(float3 pos, float4x4 martix)
 	return uv + 0.5f;
 }
 
-float3 GenerateRandomPos(int seed, float4x4 localToWorld = IDENTITY)
+float3 GenerateRandomPos(int seed, float4x4 localToWorld = Identity)
 {
 	return TransformPoint(GenerateRandomPos01(seed) - 0.5f, localToWorld);
 }

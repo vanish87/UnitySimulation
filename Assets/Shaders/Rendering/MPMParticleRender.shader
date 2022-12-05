@@ -49,8 +49,8 @@ Shader "Simulation/MPMParticleShader"
 		// bool shouldRender = (p.type != PT_INACTIVE);
 		bool shouldRender = p.IsActive();
 
-		o.position = UnityObjectToViewPos(p.pos);
-		o.col = shouldRender?saturate(p.col):float4(0.5,0,0,1);
+		o.position = UnityObjectToViewPos(p.position);
+		o.col = shouldRender?1:float4(0.5,0,0,1);
 		o.size =  shouldRender?0.1:0.05;
 		// o.size *= shouldRender;
 		// o.size = 1;

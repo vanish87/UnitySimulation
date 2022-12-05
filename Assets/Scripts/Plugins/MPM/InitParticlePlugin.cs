@@ -12,27 +12,23 @@ namespace Simulation.MPM
         public bool Inited => this.inited;
         public bool Enabled => this.isActiveAndEnabled;
         [SerializeField] protected ComputeShader initParticleCS;
+        [SerializeField] protected ComputeShader particleToGridCS;
+        [SerializeField] protected ComputeShader calculateDensityCS;
         protected bool inited = false;
-        protected const string Kernel = "InitParticleCS";
+        protected const string InitKernel = "InitParticle";
+        protected const string P2GKernel = "ParticleToGrid";
+        protected const string CalculateDensityKernel = "CalculateDensity";
 
         public void Init(params object[] parameter)
         {
             var data = parameter.Find<ISimulationData>();
             var particle = data.Data.Find<DoubleBufferInGrid<Particle, Cell>>();
+            var simSpace = data.Spaces.Find<MPMSimulationSpace>();
 
             Debug.Assert(particle != null);
             Debug.Assert(particle.Grid != null);
 
-            var simSpace = data.Spaces.Find<MPMSimulationSpace>();
-            var min = simSpace.Center - 0.5f * simSpace.Scale;
-			var max = simSpace.Center + 0.5f * simSpace.Scale;
-            var cs = this.initParticleCS;
-			cs.SetVector("_SpaceMin", new Vector4(min.x, min.y, min.z, 0));
-			cs.SetVector("_SpaceMax", new Vector4(max.x, max.y, max.z, 0));
-
-            this.SetupBuffer(particle.Read.Data);
-
-            DispatchTool.Dispatch(this.initParticleCS, Kernel, particle.Read.Size);
+            this.InitParticle(simSpace, particle);
 
             this.inited = true;
         }
@@ -48,8 +44,25 @@ namespace Simulation.MPM
         protected virtual void SetupBuffer(GraphicsBuffer particle)
         {
             var cs = this.initParticleCS;
-            var k = cs.FindKernel(Kernel);
-            cs.SetBuffer(k, "_ParticleBufferRW", particle);
+        }
+
+        protected virtual void InitParticle(ISpace simSpace, DoubleBufferInGrid<Particle, Cell> particle)
+        {
+            var min = simSpace.Center - 0.5f * simSpace.Scale;
+			var max = simSpace.Center + 0.5f * simSpace.Scale;
+            var cs = this.initParticleCS;
+			cs.SetVector("_SpaceMin", new Vector4(min.x, min.y, min.z, 0));
+			cs.SetVector("_SpaceMax", new Vector4(max.x, max.y, max.z, 0));
+
+            var k = cs.FindKernel(InitKernel);
+            cs.SetBuffer(k, "_ParticleBufferRW", particle.Read.Data);
+
+            DispatchTool.Dispatch(this.initParticleCS, InitKernel, particle.Read.Size);
+
+        }
+        protected virtual void InitGrid()
+        {
+
         }
     }
 }

@@ -30,25 +30,8 @@ static const uint MaxParticleType 			= 0x00000004;
 
 static const uint PT_NONE 		= 0;
 static const uint PT_FLUID 		= 1;
-static const uint PT_BOUNDARY   = 2;
-static const uint PT_SOLID    	= 3;
-
-struct ParticleDensity
-{
-	float density;
-};
-
-struct ParticleForce
-{
-	ParticleDataType linearForce;
-	ParticleDataType transferForce;
-	ParticleDataType transferTorque;
-};
-
-struct ParticleVorticity
-{
-	ParticleDataType vor;
-};
+static const uint PT_ELASTIC    = 2;
+static const uint PT_SNOW    	= 3;
 
 struct Particle 
 {
@@ -59,9 +42,6 @@ struct Particle
 	|0xfff00000		|0x000fffff					|
 	*/
 	uint uuid; //20-bits uuid
-	ParticleDataType pos;
-
-	ParticleDataType vel;
 	/*
 	|0000 0000	|0000 0000 0000 0000 0000	|0      	|000		|
 	|8-bits   	|20-bits					|1-bit  	|3-bits		|
@@ -70,11 +50,14 @@ struct Particle
 	*/
 	uint type;  // 20 bits boundary id + 1 bit active + 3 bits type  
 
-	ParticleDataType w;//angular velocity
-	float life;
+	float mass;
+	float volume;
+	ParticleDataType position;
+	ParticleDataType velocity;
 
-	float4 col;
-    float3x3 J;
+	float3x3 C;
+    float3x3 Fe;
+    float Jp;
 	// #if define(USE_2D_KERNEL)
 	// uint3 padding; //pading to 16-bytes for 2D
 	// #endif
@@ -102,7 +85,7 @@ struct Particle
 	}
 	inline bool IsBoundary()
 	{
-		return Type() == PT_BOUNDARY;
+		return false;
 	}
 	inline uint UUID()
 	{
@@ -122,7 +105,7 @@ struct Particle
 	}
 	inline ParticleDataType Position()
 	{
-		return pos;
+		return position;
 	}
 
 	// inline Reset(int uuid = -1, float4x4 localToWorld = 0)

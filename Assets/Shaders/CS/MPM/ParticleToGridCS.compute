@@ -24,7 +24,7 @@ void ParticleToGrid(uint3 id : SV_DispatchThreadID)
         Particle p = _ParticleBufferRead[p_id];
         if(!p.IsActive()) continue;
 
-        velocity += p.vel;
+        velocity += p.velocity;
     }
     FOR_EACH_PARTICLE_IN_CELL_END
 
