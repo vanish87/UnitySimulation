@@ -15,8 +15,9 @@ namespace Simulation
             get => this.size; 
             set
             {
+                if (math.all(this.size == value)) return;
+
                 this.size = value;
-                Debug.Assert(this.Length > 0);
                 this.OnCreateBuffer();
             }
         }
@@ -48,6 +49,8 @@ namespace Simulation
 
         protected virtual void OnCreateBuffer()
         {
+            Debug.Assert(this.Length > 0);
+            
             if(this.data != null )GameObject.Destroy(this.data);
             this.data = new RenderTexture(this.Size.x, this.Size.y, this.Size.z, this.Format);
         }

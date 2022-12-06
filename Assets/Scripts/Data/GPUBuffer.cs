@@ -20,8 +20,9 @@ namespace Simulation
             get => this.size; 
             set
             {
+                if (math.all(this.size == value)) return;
+                
                 this.size = value;
-                Debug.Assert(this.Length > 0);
                 this.OnCreateBuffer(this.Length);
             }
         }
@@ -50,6 +51,8 @@ namespace Simulation
 
         protected virtual void OnCreateBuffer(int size, GraphicsBuffer.Target target = GraphicsBuffer.Target.Structured)
         {
+            Debug.Assert(size > 0);
+            
             this.data?.Release();
             this.data = new GraphicsBuffer(target, size, Marshal.SizeOf<T>());
             this.data.SetCounterValue(0);
