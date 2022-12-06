@@ -1,13 +1,6 @@
 #pragma kernel Vorticity
 
-#include "SPHParameter.hlsl"
-#include "Kernel.hlsl"
-
-#include "../DispatcherHelper.hlsl"
-#include "../DefaultGrid.hlsl"
-#include "../GridData.hlsl"
-#include "../GridHelper.hlsl"
-#include "../DefaultParticle.hlsl"
+#include "Common.hlsl"
 
 StructuredBuffer<Particle> _ParticleBufferRead;
 StructuredBuffer<ParticleDensity> _ParticleDensityBufferRead;

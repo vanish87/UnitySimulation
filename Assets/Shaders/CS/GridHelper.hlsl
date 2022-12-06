@@ -15,6 +15,10 @@ uint3 CellPosToCellIndex(float3 pos)
 {
 	return (uint3)pos;
 }
+float3 CellIndexToCellPos(uint3 index, float3 gridMin, float3 gridMax, float3 gridSpacing)
+{
+	return gridMin + (index + 0.5) * gridSpacing;
+}
 
 uint3 PosToCellIndex(float3 pos, float3 gridMin, float3 gridMax, float3 gridSpacing)
 {

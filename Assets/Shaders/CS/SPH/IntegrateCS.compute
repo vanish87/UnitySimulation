@@ -1,16 +1,10 @@
 #pragma kernel Integrate
 
-#include "SPHParameter.hlsl"
-#include "Kernel.hlsl"
+#include "UnityCG.cginc"
 
-#include "../DispatcherHelper.hlsl"
-// #include "../GridData.hlsl"
-// #include "../GridHelper.hlsl"
-#include "../DefaultParticle.hlsl"
-
+#include "Common.hlsl"
 #include "../Tools.hlsl"
 
-#include "UnityCG.cginc"
 
 StructuredBuffer<Particle> _ParticleBufferRead;
 RWStructuredBuffer<Particle> _ParticleBufferWrite;

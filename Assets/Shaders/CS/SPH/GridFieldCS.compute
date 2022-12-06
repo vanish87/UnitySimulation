@@ -1,10 +1,6 @@
 #pragma kernel GridToTexture
 
-#include "../DispatcherHelper.hlsl"
-#include "../DefaultGrid.hlsl"
-#include "../GridData.hlsl"
-#include "../GridHelper.hlsl"
-#include "../DefaultParticle.hlsl"
+#include "Common.hlsl"
 
 RWTexture2D<float2> _Velocity;
 RWTexture2D<float> _Density;

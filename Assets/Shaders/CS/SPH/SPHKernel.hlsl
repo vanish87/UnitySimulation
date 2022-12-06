@@ -2,7 +2,7 @@
 #define USE_2D_KERNEL
 
 // static const float PI = 3.141592653f;
-#include "../../Constant.hlsl"
+#include "../Constant.hlsl"
 
 float Poly6W()
 {

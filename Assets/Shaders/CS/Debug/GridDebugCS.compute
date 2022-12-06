@@ -2,12 +2,14 @@
 #pragma kernel Debug
 
 #include "../SPH/SPHParameter.hlsl"
-#include "../SPH/Kernel.hlsl"
-#include "../DispatcherHelper.hlsl"
+#include "../SPH/SPHKernel.hlsl"
+#include "../DefaultParticle.hlsl"
+
 #include "../DefaultGrid.hlsl"
 #include "../GridData.hlsl"
+
 #include "../GridHelper.hlsl"
-#include "../DefaultParticle.hlsl"
+#include "../DispatcherHelper.hlsl"
 
 RWStructuredBuffer<Particle> _ParticleBufferRW;
 float3 pos;

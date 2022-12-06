@@ -16,6 +16,14 @@ for(int k = max(cid.z - _GridRange.z, 0); k <= min(cid.z + _GridRange.z, _GridSi
 
 #define FOR_EACH_NEIGHBOR_END }}}
 
+#define FOR_EACH_NEIGHBOR_GRID_START(CID, NID, GRID) {\
+for(int i = max(CID.x - _GridRange.x, 0); i <= min(CID.x + _GridRange.x, _GridSize.x-1); ++i)\
+for(int j = max(CID.y - _GridRange.y, 0); j <= min(CID.y + _GridRange.y, _GridSize.y-1); ++j)\
+for(int k = max(CID.z - _GridRange.z, 0); k <= min(CID.z + _GridRange.z, _GridSize.z-1); ++k){\
+	uint2 startEnd = GRID[CellIndexToCellID(int3(i,j,k), _GridSize)].Index(); \
+	for(uint NID = startEnd.x; NID < startEnd.y; ++NID){\
+
+#define FOR_EACH_NEIGHBOR_GRID_END }}}
 
 #define FOR_EACH_PARTICLE_IN_CELL_START(CELL, PID, GRID) {\
 uint2 startEnd = GRID[CellIndexToCellID(int3(CELL.x,CELL.y,CELL.z), _GridSize)].Index(); \

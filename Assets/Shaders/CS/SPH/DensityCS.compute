@@ -1,12 +1,6 @@
 #pragma kernel Density
 
-#include "SPHParameter.hlsl"
-#include "Kernel.hlsl"
-#include "../DispatcherHelper.hlsl"
-#include "../DefaultGrid.hlsl"
-#include "../GridData.hlsl"
-#include "../GridHelper.hlsl"
-#include "../DefaultParticle.hlsl"
+#include "Common.hlsl"
 #include "../Tools.hlsl"
 
 #include "../Boundary/BoundaryData.hlsl"

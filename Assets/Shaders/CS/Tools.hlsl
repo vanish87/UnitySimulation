@@ -1,5 +1,5 @@
 
-#include "../Constant.hlsl"
+#include "Constant.hlsl"
 
 void MinMaxScaleDissipation(inout float value, float4 minMaxScaleDissipation)
 {
