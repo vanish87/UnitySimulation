@@ -28,8 +28,8 @@ namespace Simulation
 
         public void Init(params object[] parameter)
         {
-            var data = parameter.OfType<ISimulationData>().FirstOrDefault();
-            var grid = data.Data.OfType<GPUGridBuffer<uint2>>().FirstOrDefault();
+            var data = parameter.Find<ISimulationData>();
+            var grid = data.Data.Find<IGrid>();
 
             this.Force.Size = new int3(grid.Size.xy, 1);
             this.Force.Data.enableRandomWrite = true;
@@ -65,10 +65,11 @@ namespace Simulation
             grid.OnSetupGridParameter(this.gridCS, Kernel);
 
             this.gridCS.SetTexture(k, "_Velocity", this.Velocity.Data);
-            this.gridCS.SetTexture(k, "_Force", this.force.Data);
+            this.gridCS.SetTexture(k, "_Force", this.Force.Data);
             this.gridCS.SetTexture(k, "_Density", this.Density.Data);
             this.gridCS.SetTexture(k, "_Vorticity", this.Vorticity.Data);
-            DispatchTool.Dispatch(this.gridCS, Kernel, this.Velocity.Size);
+            var size = this.Velocity.Size;
+            DispatchTool.Dispatch(this.gridCS, Kernel, size);
 
             //upsample to larger field texture
             var densityField = data.Data.OfType<DoubleDensityTexture2D>().FirstOrDefault();

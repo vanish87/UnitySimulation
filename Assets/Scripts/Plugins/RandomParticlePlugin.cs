@@ -21,11 +21,11 @@ namespace Simulation
 
         public void Init(params object[] parameter)
         {
-            var data = parameter.OfType<ISimulationData>().FirstOrDefault();
+            var data = parameter.Find<ISimulationData>();
+            var space = data.Spaces.Find<ISimulationSpace>();
             var particleBuffers = data.Data.OfType<DoubleBuffer<GraphicsBuffer, Particle>>();
             foreach (var particle in particleBuffers)
             {
-                var space = data.Spaces.OfType<ISimulationSpace>().FirstOrDefault();
                 var k = this.randomCS.FindKernel("RandomParticle");
                 this.randomCS.SetBuffer(k, "_Buffer", particle.Read.Data);
                 this.randomCS.SetInt("_BufferCount", particle.Read.Data.count);

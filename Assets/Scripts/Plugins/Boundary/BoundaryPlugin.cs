@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Simulation.Tool;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -27,8 +28,8 @@ namespace Simulation
             this.OnUpdateBoundaryBuffer(this.BoundaryBuffer);
             this.OnCombineBoundaryField();
 
-            var space = data.Spaces.OfType<ISimulationSpace>().FirstOrDefault();
-            this.OnUpdateBoundaryParticleBuffer(space);
+            var space = data.Spaces.Find<ISimulationSpace>();
+            if (space != null) this.OnUpdateBoundaryParticleBuffer(space);
         }
         protected override void OnUpdateBoundaryBuffer(GraphicsBuffer boundary)
         {
