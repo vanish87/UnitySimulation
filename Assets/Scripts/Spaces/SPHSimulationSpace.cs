@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Simulation.Fluid.SPH
 {
-    public class SPHSimulationSpace : SPHConfigure, ISimulationSpace, IGridConfigure
+    public class SPHSimulationSpace : SPHConfigure, IParticleSimulationSpace, IGridConfigure
     {
         public float3 Center => this.transform.localPosition;
         public quaternion Rotation => this.transform.localRotation;

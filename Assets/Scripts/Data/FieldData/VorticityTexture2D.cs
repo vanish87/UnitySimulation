@@ -1,21 +1,12 @@
 using System.Linq;
+using Simulation.Tool;
 using Unity.Mathematics;
-namespace Simulation
+namespace Simulation.Fluid
 {
-    public class VorticityTexture2D : GPUTexture<float2>
+    public class VorticityTexture2D : GridSpaceTexture<float2>
     {
         public override string Identifier => Fluid.DataType.VorticityTexture.ToString();
         public override Dimension Dim => Dimension.Dim2D;
-        protected override IGPUBufferConfigure OnGetConfigure(object[] parameter)
-        {
-            var data = parameter.OfType<ISimulationData>().FirstOrDefault();
-            var space = data.Spaces.OfType<ISimulationSpace>().FirstOrDefault();
-
-            var config = this.GetComponent<IGPUBufferConfigure>();
-            config?.Init(space);
-
-            return config;
-        }
     }
 
 }

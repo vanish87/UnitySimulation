@@ -26,26 +26,26 @@ namespace Simulation.Fluid.SPH
             //x is max speed to assure cfl condition
             public float maxSpeed = 1f;
         }
-        public bool Inited => true;
-        public float SmoothLength => this.data.smoothLength;
-        public float2 PressureK => this.data.pressureK;
-        public float2 ParticleGamma => this.data.particleGamma;
-        public float RestDensity => this.data.restDensity;
-        public float ParticleMass => this.data.particleMass;
-        public float Viscosity => this.data.viscosity;
-        public float VorticityConfinement => this.data.vorticityConfinement;
-        public float3 NU_T => this.data.nu_t;
-        public float3 NU_EXT => this.data.nu_ext;
-        public float3 Theta => this.data.theta;
-        public float PreferredTimeStep => this.data.useCFL ? this.data.preferredTimeStep = FluidTool.GetCFL(this.SmoothLength, this.MaxSpeed) : this.data.preferredTimeStep;
-        public float MaxSpeed => this.data.maxSpeed;
-
+        public virtual bool Inited => true;
+        public virtual float SmoothLength => this.data.smoothLength;
+        public virtual float2 PressureK => this.data.pressureK;
+        public virtual float2 ParticleGamma => this.data.particleGamma;
+        public virtual float RestDensity => this.data.restDensity;
+        public virtual float ParticleMass => this.data.particleMass;
+        public virtual float Viscosity => this.data.viscosity;
+        public virtual float VorticityConfinement => this.data.vorticityConfinement;
+        public virtual float3 NU_T => this.data.nu_t;
+        public virtual float3 NU_EXT => this.data.nu_ext;
+        public virtual float3 Theta => this.data.theta;
+        public virtual float PreferredTimeStep => this.data.useCFL ? this.data.preferredTimeStep = FluidTool.GetCFL(this.SmoothLength, this.MaxSpeed) : this.data.preferredTimeStep;
+        public virtual float MaxSpeed => this.data.maxSpeed;
+        public virtual string Identifier => this.ToString();
 
         [SerializeField] protected Data data = new Data();
-        public void Init(params object[] parameter)
+        public virtual void Init(params object[] parameter)
         {
         }
-        public void Deinit(params object[] parameter)
+        public virtual void Deinit(params object[] parameter)
         {
         }
     }

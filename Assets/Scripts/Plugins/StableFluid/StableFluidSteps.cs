@@ -9,6 +9,7 @@ namespace Simulation.Fluid.StableFluid
         Divergence,
         PressureSolver,
         ProjectionSubtract,
+        Boundary,
     }
 
 }

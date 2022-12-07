@@ -10,9 +10,10 @@ namespace Simulation
     }
     public class ParticleConfigure : MonoBehaviour, IGPUBufferConfigure, IParticleConfigure
     {
-        public int3 Size => new int3(this.numOfParticle, 1, 1);
-        public bool Inited => this.inited;
-        public int NumOfParticles => this.numOfParticle;
+        public virtual int3 Size => new int3(this.numOfParticle, 1, 1);
+        public virtual bool Inited => this.inited;
+        public virtual int NumOfParticles => this.numOfParticle;
+        public virtual string Identifier => this.ToString();
         [SerializeField] protected int numOfParticle = 1024 * 64;
         protected bool inited = false;
         public virtual void Init(params object[] parameter)

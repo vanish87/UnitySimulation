@@ -5,4 +5,14 @@ namespace Simulation
     {
 
     }
+
+    public interface IParticleSimulationSpace : ISimulationSpace
+    {
+
+    }
+
+    public interface IGridSimulationSpace : ISimulationSpace
+    {
+
+    }
 }

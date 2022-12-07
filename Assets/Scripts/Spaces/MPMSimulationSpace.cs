@@ -5,23 +5,19 @@ using UnityEngine;
 
 namespace Simulation.MPM
 {
-    public class MPMSimulationSpace : MonoBehaviour, ISimulationSpace, IGridConfigure
+    public class MPMSimulationSpace : MonoBehaviour, IGridConfigure, IParticleSimulationSpace, IGridSimulationSpace
     {
-        public float3 Center => this.transform.localPosition;
-        public quaternion Rotation => this.transform.localRotation;
-        public float3 Scale => this.transform.localScale;
-        public float4x4 TRS => this.transform.localToWorldMatrix;
-        public ISpace Space => this;
-        public float3 Spacing => this.spacing;
-        public bool Inited => this.inited;
+        public virtual float3 Center => this.transform.localPosition;
+        public virtual quaternion Rotation => this.transform.localRotation;
+        public virtual float3 Scale => this.transform.localScale;
+        public virtual float4x4 TRS => this.transform.localToWorldMatrix;
+        public virtual ISpace Space => this;
+        public virtual float3 Spacing => this.spacing;
+        public virtual bool Inited => this.inited;
+        public virtual string Identifier => this.ToString();
+
         [SerializeField] protected float3 spacing = 1;
         protected bool inited = false;
-        protected virtual void OnDrawGizmos()
-        {
-            Gizmos.matrix = this.TRS;
-            Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
-        }
-
         public void Init(params object[] parameter)
         {
             this.inited = true;
@@ -31,6 +27,12 @@ namespace Simulation.MPM
         {
             this.inited = false;
         }
+        protected virtual void OnDrawGizmos()
+        {
+            Gizmos.matrix = this.TRS;
+            Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
+        }
+
 
     }
 

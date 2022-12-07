@@ -11,7 +11,7 @@ namespace Simulation
     }
     public class CPUField2D : MonoBehaviour, IStructuredData<float2[,], float2>, IField<float2, float2>
     {
-        public string Identifier => this.ToString();
+        public virtual string Identifier => this.ToString();
         public virtual float2[,] Data => this.data;
         public virtual int3 Size
         {

@@ -6,8 +6,10 @@ namespace Simulation
 {
     public class CPUDataConfigure : MonoBehaviour, ICPUDataConfigure
     {
-        public int3 Size => this.size;
-        public bool Inited => true;
+        public virtual int3 Size => this.size;
+        public virtual bool Inited => true;
+        public virtual string Identifier => this.ToString();
+
         [SerializeField] protected int3 size = 1;
         public void Init(params object[] parameter)
         {

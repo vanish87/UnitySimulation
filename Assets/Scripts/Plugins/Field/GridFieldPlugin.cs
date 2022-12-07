@@ -5,7 +5,7 @@ using Simulation.Tool;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Simulation
+namespace Simulation.Fluid
 {
     public class GridFieldPlugin : MonoBehaviour, IPlugin
     {
