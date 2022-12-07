@@ -60,7 +60,7 @@ namespace Simulation.MPM
             DispatchTool.Dispatch(this.initParticleCS, InitKernel, particle.Read.Size);
 
         }
-        protected virtual void InitGrid()
+        protected virtual void InitGrid(DoubleBufferInGrid<Particle, Cell> particle)
         {
 
         }

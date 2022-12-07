@@ -1,7 +1,4 @@
-using System.Linq;
 using Simulation.Tool;
-using Unity.Mathematics;
-using UnityEngine;
 
 namespace Simulation
 {
@@ -15,12 +12,12 @@ namespace Simulation
             base.OnCreateBuffer();
             this.Data.enableRandomWrite = true;
         }
-        protected override IGPUBufferConfigure OnGetConfigure(object[] parameter)
+        protected override IGPUBufferConfigure OnGetConfigure(params object[] parameter)
         {
             var data = parameter.Find<ISimulationData>();
             var space = data.Spaces.Find<ISimulationSpace>();
 
-            var config = this.GetComponent<IGPUBufferConfigure>();
+            var config = base.OnGetConfigure(parameter);
             config?.Init(space);
 
             return config;

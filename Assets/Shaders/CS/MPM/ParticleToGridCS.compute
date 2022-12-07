@@ -3,10 +3,13 @@
 #include "MPMParticle.hlsl"
 #include "MPMGrid.hlsl"
 
+#include "MPMKernel.hlsl"
+
 #include "../DispatcherHelper.hlsl"
 #include "../GridData.hlsl"
 #include "../GridHelper.hlsl"
 #include "../Tools.hlsl"
+#include "../SVD.hlsl"
 
 StructuredBuffer<Particle> _ParticleBufferRead;
 
@@ -17,16 +20,80 @@ void ParticleToGrid(uint3 id : SV_DispatchThreadID)
 
     const uint3 g_id = id;
 
-    float3 velocity = 0;
+    float3 c_pos = CellIndexToCellPos(g_id, _GridMin, _GridMax, _GridSpacing);
 
-    FOR_EACH_PARTICLE_IN_CELL_START(g_id, p_id, _GridBuffer)
+    FOR_EACH_NEIGHBOR_GRID_START(g_id, p_id, _GridBuffer)
     {
         Particle p = _ParticleBufferRead[p_id];
         if(!p.IsActive()) continue;
 
-        velocity += p.velocity;
+        float w = GetWeight(p.position, c_pos, _GridSpacing);
+
+						float3x3 F = p.Fe;
+						float3x3 R = 0;
+						float3x3 U ;
+						float3 d;
+						float3x3 V;
+
+						float volume = p.volume;
+						float3x3 Dinv = InvD(_GridSpacing);
+						
+
+						// if(Is2D())
+						// {
+						// 	float3x3 S = 0;
+						// 	GetPolarDecomposition2D(F, R, S);
+						// }
+						{
+							GetSVD3D(F, U, d, V);
+							R = mul(U, transpose(V));
+						}
+
+
+
+						float e = 1;
+						float mu = _mu;
+						float lambda = _lambda;
+
+						float j = determinant(F);
+						if(p.type == 2)
+						{
+							e = exp(_hardening * (1 - p.Jp));
+						}
+						// else
+						// if(p.type == 3)
+						// {
+						// 	mu = 0;
+						// 	j = p.Jp;
+						// }
+
+						float mup = mu * e;
+						float lambdap = lambda * e;
+
+
+						float3x3 P = mul((2 * mup * (F - R)), transpose(F)) + lambdap * (j - 1) * j ;
+
+						if(p.type == 3)
+						{
+							float s = p.Jp -1;
+							P = float3x3(s,0,0,0,s,0,0,0,s) * mu;
+						}
+						float3x3 stress = -(_DT * volume) * mul(Dinv , P);
+
+						
+						float3x3 apic = stress + p.mass * p.C;
+
+						
+						// j = clamp(j, 0.6f,20.0f);
+						// float3x3 FinvT = transpose(inverse(F));
+						// float3x3 P = (2.0f * mup * (F - R)) + lambdap * (j - 1.0f) * j * FinvT;
+						// float3x3 stress = 1.0f / j * mul(P, transpose(F));
+
+						c.mass += w * p.mass;
+						c.mv += w * (p.mass * p.velocity + mul(apic, (gpos-p.position)));
+
     }
-    FOR_EACH_PARTICLE_IN_CELL_END
+    FOR_EACH_NEIGHBOR_GRID_END
 
 	_GridBuffer[CellIndexToCellID(g_id, _GridSize)].velocity = velocity;
 }

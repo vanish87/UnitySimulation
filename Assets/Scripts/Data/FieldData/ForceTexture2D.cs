@@ -1,7 +1,5 @@
 using System.Linq;
-using Simulation.Tool;
 using Unity.Mathematics;
-using UnityEngine;
 
 namespace Simulation
 {

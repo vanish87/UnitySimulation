@@ -1,18 +1,21 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Simulation.Tool;
 using UnityEngine;
 
 namespace Simulation.Fluid
 {
     public class SimulationController : MonoBehaviour, ISimulation, ISimulationData
     {
+        public virtual ISimulationData SimulationData => this;
         public virtual IEnumerable<IConfigure> Configures => this.configures ??= this.GetComponentsInChildren<IConfigure>();
         public virtual IEnumerable<IData> Data => this.data ??= this.GetComponentsInChildren<IData>();
         public virtual IEnumerable<ISpace> Spaces => this.spaces ??= this.GetComponentsInChildren<ISpace>();
         public virtual IEnumerable<IPlugin> Plugins => this.plugins ??= this.GetComponentsInChildren<IPlugin>();
         public bool Inited => this.inited;
         public virtual IEnumerable<KeyValuePair<int, List<IPlugin>>> SortedPlugins => this.sortedPlugins.OrderBy(k => k.Key);
+        [SerializeField] protected AccumulatorTimestep accumulator = new AccumulatorTimestep();
         protected Dictionary<int, List<IPlugin>> sortedPlugins = new Dictionary<int, List<IPlugin>>();
         protected IEnumerable<IPlugin> plugins;
         protected IEnumerable<IConfigure> configures;
@@ -54,19 +57,19 @@ namespace Simulation.Fluid
         {
             foreach (var p in this.Plugins)
             {
-                p.Deinit(parameter, this, this);
+                p.Deinit(parameter, this, this.Configures, this.Spaces, this.Data, this.Plugins);
             }
             foreach (var d in this.Data)
             {
-                d.Deinit(parameter, this, this);
+                d.Deinit(parameter, this, this.Configures, this.Spaces, this.Data, this.Plugins);
             }
             foreach (var s in this.Spaces)
             {
-                s.Deinit(parameter, this, this);
+                s.Deinit(parameter, this, this.Configures, this.Spaces, this.Data, this.Plugins);
             }
             foreach (var c in this.Configures)
             {
-                c.Deinit(parameter, this, this);
+                c.Deinit(parameter, this, this.Configures, this.Spaces, this.Data, this.Plugins);
             }
             this.inited = false;
         }
@@ -80,9 +83,15 @@ namespace Simulation.Fluid
                 }
             }
         }
+
+        protected void OnUpdate(float time)
+        {
+
+        }
         protected virtual void OnEnable()
         {
             this.Init();
+            this.accumulator.OnUpdate(dt => this.OnUpdate(dt));
         }
         protected virtual void OnDisable()
         {
