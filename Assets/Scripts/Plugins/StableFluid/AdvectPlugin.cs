@@ -44,14 +44,13 @@ namespace Simulation.Fluid.StableFluid
             Assert.IsNotNull(density.Read.Data);
             Assert.IsNotNull(density.Write.Data);
 
-            this.Advect(this.mat, velocity.Read.Data, velocity.Read.Data, velocity.Write.Data, config.VelocityDissipation, new float3(1) / velocity.Read.Size);
+            this.Advect(this.mat, velocity.Read.Data, velocity.Read.Data, velocity.Write.Data, config.VelocityDissipation, new float3(1) / velocity.Read.Size, config.Timestep);
             velocity.SwipeBuffer();
 
         }
 
-        protected void Advect(Material mat, RenderTexture velocity, RenderTexture src, RenderTexture dest, float dissipation, float3 invSize)
+        protected void Advect(Material mat, RenderTexture velocity, RenderTexture src, RenderTexture dest, float dissipation, float3 invSize, float dt)
         {
-            var dt = Time.deltaTime;
             mat.SetVector("_InverseSize", new Vector4(invSize.x, invSize.y, invSize.z,0));
             mat.SetFloat("_TimeStep", dt);
             mat.SetFloat("_Dissipation", dissipation);

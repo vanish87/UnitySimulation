@@ -10,5 +10,6 @@ namespace Simulation
         StructType Data { get; }
         int3 Size { get; set; }
         int Length { get; }
+        void Reset(ElementType defaultValue = default);
     }
 }

@@ -44,6 +44,11 @@ namespace Simulation
             this.inited = false;
             this.data = null;
         }
+        public virtual void Reset(float2 defaultValue = default)
+        {
+            this.data = new float2[this.Size.x, this.Size.y];
+            Debug.LogWarning("Not set value");
+        }
         public virtual float2 Gradient(float2 uv, SampleType sp = SampleType.Center)
         {
             return default;

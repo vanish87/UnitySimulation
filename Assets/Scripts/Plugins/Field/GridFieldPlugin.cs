@@ -16,6 +16,7 @@ namespace Simulation.Fluid
         public bool Inited => this.inited;
         protected const string Kernel = "GridToTexture";
         [SerializeField] protected ComputeShader gridCS;
+        [SerializeField] protected bool updateFluidField = true;
         protected bool inited = false;
         protected ForceTexture2D Force => this.force ??= this.GetComponent<ForceTexture2D>();
         protected ForceTexture2D force;
@@ -72,14 +73,17 @@ namespace Simulation.Fluid
             DispatchTool.Dispatch(this.gridCS, Kernel, size);
 
             //upsample to larger field texture
-            var densityField = data.Data.OfType<DoubleDensityTexture2D>().FirstOrDefault();
-            var velocityField = data.Data.OfType<DoubleVelocityTexture2D>().FirstOrDefault();
-            var vorticityField = data.Data.OfType<DoubleVorticityTexture2D>().FirstOrDefault();
-            var forceField = data.Data.OfType<DoubleForceTexture2D>().FirstOrDefault();
-            Graphics.Blit(this.Density.Data, densityField.Read.Data);
-            Graphics.Blit(this.Velocity.Data, velocityField.Read.Data);
-            Graphics.Blit(this.Vorticity.Data, vorticityField.Read.Data);
-            Graphics.Blit(this.Force.Data, forceField.Read.Data);
+            if(this.updateFluidField)
+            {
+                var densityField = data.Data.OfType<DoubleDensityTexture2D>().FirstOrDefault();
+                var velocityField = data.Data.OfType<DoubleVelocityTexture2D>().FirstOrDefault();
+                var vorticityField = data.Data.OfType<DoubleVorticityTexture2D>().FirstOrDefault();
+                var forceField = data.Data.OfType<DoubleForceTexture2D>().FirstOrDefault();
+                Graphics.Blit(this.Density.Data, densityField.Read.Data);
+                Graphics.Blit(this.Velocity.Data, velocityField.Read.Data);
+                Graphics.Blit(this.Vorticity.Data, vorticityField.Read.Data);
+                Graphics.Blit(this.Force.Data, forceField.Read.Data);
+            }
         }
     }
 }

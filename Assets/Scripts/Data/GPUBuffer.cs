@@ -45,17 +45,23 @@ namespace Simulation
         }
         public virtual void Deinit(params object[] parameter)
         {
-            this.data?.Release();
+            this.Data?.Release();
             this.inited = false;
+        }
+
+        public virtual void Reset(T defaultValue)
+        {
+            this.Data.SetData(Enumerable.Repeat(defaultValue, this.Length).ToArray());
         }
 
         protected virtual void OnCreateBuffer(int size, GraphicsBuffer.Target target = GraphicsBuffer.Target.Structured)
         {
             Debug.Assert(size > 0);
             
-            this.data?.Release();
+            this.Data?.Release();
+
             this.data = new GraphicsBuffer(target, size, Marshal.SizeOf<T>());
-            this.data.SetCounterValue(0);
+            this.Data.SetCounterValue(0);
 
             if(this.initCS != null)
             {
