@@ -30,5 +30,10 @@ namespace Simulation
             this.Read = this.Write;
             this.Write = temp;
         }
+        public virtual void ResetAll(E value = default)
+        {
+            this.Read.Reset(value);
+            this.Write.Reset(value);
+        }
     }
 }
