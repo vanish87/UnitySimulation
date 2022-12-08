@@ -1,0 +1,64 @@
+﻿#pragma kernel CSUpdate
+
+struct ParticleData
+{
+	float3 velocity;
+	float3 position;
+	float  age;
+};
+
+RWStructuredBuffer<ParticleData> _ParticleDataBuffer;
+Texture2D<float4> _FluidVelocityMap;
+
+float  _Throttle;
+float2 _LifeTimeParams; // 1.0 / LifeTimeMin, 1.0 / LifeTimeMax
+float  _DeltaTime;
+float  _Time;
+
+float _AccelerationWeight;
+
+float3 _SimMin;
+float3 _SimMax;
+
+float2 _FluidVelocityMapResolution;
+
+float rand(float idx, float salt)
+{
+	float2 uv = float2(idx + salt, 0.0);
+	return frac(sin(dot(uv, float2(12.9898, 78.233))) * 43758.5453);
+}
+
+float3 randPos(float idx, float salt)
+{
+	float3 rd = float3(rand(idx, salt), rand(idx, salt + 2), 0);
+	return lerp(_SimMin, _SimMax, rd);
+}
+
+[numthreads(256,1,1)]
+void CSUpdate(uint3 id : SV_DispatchThreadID)
+{
+	uint idx = id.x;
+
+	ParticleData pd = _ParticleDataBuffer[idx];
+	
+
+	float3 npos = (pd.position - _SimMin)/(_SimMax - _SimMin);
+	uint2 uv = (uint2)(npos.xy * _FluidVelocityMapResolution);
+	float2 fluidVel = _FluidVelocityMap[uv].xy;
+
+	if (pd.age < 0.0)
+	{
+		pd.velocity = float3(0, 0, 0);
+		pd.position = randPos(idx, _Time);
+		pd.age = 1.0;
+	}
+	else
+	{
+		pd.velocity += float3(fluidVel.x, fluidVel.y, 0) * _AccelerationWeight *_DeltaTime;
+		pd.velocity *= 0.5;
+		pd.position += pd.velocity * _DeltaTime;
+		pd.age -= lerp(_LifeTimeParams.x, _LifeTimeParams.y, rand(idx, 0.0)) * _DeltaTime;
+	}
+	
+	_ParticleDataBuffer[id.x] = pd;
+}
