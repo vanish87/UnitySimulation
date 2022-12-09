@@ -3049,7 +3049,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridCS: {fileID: 7200000, guid: cf910456be8973a45bdfc71785b3fa0a, type: 3}
-  updateFluidField: 1
+  updateFluidField: 0
 --- !u!114 &1190228999
 MonoBehaviour:
   m_ObjectHideFlags: 0
