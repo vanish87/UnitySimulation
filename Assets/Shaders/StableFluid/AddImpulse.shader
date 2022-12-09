@@ -5,13 +5,18 @@
 	}
 	CGINCLUDE
 	#include "UnityCG.cginc"
+	#include "../CS/Tools.hlsl"
+	#include "../CS/UVTools.hlsl"
+	#include "../CS/Boundary/BoundaryData.hlsl"
+	#include "../CS/Boundary/Boundary.hlsl"
 	// ======================================================================
 	// 変数
 	// ======================================================================
 	sampler2D _Source;          // 入力場
 
-	float4 _ImpulseParams;	    // point.x, point.y, radius, power
-	float2 _ImpulseDirection;	// direction.x, direction.y
+	float4 _SimMin;
+	float4 _SimMax;
+
 
 	// ======================================================================
 	// 関数
@@ -24,13 +29,12 @@
 	// Pass 0 : 速度場に力を加える
 	float4 frag(v2f_img i) : SV_Target
 	{
-		float3 velocityDir = float3(_ImpulseDirection.xy, 0.0);
-		velocityDir = -1.0 * max(-1.0, min(1.0, velocityDir));
-		float2 diff    = _ImpulseParams.xy - i.uv.xy;
-		float3 impulse = min(0.8, velocityDir.xyz * gaussian(dot(diff, diff), _ImpulseParams.z));
+		float3 uv = float3(i.uv.xy, 0);
+		float3 pos = lerp(_SimMin, _SimMax, uv);
+		float3 force = GetBoundaryVelocityForce(pos);
 
 		float3 src = tex2D(_Source, i.uv.xy);
-		return float4(src.xyz + _ImpulseParams.w * impulse.xyz, 1.0);
+		return float4(src.xyz + force, 1.0);
 	}
 	ENDCG
 

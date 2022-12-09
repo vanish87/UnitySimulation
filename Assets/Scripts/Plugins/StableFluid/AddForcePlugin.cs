@@ -7,7 +7,7 @@ using UnityEngine.Assertions;
 
 namespace Simulation.Fluid.StableFluid
 {
-    public class AddForcePlugin : MonoBehaviour
+    public class AddForcePlugin : MonoBehaviour, IPlugin
     {
         public string Identifier => this.ToString();
         public bool Enabled => this.isActiveAndEnabled;
@@ -28,8 +28,8 @@ namespace Simulation.Fluid.StableFluid
         }
         public void OnSimulationStep(int stepIndex, ISimulation sim, ISimulationData data)
         {
-            return;
             var config = data.Configures.Find<IStableFluidConfigure>();
+            var space = data.Spaces.Find<StableFluidSimulationSpace>();
 
             var velocity = data.Data.Find<DoubleVelocityTexture2D>();
             var velocityDivergence = data.Data.Find<DoubleVelocityDivergenceTexture2D>();
@@ -46,22 +46,20 @@ namespace Simulation.Fluid.StableFluid
             Assert.IsNotNull(density.Read.Data);
             Assert.IsNotNull(density.Write.Data);
 
-            for (var i = 0; i < config.JacobiIterationForDiffusion; i++)
-            {
-                this.Diffusion(mat, velocity.Read.Data, velocity.Write.Data, new float3(1) / velocity.Read.Size, config.Viscosity, config.Timestep);
-                velocity.SwipeBuffer();
-            }
+            this.AddForce(mat, velocity.Read.Data, velocity.Write.Data, space, boundary);
+            velocity.SwipeBuffer();
 
         }
 
-        protected void Diffusion(Material mat, RenderTexture velocity, RenderTexture dest, float3 invSize, float viscosity, float dt)
+        protected void AddForce(Material mat, RenderTexture velocity, RenderTexture dest, StableFluidSimulationSpace space, IBoundaryController boundary)
         {
-            mat.SetVector("_InverseSize", new Vector4(invSize.x, invSize.y, invSize.z));
-            float alpha = 1.0f / (viscosity * dt + Mathf.Epsilon);
-            mat.SetFloat("_Alpha", alpha);
-            mat.SetFloat("_InverseBeta", 1.0f / (4.0f + alpha));
+            var min = space.Center - 0.5f * space.Scale;
+            var max = space.Center + 0.5f * space.Scale;
+            mat.SetVector("_SimMin", new Vector4(min.x, min.y, min.z));
+            mat.SetVector("_SimMax", new Vector4(max.x, max.y, max.z));
             mat.SetTexture("_Source", velocity);
-            mat.SetTexture("_ConstantVector", velocity);
+            mat.SetBuffer("_BoundaryBuffer", boundary.BoundaryBuffer);
+            mat.SetInt("_BoundaryBufferCount", boundary.BoundaryBuffer.count);
             Graphics.Blit(null, dest, mat, 0);
         }
 
