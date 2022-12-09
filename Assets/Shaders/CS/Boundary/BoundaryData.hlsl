@@ -14,6 +14,7 @@ struct Boundary
 	float4x4 localToWorld;
 	float4x4 worldToLocal;
 	float4 parameter;
+	float3 velocity;
 
 	inline bool IsActive()
 	{

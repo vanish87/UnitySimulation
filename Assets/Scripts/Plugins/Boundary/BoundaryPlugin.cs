@@ -40,6 +40,7 @@ namespace Simulation
 
                 this.BoundaryCPU[bid].uuid = b.UUID;
                 this.BoundaryCPU[bid].type = b.Type;
+                this.BoundaryCPU[bid].velocity = this.GetVelocity(this.boundaryCPU[bid], b);
                 this.BoundaryCPU[bid].localToWorld = b.TRS;
                 this.BoundaryCPU[bid].worldToLocal = math.inverse(b.TRS);
                 this.BoundaryCPU[bid].parameter = b.Parameter;
@@ -47,6 +48,13 @@ namespace Simulation
             }
 
             boundary.SetData(this.BoundaryCPU);
+        }
+
+        protected float3 GetVelocity(Boundary_S prev, IBoundary b)
+        {
+            var m = prev.localToWorld;
+            var prevPos = new float3(m[3][0], m[3][1], m[3][2]);
+            return (b.Center- prevPos) / Time.deltaTime;
         }
     }
 }

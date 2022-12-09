@@ -1,5 +1,5 @@
 
-float3 OnSDFBoundary(float3 pos, in Boundary b)
+float3 OnSDFBoundaryVelocityForce(float3 pos, in Boundary b)
 {
     float3 force = 0;
 	switch(b.type)
@@ -12,7 +12,30 @@ float3 OnSDFBoundary(float3 pos, in Boundary b)
 			if(dist < r)
 			{
 				float4 p = b.parameter;
-				force = normalize(pos-c) * pow(p.x, p.y+(r-dist));
+				float3 dir = b.velocity;
+				force = dir * pow(p.x, p.y+(r-dist));
+			}
+		}
+		break;
+		default: break;
+	}
+	return force;
+}
+float3 OnSDFBoundaryForce(float3 pos, in Boundary b)
+{
+    float3 force = 0;
+	switch(b.type)
+	{
+		case BT_SDF_SPHERE:
+		{
+			float r = GetScale(b.localToWorld).x;
+			float3 c = GetPos(b.localToWorld);
+			float dist = distance(pos,c);
+			if(dist < r)
+			{
+				float4 p = b.parameter;
+				float3 dir = normalize(pos-c);
+				force = dir * pow(p.x, p.y+(r-dist));
 			}
 		}
 		break;
@@ -53,7 +76,19 @@ float3 GetBoundaryForce(float3 pos)
 	for(int i = 0; i < _BoundaryBufferCount; ++i)
 	{
 		Boundary b = _BoundaryBuffer[i];
-		total += OnSDFBoundary(pos, b);
+		total += OnSDFBoundaryForce(pos, b);
+	}
+	return total;
+
+}
+
+float3 GetBoundaryVelocityForce(float3 pos)
+{
+    float3 total = 0;
+	for(int i = 0; i < _BoundaryBufferCount; ++i)
+	{
+		Boundary b = _BoundaryBuffer[i];
+		total += OnSDFBoundaryVelocityForce(pos, b);
 	}
 	return total;
 
